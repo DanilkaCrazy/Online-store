@@ -66,6 +66,12 @@
 
 ![Screenshot_4](https://github.com/DanilkaCrazy/Online-store/assets/95550202/fa037871-6ba3-47a2-a1f2-cf54d2034134)
 
+
+Моделирование функционала ролей строилось на основе диаграммы вариантов использования (диаграмма прецендентов) с использованием языка моделирования UML через draw.io.
+
+![Screenshot_5](https://github.com/DanilkaCrazy/Online-store/assets/95550202/acde4d85-6ebe-4352-bc55-aea8f1b73d2b)
+
+
 ### Формирование разделов, подразделов и функций сайта
 **Header**
 - Название сайта (бренд);
