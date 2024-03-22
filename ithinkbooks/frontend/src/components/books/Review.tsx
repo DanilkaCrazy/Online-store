@@ -24,7 +24,7 @@ const ReviewComponent: React.FC<{review: Review}> = ({review}) => (
     </div>
     <div>
       <p>{review.rating} / 5</p>
-      <h4>{review.title}</h4>
+      <h3>{review.title}</h3>
       <p>{review.text}</p>
       <div>
         <p>{review.positiveVotes - review.negativeVotes}</p>

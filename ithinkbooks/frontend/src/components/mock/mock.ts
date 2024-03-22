@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { nanoid } from 'nanoid';
 import themes from './themes.json';
 import Theme from '../Theme';
+import User from '../User';
 
 const COUNT = 20;
 
@@ -38,7 +39,8 @@ const users = Array.from({length: COUNT}, (_v, i) => ({
     bio: faker.person.bio(),
     status: STATUSES[randomInteger(0, STATUSES.length - 1)],
     branches: randomThemes(randomInteger(0, 3), themes),
-    reviewsAmount: randomInteger(0, 10)
+    reviewsAmount: randomInteger(0, 10),
+    city: 'Санкт-Петербург'
 }));
 
 const generateReviews = (count: number, book: string) => Array.from({length: count}, () => ({
@@ -74,4 +76,18 @@ const books = Array.from({length: COUNT}, (_v, i) => ({
     reviews: generateReviews(randomInteger(0, 5), `abcde${i}`)
 }));
 
-export {books, users, MONTHS};
+const personalAccount: User = {
+    id: `abc`,
+    login: faker.word.noun(),
+    password: faker.word.noun(),
+    name: faker.person.fullName(),
+    avatar: faker.image.avatar(),
+    age: randomInteger(18, 70),
+    bio: faker.person.bio(),
+    status: STATUSES[randomInteger(0, STATUSES.length - 1)],
+    branches: randomThemes(randomInteger(0, 3), themes),
+    reviewsAmount: randomInteger(0, 10),
+    city: 'Екатеринбург'
+}
+
+export {books, users, MONTHS, personalAccount};

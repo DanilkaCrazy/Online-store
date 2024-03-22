@@ -1,24 +1,32 @@
 import React from 'react';
+import Logo from '../../images/header/Logo.svg';
+import SearchIcon from '../../images/header/Search.svg';
+import DarkMode from '../../images/header/Dark.svg';
+import StarIcon from '../../images/header/Star.svg';
+import BasketIcon from '../../images/header/Basket.svg';
+import AccountIcon from '../../images/header/Account.svg';
+import Arrow from '../../images/header/Arrow.svg';
+import '../../css/Header.css';
 import {Link, Outlet} from 'react-router-dom';
 
 const Header: React.FC<{}> = () => (
-  <nav>
-    <Link to='/'>IThink books</Link>
-    <button>
-      <div>
+  <header>
+    <Link to='/'><img className='logo' src={Logo} alt='IThink books'/></Link>
+    <button className='catalog'>
         <p>Каталог</p>
-      </div>
+        <img src={Arrow} alt=''/>
     </button>
-    <div>
+    <div className='search'>
       <input type='text' placeholder='Поиск'/>
+      <img src={SearchIcon} alt='Найти'/>
     </div>
-    <Link to='roadmap'>Построить роадмап</Link>
-    <button>Dark</button>
-    <Link to='account/favorities'>Favs</Link>
-    <Link to='account/basket'>Bsk</Link>
-    <Link to='acoount'>Acc</Link>
+    <Link to='/roadmap' className='main-button'>Построить роадмап</Link>
+    <button><img src={DarkMode} alt='Тёмный режим'/></button>
+    <Link to='/account/favorities'><img src={StarIcon} alt='Избранное'/></Link>
+    <Link to='/account/basket'><img src={BasketIcon} alt='Корзина'/></Link>
+    <Link to='/account/basket'><img src={AccountIcon} alt='Личный кабиент'/></Link>
     <Outlet/>
-  </nav>
+  </header>
 );
 
 export default Header;

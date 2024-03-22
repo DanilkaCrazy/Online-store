@@ -11,4 +11,5 @@ export default interface User {
   status: string;
   branches: Theme[];
   reviewsAmount: number;
+  city: string;
 };
