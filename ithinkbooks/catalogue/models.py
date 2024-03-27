@@ -1,8 +1,20 @@
 from django.db import models
 from django.utils.translation import gettext as _
-from multiselectfield import MultiSelectField
+#from multiselectfield import MultiSelectField
 
 # Create your models here.
+class Categories(models.Model):
+    name = models.CharField(max_length = 150, unique=True, verbose_name='Категория')
+    slug = models.SlugField(max_length = 150, unique=True, blank=True, null=True, verbose_name='URL')
+
+    class Meta:
+        db_table = 'category'
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+    def __str__(self):
+        return self.name
+
 class Products(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название')
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL')
@@ -15,22 +27,22 @@ class Products(models.Model):
     price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
     #Типы книг
-    class BookTypes(models.TextChoices): #Переделать позже, может очень просто совпадать
-        FRONTEND = "FE","Frontend"
-        BACKEND = "BE","Backend"
-        DESIGN = "DE","Дизайн"
-        GAMEDEV = "GD","Gamedev"
-        COMPSCI = "CS","Computer Science" #Разбить на несколько
-        JAVASCRIPT = "JS","JavaScript"
-        JAVA = "J","Java"
-        PYTHON = "PY","Python"
-        CSHARP = "C#","C#"
-        CLANGUAGE = "C","C"
-        CPLUS = "C++","C++"
-        SQL = "SQL","SQL"
-        OTHER = "OT","Другое"
+    #class BookTypes(models.TextChoices): #Переделать позже, может очень просто совпадать
+     #   FRONTEND = "FE","Frontend"
+      #  BACKEND = "BE","Backend"
+       # DESIGN = "DE","Дизайн"
+        #GAMEDEV = "GD","Gamedev"
+        #COMPSCI = "CS","Computer Science" #Разбить на несколько
+        #JAVASCRIPT = "JS","JavaScript"
+        #JAVA = "J","Java"
+        #PYTHON = "PY","Python"
+        #CSHARP = "C#","C#"
+        #CLANGUAGE = "C","C"
+        #CPLUS = "C++","C++"
+        #SQL = "SQL","SQL"
+        #OTHER = "OT","Другое"
     #Тип книги, максимум четыре типа
-    book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
+    #book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
     #Типы переплета
     class BookBinding(models.TextChoices):
         SOFTCOVER = "Мягкий переплет"
@@ -49,4 +61,4 @@ class Products(models.Model):
         verbose_name_plural = 'Книги'
 
     def __str__(self):
-        return f'{self.name} Количество - {self.quantity}'
+        return self.name
