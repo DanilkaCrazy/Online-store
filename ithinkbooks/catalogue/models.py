@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext as _
-#from multiselectfield import MultiSelectField
+from multiselectfield import MultiSelectField
 
 # Create your models here.
 class Categories(models.Model):
@@ -27,22 +27,22 @@ class Products(models.Model):
     price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
     #Типы книг
-    #class BookTypes(models.TextChoices): #Переделать позже, может очень просто совпадать
-     #   FRONTEND = "FE","Frontend"
-      #  BACKEND = "BE","Backend"
-       # DESIGN = "DE","Дизайн"
-        #GAMEDEV = "GD","Gamedev"
-        #COMPSCI = "CS","Computer Science" #Разбить на несколько
-        #JAVASCRIPT = "JS","JavaScript"
-        #JAVA = "J","Java"
-        #PYTHON = "PY","Python"
-        #CSHARP = "C#","C#"
-        #CLANGUAGE = "C","C"
-        #CPLUS = "C++","C++"
-        #SQL = "SQL","SQL"
-        #OTHER = "OT","Другое"
+    class BookTypes(models.TextChoices): #Переделать позже, может очень просто совпадать
+        FRONTEND = "FE","Frontend"
+        BACKEND = "BE","Backend"
+        DESIGN = "DE","Дизайн"
+        GAMEDEV = "GD","Gamedev"
+        COMPSCI = "CS","Computer Science" #Разбить на несколько
+        JAVASCRIPT = "JS","JavaScript"
+        JAVA = "J","Java"
+        PYTHON = "PY","Python"
+        CSHARP = "C#","C#"
+        CLANGUAGE = "C","C"
+        CPLUS = "C++","C++"
+        SQL = "SQL","SQL"
+        OTHER = "OT","Другое"
     #Тип книги, максимум четыре типа
-    #book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
+    book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
     #Типы переплета
     class BookBinding(models.TextChoices):
         SOFTCOVER = "Мягкий переплет"
@@ -51,8 +51,8 @@ class Products(models.Model):
     book_bindings = models.CharField(max_length=30, choices = BookBinding, default = BookBinding.SOFTCOVER,verbose_name='Переплёт')
     #Перевод
     class Translator(models.TextChoices):
-        TRANSLATE = "Переводчик"
-        NOTRANSLATE = "Нет переводчика"
+        TRANSLATE = "Имя переводчика"
+        NOTRANSLATE = "Отсутствует"
     #Выбор перевода
     translator_choice = models.CharField (max_length=30, choices = Translator, default=Translator.TRANSLATE, verbose_name='Переводчик')
     class Meta:

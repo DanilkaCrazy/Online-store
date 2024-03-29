@@ -3,6 +3,6 @@ from catalogue.views import ProductsListView, ProductView
 
 app_name = 'catalogue'
 urlpatterns = [
-    path('',ProductsListView.as_view(), name='Products'),
-    path('product',ProductView.as_view(),name='product')
+    path('products',ProductsListView.as_view(), name='Products'),
+    path('products/<int:pk>',ProductView.as_view(),name='Products')
 ]
