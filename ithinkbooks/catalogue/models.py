@@ -65,17 +65,30 @@ class Products(models.Model):
     def __str__(self):
         return self.name
 
+#Звезды отзыва
+class RatingStar(models.Model):
+    #star_value = models.SmallIntegerField(default=0, verbose_name='Звезда рейтинга')
+    star_value = models.DecimalField(default=0, verbose_name='Звезда рейтинга', max_digits=2, decimal_places=1)
+    def __str__(self):
+        return f"{self.star_value}"
+    class Meta:
+        db_table = 'rating_star'
+        verbose_name = 'Звезда рейтинга'
+        verbose_name_plural = 'Звёзды рейтинга'
+
 #Отзыв 
 class Review(models.Model):
-    #В будущем добавить связь с пользователем
+    #В будущем добавить связь с пользователем (аватарки и роль)
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='review')
-    title = models.TextField("Заголовок отзыва", max_length=100)
-    text = models.TextField("Текст отзыва", max_length=5000)
+    title = models.TextField(max_length=100, verbose_name = 'Заголовок отзыва')
+    text = models.TextField( max_length=5000, verbose_name = 'Текст отзыва')
+    star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name='Звезда', related_name='review')
+    #Реализовать Upvote/Downvote
     class Meta:
         db_table = 'review'
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
     
     def __str__(self):
-        return f"{self.name} - {self.movie}"
+        return f"{self.title} - {self.product}"
     
