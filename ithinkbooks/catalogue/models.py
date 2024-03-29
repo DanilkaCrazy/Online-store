@@ -3,6 +3,7 @@ from django.utils.translation import gettext as _
 from multiselectfield import MultiSelectField
 
 # Create your models here.
+#Категории книг
 class Categories(models.Model):
     name = models.CharField(max_length = 150, unique=True, verbose_name='Категория')
     slug = models.SlugField(max_length = 150, unique=True, blank=True, null=True, verbose_name='URL')
@@ -15,6 +16,7 @@ class Categories(models.Model):
     def __str__(self):
         return self.name
 
+#Книга
 class Products(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название')
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL')
@@ -62,3 +64,18 @@ class Products(models.Model):
 
     def __str__(self):
         return self.name
+
+#Отзыв 
+class Review(models.Model):
+    #В будущем добавить связь с пользователем
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='review')
+    title = models.TextField("Заголовок отзыва", max_length=100)
+    text = models.TextField("Текст отзыва", max_length=5000)
+    class Meta:
+        db_table = 'review'
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+    
+    def __str__(self):
+        return f"{self.name} - {self.movie}"
+    
