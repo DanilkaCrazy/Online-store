@@ -5,8 +5,8 @@ class RatingStarSerializer (serializers.ModelSerializer):
     class Meta:
         model = RatingStar
         fields = '__all__'
+
 class CreateReviewSerializer (serializers.ModelSerializer):
-    star = RatingStarSerializer()
     class Meta:
         model = Review
         fields = '__all__'
