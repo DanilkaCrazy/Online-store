@@ -6,6 +6,7 @@ from multiselectfield import MultiSelectField
 #Категории книг
 class Categories(models.Model):
     name = models.CharField(max_length = 150, unique=True, verbose_name='Категория')
+    description = models.TextField(max_length = 200, verbose_name='Описание категории')
     slug = models.SlugField(max_length = 150, unique=True, blank=True, null=True, verbose_name='URL')
 
     class Meta:
@@ -57,6 +58,8 @@ class Products(models.Model):
         NOTRANSLATE = "Отсутствует"
     #Выбор перевода
     translator_choice = models.CharField (max_length=30, choices = Translator, default=Translator.TRANSLATE, verbose_name='Переводчик')
+    #Категория книги
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE ,verbose_name='Категория')
     class Meta:
         db_table = 'book'
         verbose_name = 'Книга'

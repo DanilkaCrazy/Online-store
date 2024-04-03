@@ -18,6 +18,14 @@ class ProductView(RetrieveAPIView):
     queryset = Products.objects.all()
     serializer_class = ProductsSerializer
 
+#Просмотр книг по категории
+class CategoryView(ListAPIView):
+    serializer_class = ProductsSerializer
+    def get_queryset(self):
+        category = self.kwargs['category']
+        return Products.objects.filter(category__id=category)
+    
+
 #Создание отзыва
 class CreateReviewView(APIView):
     def post(self, request):
