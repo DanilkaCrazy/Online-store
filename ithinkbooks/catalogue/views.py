@@ -22,8 +22,12 @@ class ProductView(RetrieveAPIView):
 class CategoryView(ListAPIView):
     serializer_class = ProductsSerializer
     def get_queryset(self):
-        category = self.kwargs['category']
-        return Products.objects.filter(category__id=category)
+        #category = self.kwargs['category']
+        queryset = Products.objects.all()
+        #book_type = self.request.query_params.get('book_type')
+        #book_type = book_type.split(",")
+        book_theme = self.kwargs['book_theme']
+        return queryset.filter(book_theme=book_theme)
     
 
 #Создание отзыва

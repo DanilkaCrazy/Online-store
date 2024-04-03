@@ -30,12 +30,14 @@ class Products(models.Model):
     price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
     #Типы книг
-    class BookTypes(models.TextChoices): #Переделать позже, может очень просто совпадать
+    class BookTheme(models.TextChoices):
         FRONTEND = "FE","Frontend"
         BACKEND = "BE","Backend"
         DESIGN = "DE","Дизайн"
         GAMEDEV = "GD","Gamedev"
         COMPSCI = "CS","Computer Science" #Разбить на несколько
+        OTHER = "OT","Other"
+    class ProgrammingLanguage(models.TextChoices):
         JAVASCRIPT = "JS","JavaScript"
         JAVA = "J","Java"
         PYTHON = "PY","Python"
@@ -43,9 +45,11 @@ class Products(models.Model):
         CLANGUAGE = "C","C"
         CPLUS = "C++","C++"
         SQL = "SQL","SQL"
-        OTHER = "OT","Другое"
+        OTHER = "OT","Other"
     #Тип книги, максимум четыре типа
-    book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
+    #book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
+    book_theme = models.CharField(max_length=30, choices=BookTheme, default = BookTheme.OTHER, verbose_name='Темы')
+    programming_language = models.CharField(max_length=30, choices = ProgrammingLanguage, default = ProgrammingLanguage.OTHER, verbose_name='Язык программирования')
     #Типы переплета
     class BookBinding(models.TextChoices):
         SOFTCOVER = "Мягкий переплет"
