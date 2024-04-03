@@ -27,7 +27,10 @@ class CategoryView(ListAPIView):
         #book_type = self.request.query_params.get('book_type')
         #book_type = book_type.split(",")
         book_theme = self.kwargs['book_theme']
-        return queryset.filter(book_theme=book_theme)
+        if book_theme == "all":
+            return Products.objects.all()
+        else:
+            return queryset.filter(book_theme=book_theme)
     
 
 #Создание отзыва

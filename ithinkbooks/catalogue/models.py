@@ -31,20 +31,25 @@ class Products(models.Model):
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
     #Типы книг
     class BookTheme(models.TextChoices):
-        FRONTEND = "FE","Frontend"
-        BACKEND = "BE","Backend"
-        DESIGN = "DE","Дизайн"
-        GAMEDEV = "GD","Gamedev"
+        FRONTEND = "frontend","Frontend"
+        BACKEND = "backend","Backend"
+        DESIGN = "design","Дизайн"
+        GAMEDEV = "gamedev","Gamedev"
+        ANALYTICS = "analytics", "Analytics"
+        AI = "ai", "AI"
+        DATASCIENCE = "data", "Data Science"
+        DEVOPS = "devops", "DevOps"
+        QA = "qa", "Quality Assurance"
         COMPSCI = "CS","Computer Science" #Разбить на несколько
         OTHER = "OT","Other"
     class ProgrammingLanguage(models.TextChoices):
-        JAVASCRIPT = "JS","JavaScript"
-        JAVA = "J","Java"
-        PYTHON = "PY","Python"
-        CSHARP = "C#","C#"
-        CLANGUAGE = "C","C"
-        CPLUS = "C++","C++"
-        SQL = "SQL","SQL"
+        JAVASCRIPT = "JavaScript"
+        JAVA = "Java"
+        PYTHON = "Python"
+        CSHARP = "C#"
+        CLANGUAGE = "C"
+        CPLUS = "C++"
+        SQL = "SQL"
         OTHER = "OT","Other"
     #Тип книги, максимум четыре типа
     #book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
