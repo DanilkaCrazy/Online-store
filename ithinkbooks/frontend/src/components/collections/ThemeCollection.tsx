@@ -8,7 +8,12 @@ const ThemeCollection: React.FC<{theme: Theme}> = ({theme}) => {
   return (
     <>
       <h1>{theme.name}</h1>
-      {themeBooks.map((book, i) => <p key={i}>{book.title}</p>)}
+      {themeBooks.map((book, i) => (
+        <div key={i} className='book-small'>
+          <h3>{book.title}</h3>
+          <p>{book.author}</p>
+        </div>
+      ))}
     </>
   );
 };
