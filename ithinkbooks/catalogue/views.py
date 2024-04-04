@@ -40,3 +40,7 @@ class CreateReviewView(APIView):
         if review.is_valid():
             review.save()
         return Response(status=201) 
+
+def front(request):
+    context = {}
+    return render(request, "index.html", context)
