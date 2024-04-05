@@ -6,6 +6,7 @@ from multiselectfield import MultiSelectField
 #Категории книг
 class Categories(models.Model):
     name = models.CharField(max_length = 150, unique=True, verbose_name='Категория')
+    description = models.TextField(max_length = 200, verbose_name='Описание категории')
     slug = models.SlugField(max_length = 150, unique=True, blank=True, null=True, verbose_name='URL')
 
     class Meta:
@@ -29,22 +30,31 @@ class Products(models.Model):
     price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
     quantity = models.PositiveIntegerField(default=0, verbose_name='Количество')
     #Типы книг
-    class BookTypes(models.TextChoices): #Переделать позже, может очень просто совпадать
-        FRONTEND = "FE","Frontend"
-        BACKEND = "BE","Backend"
-        DESIGN = "DE","Дизайн"
-        GAMEDEV = "GD","Gamedev"
+    class BookTheme(models.TextChoices):
+        FRONTEND = "frontend","Frontend"
+        BACKEND = "backend","Backend"
+        DESIGN = "design","Дизайн"
+        GAMEDEV = "gamedev","Gamedev"
+        ANALYTICS = "analytics", "Analytics"
+        AI = "ai", "AI"
+        DATASCIENCE = "data", "Data Science"
+        DEVOPS = "devops", "DevOps"
+        QA = "qa", "Quality Assurance"
         COMPSCI = "CS","Computer Science" #Разбить на несколько
-        JAVASCRIPT = "JS","JavaScript"
-        JAVA = "J","Java"
-        PYTHON = "PY","Python"
-        CSHARP = "C#","C#"
-        CLANGUAGE = "C","C"
-        CPLUS = "C++","C++"
-        SQL = "SQL","SQL"
-        OTHER = "OT","Другое"
+        OTHER = "OT","Other"
+    class ProgrammingLanguage(models.TextChoices):
+        JAVASCRIPT = "JavaScript"
+        JAVA = "Java"
+        PYTHON = "Python"
+        CSHARP = "C#"
+        CLANGUAGE = "C"
+        CPLUS = "C++"
+        SQL = "SQL"
+        OTHER = "OT","Other"
     #Тип книги, максимум четыре типа
-    book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
+    #book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
+    book_theme = models.CharField(max_length=30, choices=BookTheme, default = BookTheme.OTHER, verbose_name='Темы')
+    programming_language = models.CharField(max_length=30, choices = ProgrammingLanguage, default = ProgrammingLanguage.OTHER, verbose_name='Язык программирования')
     #Типы переплета
     class BookBinding(models.TextChoices):
         SOFTCOVER = "Мягкий переплет"
@@ -57,6 +67,8 @@ class Products(models.Model):
         NOTRANSLATE = "Отсутствует"
     #Выбор перевода
     translator_choice = models.CharField (max_length=30, choices = Translator, default=Translator.TRANSLATE, verbose_name='Переводчик')
+    #Категория книги
+    category = models.ForeignKey(Categories, on_delete=models.CASCADE ,verbose_name='Категория')
     class Meta:
         db_table = 'book'
         verbose_name = 'Книга'
