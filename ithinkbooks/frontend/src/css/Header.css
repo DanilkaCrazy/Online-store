@@ -1,12 +1,13 @@
 header {
-  padding: 15px 70px;
+  padding: 15px 5%;
   background-color: #262626;
   color: #E5E5E5;
   display: flex;
   justify-content: space-between;
   margin: 0;
-  width: calc(100% - 140px);
+  width: 100%;
   align-items: center;
+  margin-bottom: 50px;
 }
 
 .catalog {
@@ -20,10 +21,10 @@ header {
 }
 
 .search {
-  width: 400px;
+  width: 25%;
   background-color: #E5E5E5;
   color: #262626;
-  height: 24px;
+  height: 44px;
   display: flex;
   justify-content: space-between;
   padding: 10px 16px;

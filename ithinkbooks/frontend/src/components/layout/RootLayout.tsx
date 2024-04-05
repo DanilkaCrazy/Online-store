@@ -2,7 +2,7 @@ import React, { useReducer } from 'react';
 import {Routes, Route, Navigate} from 'react-router-dom';
 import Stub from './Stub';
 import AnotherUser from '../user/AnotherUser';
-import Book from '../books/Book';
+import BookPage from '../books/BookPage';
 import Main from '../collections/Main';
 import themes from '../mock/themes.json';
 import Basket from '../user/Basket';
@@ -38,7 +38,7 @@ const RootLayout: React.FC<{}> = () => {
         <Route path=':id' element={<AnotherUser/>}/>
       </Route>
       <Route path='book'>
-        <Route path=':id' element={<Book/>}/>
+        <Route path=':id' element={<BookPage/>}/>
       </Route>
       {themes.map((theme, i) => <Route key={i} path={theme.title} element={<ThemeCollection theme={theme}/>}/>)}
       <Route path='*' element={<Stub pageName='Error'/>}/>

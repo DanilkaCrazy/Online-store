@@ -1,0 +1,63 @@
+.vote-button {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  align-items: center;
+}
+
+.vote-button img {
+  display: block;
+  margin: 0 auto;
+}
+
+.arrow-down {
+  transform: scaleY(-1);
+}
+
+.review-voting {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.review-block {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+
+.review-user {
+  width: 128px;
+  text-align: center;
+}
+
+.review-user img {
+  margin-bottom: 10px;
+  width: 70px;
+}
+
+.review-user-name {
+  margin-bottom: 15px;
+  text-align: center
+}
+
+.review-user-name img {
+  text-align: center;
+  border-radius: 50%;
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.review-block:last-child {
+  margin-bottom: 0;
+}
