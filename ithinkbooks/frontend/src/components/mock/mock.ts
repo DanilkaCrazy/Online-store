@@ -55,7 +55,7 @@ const generateReviews = (count: number, bookId: string) => Array.from({length: c
 }));
  
 const books = Array.from({length: COUNT}, (_v, i) => ({
-    id: `abcde${i}`,
+    id: `${i}`,
     title: faker.commerce.productName(),
     author: faker.person.fullName(),
     cover: faker.image.urlPicsumPhotos(),
