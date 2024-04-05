@@ -1,27 +1,56 @@
 import React from 'react';
 import { personalAccount } from '../mock/mock';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useLocation } from 'react-router-dom';
+import UserProfile from './UserProfile';
+import '../../css/User.css';
 
-const PersonalAccount: React.FC<{}> = () => (
-  <>
-    <img src={personalAccount.avatar} alt={personalAccount.name}/>
-    <h1>{personalAccount.name}</h1>
-    <p>{personalAccount.bio}</p>
-    <p>{personalAccount.age}</p>
-    <p>{personalAccount.city}</p>
-    <h3>{personalAccount.status}</h3>
-    {personalAccount.branches.map((branch, i) => <h2 key={i}>{branch.name}</h2>)}
-    
-    <ul>
-      <li><Link to='basket'>Корзина</Link></li>
-      <li><Link to='favorities'>Избранное</Link></li>
-      <li><Link to='history'>История покупок</Link></li>
-      <li><Link to='roadmaps'>Роадмапы</Link></li>
-      <li><Link to='reviews'>Рецензии</Link></li>
-    </ul>
+const ProfilePages = {
+  BASKET: {
+    TITLE: 'basket',
+    TRANSLATION: 'Корзина'
+  },
+  FAVORITIES: {
+    TITLE: 'favorities',
+    TRANSLATION: 'Избранное'
+  },
+  HISTORY: {
+    TITLE: 'history',
+    TRANSLATION: 'История покупок'
+  },
+  ROADMAPS: {
+    TITLE: 'roadmaps',
+    TRANSLATION: 'Роадмапы'
+  },
+  REVIEWS: {
+    TITLE: 'reviews',
+    TRANSLATION: 'Отзывы'
+  }
+};
 
-    <Outlet/>
-  </>
-);
+const PersonalAccount: React.FC<{}> = () => {
+  const pageLocation = useLocation();
+  const paths = pageLocation.pathname.split('/');
+  const currentPage = paths[paths.length - 1];
+
+  return (
+    <div className='divided-page user-page'>
+      <UserProfile user={personalAccount} isPersonal/>
+
+      <div className='tab'>
+        <div className='tab-buttons'>
+          {Object.values(ProfilePages).map((page, i) => (
+            <Link 
+              key={i}
+              to={page.TITLE} 
+              className={currentPage === page.TITLE ? 'main-button' : 'secondary-button'}>
+                {page.TRANSLATION}
+            </Link>
+          ))}
+        </div>
+        <Outlet/>
+      </div>
+    </div>
+  );
+};
 
 export default PersonalAccount;

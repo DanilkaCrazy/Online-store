@@ -91,7 +91,7 @@ const BookReviewsBlock: React.FC<{
               <button className='main-button'>Оценить</button>
             </div>
             <Dropdown onSelect={onSortTypeSelect}>
-              <Dropdown.Toggle className='dropdown-sort'>{SortTranslations[sortType]}</Dropdown.Toggle>
+              <Dropdown.Toggle>{SortTranslations[sortType]}</Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item 
                   eventKey={SortTypes.POPULARITY} 
@@ -113,7 +113,7 @@ const BookReviewsBlock: React.FC<{
           </div>
         : <p className='price-p'>Нет отзывов</p>}
         <div className='reviews'>
-          {book.reviews.map((review, i) => <ReviewComponent key={i} review={review}/>)}
+          {book.reviews.map((review, i) => <ReviewComponent key={i} review={review} isInBookPage/>)}
         </div>
       </div>
     </div>

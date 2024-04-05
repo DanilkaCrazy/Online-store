@@ -1,0 +1,22 @@
+[
+  {
+    "title": "student",
+    "name": "Студент"
+  },
+  {
+    "title": "intern",
+    "name": "Стажёр"
+  },
+  {
+    "title": "junior",
+    "name": "Junior"
+  },
+  {
+    "title": "middle",
+    "name": "Middle"
+  },
+  {
+    "title": "senior",
+    "name": "Senior"
+  }
+]

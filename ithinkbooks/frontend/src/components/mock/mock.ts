@@ -1,12 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { nanoid } from 'nanoid';
 import themes from './themes.json';
+import statuses from './statuses.json';
 import Theme from '../Theme';
 import User from '../User';
 
 const COUNT = 20;
-
-const STATUSES = ['Студент', 'Стажёр', 'Junior', 'Middle', 'Senior'];
 
 const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
@@ -37,13 +36,15 @@ const users = Array.from({length: COUNT}, (_v, i) => ({
     avatar: faker.image.avatar(),
     age: randomInteger(18, 70),
     bio: faker.person.bio(),
-    status: STATUSES[randomInteger(0, STATUSES.length - 1)],
+    status: statuses[randomInteger(0, statuses.length - 1)],
     branches: randomThemes(randomInteger(0, 3), themes),
     reviewsAmount: randomInteger(0, 10),
-    city: faker.location.city()
+    city: faker.location.city(),
+    books: [],
+    reviews: []
 }));
 
-const generateReviews = (count: number, bookId: string) => Array.from({length: count}, () => ({
+const generateReviews = (count: number) => Array.from({length: count}, () => ({
     id: nanoid(),
     rating: randomInteger(0, 5),
     title: faker.lorem.sentence(),
@@ -51,9 +52,11 @@ const generateReviews = (count: number, bookId: string) => Array.from({length: c
     user: users[randomInteger(0, COUNT - 1)],
     positiveVotes: randomInteger(0, 100),
     negativeVotes: randomInteger(0, 100),
-    bookId
+    bookId: `${randomInteger(0, COUNT - 1)}`
 }));
  
+const reviews = generateReviews(COUNT);
+
 const books = Array.from({length: COUNT}, (_v, i) => ({
     id: `${i}`,
     title: faker.commerce.productName(),
@@ -73,9 +76,18 @@ const books = Array.from({length: COUNT}, (_v, i) => ({
     themes: randomThemes(randomInteger(1, 3), themes),
     deliveryDays: randomInteger(1, 14),
     description: faker.lorem.sentence(),
-    reviews: generateReviews(randomInteger(0, 5), `abcde${i}`),
+    reviews: reviews.filter((review) => review.bookId === `${i}`),
     isRecommended: randomInteger(0, 1) === 1
 }));
+
+const getRandomBooks = () => {
+    const divider = randomInteger(3, 7)
+    return books.filter((_v, i) => i % divider === 0).map((book) => book.id);
+};
+
+const ownedBooks = getRandomBooks();
+const booksInBasket = getRandomBooks();
+const favoriteBooks = getRandomBooks();
 
 const personalAccount: User = {
     id: `abc`,
@@ -85,10 +97,12 @@ const personalAccount: User = {
     avatar: faker.image.avatar(),
     age: randomInteger(18, 70),
     bio: faker.person.bio(),
-    status: STATUSES[randomInteger(0, STATUSES.length - 1)],
+    status: statuses[randomInteger(0, statuses.length - 1)],
     branches: randomThemes(randomInteger(0, 3), themes),
     reviewsAmount: randomInteger(0, 10),
-    city: faker.location.city()
+    city: faker.location.city(),
+    books: ownedBooks,
+    reviews: reviews.filter((review) => ownedBooks.some((book) => book === review.bookId)).map((r) => r.bookId)
 }
 
-export {books, users, MONTHS, personalAccount};
+export {books, users, MONTHS, personalAccount, booksInBasket, favoriteBooks, reviews};

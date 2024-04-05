@@ -18,7 +18,7 @@ const AnotherUser: React.FC<{}> = () => {
       <h1>{user.name}</h1>
       <p>{user.bio}</p>
       <p>{user.age}</p>
-      <h3>{user.status}</h3>
+      <h3>{user.status.name}</h3>
       {user.branches.map((branch, i) => <h2 key={i}>{branch.name}</h2>)}
       <h2>{user.reviewsAmount} {getPluralNoun(user.reviewsAmount, 'отзыв', 'отзыва', 'отзывов')}</h2>
     </>

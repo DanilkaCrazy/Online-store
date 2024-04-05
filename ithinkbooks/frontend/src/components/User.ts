@@ -1,3 +1,4 @@
+import Status from './Status';
 import Theme from './Theme';
 
 export default interface User {
@@ -8,8 +9,10 @@ export default interface User {
   avatar: string;
   age: number;
   bio: string;
-  status: string;
+  status: Status;
   branches: Theme[];
   reviewsAmount: number;
   city: string;
+  books: string[];
+  reviews: string[];
 };

@@ -1,0 +1,19 @@
+.theme-collection {
+  gap: 50px;
+}
+
+.theme-collection h1 {
+  margin-bottom: 30px;
+}
+
+.filters {
+  width: 400px;
+  padding-top: 68px;
+}
+
+.books-collection {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 175px 175px 175px 175px;
+  gap: 50px;
+}

@@ -66,3 +66,9 @@
   background-color: #3F97E7;
   color: #FFFFFF;
 }
+
+.dropdown-item:hover {
+  background-color: #3F97E7;
+  color: #E5E5E5;
+  font-size: 18px;
+}

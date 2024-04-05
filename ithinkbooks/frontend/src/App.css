@@ -4,3 +4,9 @@
   gap: 75px;
   margin-bottom: 75px;
 }
+
+.divided-page {
+  display: flex;
+  gap: 150px;
+  margin-bottom: 75px;
+}
