@@ -4,7 +4,7 @@ footer {
   color: #E5E5E5;
   display: flex;
   justify-content: space-between;
-  width: calc(100% - 140px);
+  width: 100%;
 }
 
 .footer-part {
@@ -21,18 +21,15 @@ footer .logo {
 }
 
 .contacts {
-  list-style: none;
   display: flex;
   gap: 20px;
-  padding: 0;
   margin: 0;
   margin-top: 17px;
 }
 
 .partners {
-  margin-top: 17px;
-  list-style: none;
   padding: 0;
+  margin-top: 17px;
 }
 
 .partners li {
@@ -44,8 +41,6 @@ footer .logo {
 }
 
 .footer-nav {
-  list-style: none;
-  padding: 0;
   margin-top: 17px;
 }
 

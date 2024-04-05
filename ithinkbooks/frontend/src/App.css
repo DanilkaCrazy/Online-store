@@ -1,0 +1,6 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 75px;
+  margin-bottom: 75px;
+}

@@ -11,8 +11,8 @@ const STATUSES = ['Студент', 'Стажёр', 'Junior', 'Middle', 'Senior'
 const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
 const PaperFormat = {
-    SOFT: 'мягкий',
-    HARD: 'твёрдый'
+    SOFT: 'Мягкий',
+    HARD: 'Твёрдый'
 };
 
 const FileType = {
@@ -40,10 +40,10 @@ const users = Array.from({length: COUNT}, (_v, i) => ({
     status: STATUSES[randomInteger(0, STATUSES.length - 1)],
     branches: randomThemes(randomInteger(0, 3), themes),
     reviewsAmount: randomInteger(0, 10),
-    city: 'Санкт-Петербург'
+    city: faker.location.city()
 }));
 
-const generateReviews = (count: number, book: string) => Array.from({length: count}, () => ({
+const generateReviews = (count: number, bookId: string) => Array.from({length: count}, () => ({
     id: nanoid(),
     rating: randomInteger(0, 5),
     title: faker.lorem.sentence(),
@@ -51,7 +51,7 @@ const generateReviews = (count: number, book: string) => Array.from({length: cou
     user: users[randomInteger(0, COUNT - 1)],
     positiveVotes: randomInteger(0, 100),
     negativeVotes: randomInteger(0, 100),
-    book
+    bookId
 }));
  
 const books = Array.from({length: COUNT}, (_v, i) => ({
@@ -70,10 +70,11 @@ const books = Array.from({length: COUNT}, (_v, i) => ({
     pagesAmount: randomInteger(100, 1000),
     isbn: `${randomInteger(100, 999)}-${randomInteger(0, 9)}-${randomInteger(10, 99)}-${randomInteger(100000, 999999)}-${randomInteger(0, 9)}`,
     translator: faker.person.firstName(),
-    themes: randomThemes(randomInteger(0, 3), themes),
+    themes: randomThemes(randomInteger(1, 3), themes),
     deliveryDays: randomInteger(1, 14),
     description: faker.lorem.sentence(),
-    reviews: generateReviews(randomInteger(0, 5), `abcde${i}`)
+    reviews: generateReviews(randomInteger(0, 5), `abcde${i}`),
+    isRecommended: randomInteger(0, 1) === 1
 }));
 
 const personalAccount: User = {
@@ -87,7 +88,7 @@ const personalAccount: User = {
     status: STATUSES[randomInteger(0, STATUSES.length - 1)],
     branches: randomThemes(randomInteger(0, 3), themes),
     reviewsAmount: randomInteger(0, 10),
-    city: 'Екатеринбург'
+    city: faker.location.city()
 }
 
 export {books, users, MONTHS, personalAccount};
