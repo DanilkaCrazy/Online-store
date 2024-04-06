@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { books } from '../mock/mock';
 import Theme from '../Theme';
 import '../../css/ThemeCollection.css';
 import BookComponent from '../books/Book';
 import { Dropdown } from 'react-bootstrap';
 import { SortTranslations, SortTypes } from '../sort';
-//import axios from 'axios';
+import axios from 'axios';
 
 const FiltersMenu: React.FC<{
   sortType: string, 
@@ -79,13 +79,13 @@ const ThemeCollection: React.FC<{theme: Theme}> = ({theme}) => {
   const themeBooks = books.filter((book) => book.themes.includes(theme));
   const [sortType, setSortType] = useState<string>(SortTypes.POPULARITY);
 
-  /*const GetData = () => {
-    axios.get('http://127.0.0.1:8000/products').then((res)=>{
+  const GetData = () => {
+    axios.get(`http://127.0.0.1:8000/theme/${theme.title}`).then((res)=>{
       console.log(res.data)
     })}
   useEffect(()=>{
     GetData()
-  })*/
+  })
 
   if(!themeBooks.length) {
     return (

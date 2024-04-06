@@ -23,6 +23,7 @@ class Products(models.Model):
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL')
     author = models.CharField(max_length=150, null=True, verbose_name='Автор')
     publisher = models.CharField(max_length=150, null=True, verbose_name='Издательство')
+    isbn = models.CharField(max_length=100, null=True, verbose_name='ISBN')
     year = models.IntegerField(null=True, verbose_name='Год')
     number_of_pages = models.IntegerField( null=True, verbose_name='Количество страниц')
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
@@ -67,8 +68,6 @@ class Products(models.Model):
         NOTRANSLATE = "Отсутствует"
     #Выбор перевода
     translator_choice = models.CharField (max_length=30, choices = Translator, default=Translator.TRANSLATE, verbose_name='Переводчик')
-    #Категория книги
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE ,verbose_name='Категория')
     class Meta:
         db_table = 'book'
         verbose_name = 'Книга'
