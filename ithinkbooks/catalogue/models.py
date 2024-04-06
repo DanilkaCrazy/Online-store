@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.translation import gettext as _
-from multiselectfield import MultiSelectField
 
 # Create your models here.
 #Категории книг
@@ -52,8 +51,6 @@ class Products(models.Model):
         CPLUS = "C++"
         SQL = "SQL"
         OTHER = "OT","Other"
-    #Тип книги, максимум четыре типа
-    #book_type = MultiSelectField( max_length=20, choices=BookTypes, max_choices = 4, default=BookTypes.FRONTEND,verbose_name='Темы')
     book_theme = models.CharField(max_length=30, choices=BookTheme, default = BookTheme.OTHER, verbose_name='Темы')
     programming_language = models.CharField(max_length=30, choices = ProgrammingLanguage, default = ProgrammingLanguage.OTHER, verbose_name='Язык программирования')
     #Типы переплета
@@ -68,6 +65,8 @@ class Products(models.Model):
         NOTRANSLATE = "Отсутствует"
     #Выбор перевода
     translator_choice = models.CharField (max_length=30, choices = Translator, default=Translator.TRANSLATE, verbose_name='Переводчик')
+    #Уровень книги - для роадмапа
+    level = models.IntegerField(max_length=2, default=1, verbose_name='Уровень книги')
     class Meta:
         db_table = 'book'
         verbose_name = 'Книга'
