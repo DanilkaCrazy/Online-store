@@ -39,11 +39,6 @@
   justify-content: space-between;
 }
 
-.divided-page {
-  display: flex;
-  gap: 150px;
-}
-
 .book-page-title h1 {
   margin-bottom: 12px;
 }

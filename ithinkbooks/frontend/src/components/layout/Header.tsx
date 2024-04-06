@@ -5,10 +5,21 @@ import DarkMode from '../../images/header/Dark.svg';
 import StarIcon from '../../images/header/Star.svg';
 import BasketIcon from '../../images/header/Basket.svg';
 import AccountIcon from '../../images/header/Account.svg';
-import Arrow from '../../images/header/Arrow.svg';
 import '../../css/Header.css';
 import {Link, Outlet} from 'react-router-dom';
 import { useLightMode } from '../hooks/LightModeProvider';
+import { Button, Dropdown } from 'react-bootstrap';
+import Theme from '../Theme';
+import themes from '../mock/themes.json';
+
+const Catalog: React.FC<{themes: Theme[]}> = ({themes}) => (
+  <Dropdown className='dropdown-header'>
+    <Dropdown.Toggle>Каталог</Dropdown.Toggle>
+    <Dropdown.Menu className='dropdown-menu-header'>
+      {themes.map((theme, i) => <Dropdown.Item as={Button} key={i}><Link to={`/${theme.title}`}>{theme.shortName}</Link></Dropdown.Item>)}
+    </Dropdown.Menu>
+  </Dropdown>
+);
 
 const Header: React.FC<{}> = () => {
   const {toggleLightMode} = useLightMode();
@@ -16,10 +27,7 @@ const Header: React.FC<{}> = () => {
   return (
     <header>
       <Link to='/'><img className='logo' src={Logo} alt='IThink books'/></Link>
-      <button className='catalog'>
-          <p>Каталог</p>
-          <img src={Arrow} alt=''/>
-      </button>
+      <Catalog themes={themes}/>
       <div className='search'>
         <input type='text' placeholder='Поиск'/>
         <img src={SearchIcon} alt='Найти'/>

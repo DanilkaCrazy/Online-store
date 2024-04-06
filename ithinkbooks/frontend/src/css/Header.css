@@ -45,3 +45,49 @@ textarea:focus, input:focus{
 .search img {
   width: 28px;
 }
+
+.dropdown-header {
+  width: 105px;
+  text-align: center;
+  color: #E5E5E5;
+}
+
+.dropdown-header .dropdown-toggle{
+  min-width: 105px;
+  background-color: transparent;
+  color: #E5E5E5;
+  font-size: 20px;
+  text-align: center;
+}
+
+.dropdown-header .dropdown-toggle:hover {
+  background-color: transparent;
+}
+
+.dropdown-header .dropdown-toggle:active {
+  background-color: transparent;
+}
+
+.dropdown-header .dropdown-item {
+  padding: 0;
+}
+
+.dropdown-item a {
+  display: block;
+  color: #E5E5E5;
+  font-size: 18px;
+  height: 100%;
+  padding: 4px 16px;
+}
+
+.dropdown-item a:hover {
+  color: #E5E5E5;
+  background-color: transparent;
+  font-size: 18px;
+}
+
+.dropdown-item:hover {
+  background-color: #3F97E7;
+  color: #E5E5E5;
+  font-size: 18px;
+}

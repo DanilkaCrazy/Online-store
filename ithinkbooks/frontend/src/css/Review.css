@@ -61,3 +61,13 @@
 .review-block:last-child {
   margin-bottom: 0;
 }
+
+.review-book {
+  display: block;
+  width: 128px;
+}
+
+.review-book .cover-stumb {
+  width: 128px;
+  height: 180px;
+}
