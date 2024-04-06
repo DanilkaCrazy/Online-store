@@ -8,7 +8,7 @@ import { useLightMode } from '../../hooks/LightModeProvider';
 
 const ThemeButton: React.FC<{theme: Theme}> = ({theme}) => (
   <Link to={`/${theme.title}`} className='theme-button'>
-    <img src={DesktopImages.find((image) => image.theme === theme.title)?.desktop} alt={theme.name}/>
+    <img src={DesktopImages.find((image) => image.theme === theme.title)?.image} alt={theme.name}/>
     <p>{theme.shortName}</p>
   </Link>
 );

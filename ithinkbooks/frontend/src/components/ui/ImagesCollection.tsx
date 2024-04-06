@@ -1,59 +1,90 @@
-import FrontendDesktop from '../../images/pages/desktop/FrontendDesktop.svg';
-import BackendDesktop from '../../images/pages/desktop/BackendDesktop.svg';
-import AnalyticDesktop from '../../images/pages/desktop/AnalyticsDesktop.svg';
-import GamedevDektop from '../../images/pages/desktop/GamedevDesktop.svg';
-import DesignDesktop from '../../images/pages/desktop/DesignDesktop.svg';
-import NetworkDesktop from '../../images/pages/desktop/NetworkDesktop.svg';
+import Frontend from '../../images/pages/Frontend.svg';
+import Backend from '../../images/pages/Backend.svg';
+import Analytics from '../../images/pages/Analytics.svg';
+import Gamedev from '../../images/pages/Gamedev.svg';
+import Design from '../../images/pages/Design.svg';
+import Network from '../../images/pages/Network.svg';
+import AI from '../../images/pages/AI.svg';
+import DataScience from '../../images/pages/DataScience.svg';
+import Software from '../../images/pages/Software.svg';
+import DevOps from '../../images/pages/DevOps.svg';
+import QA from '../../images/pages/QA.svg';
+import ComputerScience from '../../images/pages/ComputerSceince.svg';
+import Student from '../../images/pages/Student.svg';
+import Intern from '../../images/pages/Intern.svg';
+import Junior from '../../images/pages/Junior.svg';
+import Middle from '../../images/pages/Middle.svg';
+import Senior from '../../images/pages/Senior.svg';
 
 const DesktopImages = [
   {
     theme: 'frontend',
-    desktop: FrontendDesktop
+    image: Frontend
   },
   {
     theme: 'backend',
-    desktop: BackendDesktop
+    image: Backend
   },
   {
     theme: 'analytics',
-    desktop: AnalyticDesktop
+    image: Analytics
   },
   {
     theme: 'gamedev',
-    desktop: GamedevDektop
+    image: Gamedev
   },
   {
     theme: 'design',
-    desktop: DesignDesktop
+    image: Design
   },
   {
     theme: 'network',
-    desktop: NetworkDesktop
+    image: Network
   },
   {
     theme: 'ai',
-    desktop: FrontendDesktop
+    image: AI
   },
   {
     theme: 'data',
-    desktop: BackendDesktop
+    image: DataScience
   },
   {
-    theme: 'development',
-    desktop: AnalyticDesktop
+    theme: 'software',
+    image: Software
   },
   {
     theme: 'devops',
-    desktop: GamedevDektop
+    image: DevOps
   },
   {
     theme: 'qa',
-    desktop: DesignDesktop
+    image: QA
   },
   {
     theme: 'computer',
-    desktop: NetworkDesktop
-  }
+    image: ComputerScience
+  },
+  {
+    theme: 'student',
+    image: Student
+  },
+  {
+    theme: 'intern',
+    image: Intern
+  },
+  {
+    theme: 'junior',
+    image: Junior
+  },
+  {
+    theme: 'middle',
+    image: Middle
+  },
+  {
+    theme: 'senior',
+    image: Senior
+  },
 ];
 
 export {DesktopImages};

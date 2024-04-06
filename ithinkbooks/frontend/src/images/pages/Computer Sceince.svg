@@ -1,0 +1,16 @@
+<svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="25" y="36" width="54" height="54" rx="5" stroke="white" stroke-width="3"/>
+<rect x="37" y="48" width="30" height="30" rx="5" stroke="white" stroke-width="3"/>
+<rect x="34" y="23" width="6" height="18" rx="2" fill="white"/>
+<rect x="49" y="23" width="6" height="18" rx="2" fill="white"/>
+<rect x="64" y="23" width="6" height="18" rx="2" fill="white"/>
+<rect x="34" y="85" width="6" height="18" rx="2" fill="white"/>
+<rect x="49" y="85" width="6" height="18" rx="2" fill="white"/>
+<rect x="64" y="85" width="6" height="18" rx="2" fill="white"/>
+<rect x="30" y="45" width="6" height="18" rx="2" transform="rotate(90 30 45)" fill="white"/>
+<rect x="30" y="60" width="6" height="18" rx="2" transform="rotate(90 30 60)" fill="white"/>
+<rect x="30" y="75" width="6" height="18" rx="2" transform="rotate(90 30 75)" fill="white"/>
+<rect x="92" y="45" width="6" height="18" rx="2" transform="rotate(90 92 45)" fill="white"/>
+<rect x="92" y="60" width="6" height="18" rx="2" transform="rotate(90 92 60)" fill="white"/>
+<rect x="92" y="75" width="6" height="18" rx="2" transform="rotate(90 92 75)" fill="white"/>
+</svg>

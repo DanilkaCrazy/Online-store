@@ -71,3 +71,8 @@
   width: 128px;
   height: 180px;
 }
+
+.review-user-status img {
+  background-color: #4B4B4B;
+  border-radius: 50%;
+}

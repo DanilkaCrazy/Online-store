@@ -1,9 +1,10 @@
 import React from 'react';
 import User from '../User';
+import { DesktopImages } from '../ui/ImagesCollection';
 
 const Status: React.FC<{title: string, name: string}> = ({title, name}) => (
   <div className='status'>
-    <div className={`cover-stumb ${title}`}></div>
+    <img src={DesktopImages.find((image) => image.theme === title)?.image} alt={name}/>
     <h3>{name}</h3>
   </div>
 );

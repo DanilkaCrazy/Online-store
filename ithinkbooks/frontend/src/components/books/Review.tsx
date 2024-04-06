@@ -6,6 +6,7 @@ import '../../css/Review.css';
 import Book from '../Book';
 import { books } from '../mock/mock';
 import User from '../User';
+import { DesktopImages } from '../ui/ImagesCollection';
 
 const Reviewer: React.FC<{user: User}> = ({user}) => (
   <div className='review-user'>
@@ -14,7 +15,7 @@ const Reviewer: React.FC<{user: User}> = ({user}) => (
       <p className='secondary-p'>{user.name}</p>
     </div>
     <div className='review-user-status'>
-      <img src={user.avatar} alt={user.status.name}></img>
+      <img src={DesktopImages.find((image) => image.theme === user.status.title)?.image} alt={user.status.name}></img>
       <p className='secondary-p'>{user.status.name}</p>
     </div>
   </div>

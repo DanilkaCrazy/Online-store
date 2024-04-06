@@ -34,11 +34,10 @@
   text-align: center;
 }
 
-.status .cover-stumb {
-  width: 125px;
-  height: 125px;
-  margin-bottom: 15px;
+.status img {
+  width: 100%;
   border-radius: 50%;
+  background-color: #4B4B4B;
 }
 
 .tab {
