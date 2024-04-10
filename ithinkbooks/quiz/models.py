@@ -5,7 +5,6 @@ from django.db import models
 class Quiz(models.Model):
     name = models.CharField(max_length=120, verbose_name='Название теста')
     quiz_theme = models.CharField(max_length=120, verbose_name='Тема теста')
-    number_of_questions = models.IntegerField(verbose_name='Количество вопросов')
 
     class Meta:
         db_table = 'quiz'
@@ -18,8 +17,12 @@ class Quiz(models.Model):
 class Question(models.Model):
     text = models.TextField(max_length=120, verbose_name='Текст вопроса')
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE ,verbose_name='Тест')
-    #Тип вопроса
-
+    class QuestionType(models.TextChoices):
+        THEME = 'Theme Question' #Выбор темы
+        LEVEL = 'Level Question' #Вопрос об уровне знаний
+        PURPOSE = 'Purpose Question' #Вопрос о цели изучения
+        LANGUAGE = 'Language Question' #Вопрос о языке
+        PRICE = 'Price Question' #Вопрос о цене
     class Meta:
         db_table = 'question'
         verbose_name = 'Вопрос'
@@ -27,11 +30,14 @@ class Question(models.Model):
 
     def __str__(self):
         return self.text
+    
+    def get_answers(self):
+        return self.answer_set.all()
 
 class Answer(models.Model):
     text = models.TextField(max_length=120, verbose_name='Текст ответа')
-    question = models.ForeignKey(Question, verbose_name='Вопрос')
-
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос')
+    answer_value = models.IntegerField(verbose_name='Значение вопроса')
     class Meta:
         db_table = 'answer'
         verbose_name = 'Ответ'
