@@ -23,6 +23,7 @@ class Question(models.Model):
         PURPOSE = 'Purpose Question' #Вопрос о цели изучения
         LANGUAGE = 'Language Question' #Вопрос о языке
         PRICE = 'Price Question' #Вопрос о цене
+    question_type = models.TextField(choices=QuestionType, default=QuestionType.THEME, verbose_name='Тип вопроса')
     class Meta:
         db_table = 'question'
         verbose_name = 'Вопрос'
