@@ -37,7 +37,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     text = models.TextField(max_length=120, verbose_name='Текст ответа')
-    question = models.ForeignKey(Question, on_delete=models.CASCADE, verbose_name='Вопрос')
+    question = models.ForeignKey(Question, related_name='answer', on_delete=models.CASCADE, verbose_name='Вопрос')
     answer_value = models.IntegerField(verbose_name='Значение вопроса')
     class Meta:
         db_table = 'answer'
@@ -46,3 +46,15 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.text
+
+class Result(models.Model):
+    theme = models.TextField(verbose_name='Тема')
+    level = models.TextField(verbose_name='Уровень знаний')
+    purpose = models.TextField(verbose_name='Цель')
+    language = models.TextField(verbose_name='Язык')
+    price = models.TextField(verbose_name='Цена')
+
+    class Meta:
+        db_table = 'result'
+        verbose_name = 'Результат'
+        verbose_name_plural = 'Результаты'
