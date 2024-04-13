@@ -38,7 +38,7 @@ const Search: React.FC<{}> = () => {
   return (
     <div className='search-panel'>
       <div className='search'>
-        <input type='text' placeholder='Поиск' onChange={(evt: React.ChangeEvent<HTMLInputElement>) => findBooks(evt.target.value.toLowerCase())}/>
+        <input type='text' value={seacrhWord} placeholder='Поиск' onChange={(evt: React.ChangeEvent<HTMLInputElement>) => findBooks(evt.target.value.toLowerCase())}/>
         <img src={SearchIcon} alt='Найти'/>
       </div>
       <div className='search-result' hidden={seacrhWord === ''}>

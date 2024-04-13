@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAccount, emptyAccount } from '../hooks/AccountProvider';
+import { emptyAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
 import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
 import cities from '../mock/cities.json';
@@ -9,12 +9,11 @@ import User from '../User';
 import Validation, {validationScheme} from '../Validation';
 
 const SignUpForm: React.FC<{}> = () => {
-  const {account} = useAccount();
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
 
-  const [city, setCity] = useState<string | undefined>(account.city.city);
-  const [status, setStatus] = useState<string | undefined>(account.status.name);
-  const [chosenThemes, setChosenThemes] = useState<string[]>(account.branches.map((theme) => theme.shortName));
+  const [city, setCity] = useState<string | undefined>(newAccount.city.city);
+  const [status, setStatus] = useState<string | undefined>(newAccount.status.name);
+  const [chosenThemes, setChosenThemes] = useState<string[]>(newAccount.branches.map((theme) => theme.shortName));
 
   const [validation, setValidation] = useState<Validation>({
     login: false,

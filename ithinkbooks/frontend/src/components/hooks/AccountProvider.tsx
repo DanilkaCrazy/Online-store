@@ -5,7 +5,6 @@ import Order from '../Order';
 import { nanoid } from 'nanoid';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
-import themes from '../mock/themes.json';
 
 const emptyAccount: User = {
   id: nanoid(),
@@ -15,7 +14,7 @@ const emptyAccount: User = {
   avatar: '',
   bio: '',
   status: statuses[0],
-  branches: [themes[0]],
+  branches: [],
   reviewsAmount: 0,
   city: cities[0],
   reviews: [],
