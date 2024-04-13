@@ -2,13 +2,19 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Book from '../Book';
 import { ScreensWidth, getAverageNumber } from '../utils';
-import Star from './Star';
+import {Star} from './Star';
 import Price from './Price';
 import '../../css/Book.css';
 import { isReleased } from '../date-utils';
+import { useAccount } from '../hooks/AccountProvider';
 
-const BookComponent: React.FC<{book: Book, isInBasket?: boolean}> = ({book, isInBasket = false}) => {
+const BookComponent: React.FC<{
+  book: Book, 
+  isInBasket?: boolean, 
+  isFavorite?: boolean
+}> = ({book, isInBasket = false, isFavorite = false}) => {
   const rating = getAverageNumber(book.reviews.map((review) => review.rating));
+  const {putInBasket, removeFromBasket, markAsFavotite} = useAccount();
 
   return (
     <div className='book'>
@@ -28,8 +34,20 @@ const BookComponent: React.FC<{book: Book, isInBasket?: boolean}> = ({book, isIn
       ? <Star rating={rating}/>
       : <p className='main-p'>Нет отзывов</p>}
       <Price price={book.price}/>
-      <button className='main-button'>{isReleased(book.year, book.month) ? 'В корзину' : 'Предзаказ'}</button>
-      <button className='secondary-button' hidden={!isInBasket}>Убрать</button>
+      <button 
+        className='main-button'
+        hidden={isInBasket} 
+        onClick={() => putInBasket(book.id)}>
+          {isReleased(book.year, book.month) ? 'В корзину' : 'Предзаказ'}
+      </button>
+      <button 
+        className='secondary-button' 
+        hidden={!isInBasket && !isFavorite} 
+        onClick={() => isInBasket 
+          ? removeFromBasket(book.id) 
+          : markAsFavotite(book.id)}>
+          Убрать
+        </button>
     </div>
   );
 };

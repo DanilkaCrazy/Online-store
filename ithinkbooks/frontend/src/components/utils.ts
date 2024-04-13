@@ -35,14 +35,14 @@ const getArraySum = (array: Array<number>) => array.length ? array.reduce((prev,
 
 const getAverageNumber = (array: Array<number>) => array.length ? getArraySum(array) / array.length : 0;
 
-const getPluralNoun = (number: number, singular: string, pluralFromTwoToFour: string, plural: string) => {
+const declineNounAfterNumber = (number: number, nominative: string, genitiveSingular: string, genitivePlural: string) => {
   if(number % 10 === 1 && number % 100 !== 11) {
-    return singular;
+    return nominative;
   } else if (number % 10 > 1 && number % 10 < 5 && !(number % 100 > 11 && number % 100 < 15)) {
-    return pluralFromTwoToFour;
+    return genitiveSingular;
   }
 
-  return plural;
+  return genitivePlural;
 }
 
-export {getArraySum, getAverageNumber, getPluralNoun, ScreensWidth};
+export {getArraySum, getAverageNumber, declineNounAfterNumber, ScreensWidth};

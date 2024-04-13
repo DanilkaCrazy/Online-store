@@ -40,6 +40,30 @@
   background-color: #4B4B4B;
 }
 
+.job {
+  width: 100%;
+  text-align: center;
+}
+
+.job-icon img {
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.job-icon {
+  display: flex;
+  width: 100%;
+  height: 125px;
+  padding-left: 15%;
+  padding-right: 15%;
+  padding-top: 10%;
+  padding-bottom: 20%;
+  align-items:center;
+  border-radius: 50%;
+  background-color: #4B4B4B;
+}
+
 .tab {
   width: 65%;
 }
@@ -60,8 +84,48 @@
   border-bottom-right-radius: 0;
 }
 
-.basket-buttons {
+.basket-page .buttons-group {
   display: flex;
   gap: 20px;
   margin-bottom: 30px;
+}
+
+.editor-button {
+  padding: 0;
+  width: 65px;
+  height: 65px;
+  align-self:flex-end;
+  align-content: center;
+  border-radius: 50%;
+  background-color: #3F97E7;
+  position: absolute;
+  margin-top: 15px;
+  margin-right: 15px;
+}
+
+.editor-button img {
+  display: block;
+  margin: 0 auto;
+}
+
+.order-block {
+  margin-bottom: 50px;
+}
+
+.order-block h3 {
+  margin-bottom: 10px;
+}
+
+.sign-field {
+  width: 100%;
+  text-align: center;
+}
+
+.sign-field h3 {
+  margin-bottom: 15px;
+}
+
+.sign-button {
+  width: 60%;
+  align-self: center;
 }

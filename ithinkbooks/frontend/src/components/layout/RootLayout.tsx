@@ -14,6 +14,10 @@ import Quiz from '../roadmap/Quiz';
 import Roadmap from '../roadmap/Roadmap';
 import ThemeCollection from '../collections/ThemeCollection';
 import PersonalAccount from '../user/PersonalAccount';
+import OrderForm from '../user/OrderForm';
+import EditFrom from '../user/EditForm';
+import LogInForm from '../user/LogInForm';
+import SignUpForm from '../user/SignUpForm';
 
 const RootLayout: React.FC<{}> = () => {
   const [isCompleted, setIsCompleted] = useReducer((value) => !value, false);
@@ -40,6 +44,12 @@ const RootLayout: React.FC<{}> = () => {
       <Route path='book'>
         <Route path=':id' element={<BookPage/>}/>
       </Route>
+      <Route path='order'>
+        <Route path=':id' element={<OrderForm/>}/>
+      </Route>
+      <Route path='editor' element={<EditFrom/>}/>
+      <Route path='log-in' element={<LogInForm/>}/>
+      <Route path='sign-up' element={<SignUpForm/>}/>
       {themes.map((theme, i) => <Route key={i} path={theme.title} element={<ThemeCollection theme={theme}/>}/>)}
       <Route path='*' element={<Stub pageName='Error'/>}/>
     </Routes>

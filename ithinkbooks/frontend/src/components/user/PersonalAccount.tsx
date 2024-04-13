@@ -1,8 +1,8 @@
 import React from 'react';
-import { personalAccount } from '../mock/mock';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import UserProfile from './UserProfile';
 import '../../css/User.css';
+import { useAccount } from '../hooks/AccountProvider';
 
 const ProfilePages = {
   BASKET: {
@@ -28,13 +28,14 @@ const ProfilePages = {
 };
 
 const PersonalAccount: React.FC<{}> = () => {
+  const {account} = useAccount();
   const pageLocation = useLocation();
   const paths = pageLocation.pathname.split('/');
   const currentPage = paths[paths.length - 1];
 
   return (
     <div className='divided-page user-page'>
-      <UserProfile user={personalAccount} isPersonal/>
+      <UserProfile user={account} isPersonal/>
 
       <div className='tab'>
         <div className='tab-buttons'>

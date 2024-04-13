@@ -1,5 +1,7 @@
 import User from './User';
 
+const getVoteValue = (review: Review) => review.positiveVotes - review.negativeVotes;
+
 export default interface Review {
   id: string;
   rating: number;
@@ -10,3 +12,5 @@ export default interface Review {
   negativeVotes: number;
   bookId: string;
 };
+
+export {getVoteValue};

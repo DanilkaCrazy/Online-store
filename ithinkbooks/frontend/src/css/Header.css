@@ -20,8 +20,16 @@ header {
   align-items: center;
 }
 
-.search {
+.search-panel {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  gap: 10px;
   width: 25%;
+}
+
+.search {
+  width: 100%;
   background-color: #E5E5E5;
   color: #262626;
   height: 44px;
@@ -90,4 +98,17 @@ textarea:focus, input:focus{
   background-color: #3F97E7;
   color: #E5E5E5;
   font-size: 18px;
+}
+
+.search-result {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: absolute;
+  margin-top: 54px;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px;
+  z-index: 2;
 }

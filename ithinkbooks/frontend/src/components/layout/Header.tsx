@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Logo from '../../images/header/Logo.svg';
 import SearchIcon from '../../images/header/Search.svg';
 import DarkMode from '../../images/header/Dark.svg';
@@ -11,6 +11,11 @@ import { useLightMode } from '../hooks/LightModeProvider';
 import { Button, Dropdown } from 'react-bootstrap';
 import Theme from '../Theme';
 import themes from '../mock/themes.json';
+import { mockBooks } from '../mock/mock';
+import Book from '../Book';
+import SmallBookComponent from '../books/SmallBookComponent';
+
+const SEARCH_INTERVAL = 750;
 
 const Catalog: React.FC<{themes: Theme[]}> = ({themes}) => (
   <Dropdown className='dropdown-header'>
@@ -21,6 +26,30 @@ const Catalog: React.FC<{themes: Theme[]}> = ({themes}) => (
   </Dropdown>
 );
 
+const Search: React.FC<{}> = () => {
+  const [foundBooks, setFoundBooks] = useState<Book[]>([]);
+  const [seacrhWord, setSearchWord] = useState<string>('');
+
+  const findBooks = (bookTitle: string) => {
+    setSearchWord(bookTitle);
+    setTimeout(() => setFoundBooks(mockBooks.filter((book) => book.title.toLowerCase().includes(bookTitle))), SEARCH_INTERVAL);
+  };
+
+  return (
+    <div className='search-panel'>
+      <div className='search'>
+        <input type='text' placeholder='Поиск' onChange={(evt: React.ChangeEvent<HTMLInputElement>) => findBooks(evt.target.value.toLowerCase())}/>
+        <img src={SearchIcon} alt='Найти'/>
+      </div>
+      <div className='search-result' hidden={seacrhWord === ''}>
+        {foundBooks.length 
+          ? foundBooks.slice(0, 3).map((book, i) => <SmallBookComponent key={i} book={book} onClick={() => setSearchWord('')}/>)
+          : <p className='main-p'>Ничего не найдено</p>}
+      </div>
+    </div>
+  );
+};
+
 const Header: React.FC<{}> = () => {
   const {toggleLightMode} = useLightMode();
 
@@ -28,10 +57,7 @@ const Header: React.FC<{}> = () => {
     <header>
       <Link to='/'><img className='logo' src={Logo} alt='IThink books'/></Link>
       <Catalog themes={themes}/>
-      <div className='search'>
-        <input type='text' placeholder='Поиск'/>
-        <img src={SearchIcon} alt='Найти'/>
-      </div>
+      <Search/>
       <Link to='/roadmap' className='main-button'>Построить роадмап</Link>
       <button onClick={toggleLightMode}><img src={DarkMode} alt='Тёмный режим'/></button>
       <Link to='/account/favorities'><img src={StarIcon} alt='Избранное'/></Link>

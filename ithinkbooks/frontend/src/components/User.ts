@@ -1,3 +1,5 @@
+import City from './City';
+import Order from './Order';
 import Status from './Status';
 import Theme from './Theme';
 
@@ -7,12 +9,16 @@ export default interface User {
   password: string;
   name: string;
   avatar: string;
-  age: number;
   bio: string;
   status: Status;
   branches: Theme[];
   reviewsAmount: number;
-  city: string;
-  books: string[];
+  city: City;
   reviews: string[];
+  orders: Order[];
+  booksInBasket: string[];
+  favoriteBooks: string[];
+  email: string;
+  phoneNumber: string;
+  birthdate: Date;
 };

@@ -1,19 +1,39 @@
 import React from 'react';
 import BookComponent from '../books/Book';
-import { books, personalAccount } from '../mock/mock';
+import Book from '../Book';
+import { useAccount } from '../hooks/AccountProvider';
+import { getFormatedWithWordsDate } from '../date-utils';
+import { useBooks } from '../hooks/BooksProvider';
+
+const OrderBlock: React.FC<{date: Date, orderedBooks: Book[]}> = ({date, orderedBooks}) => (
+  <div className='order-block'>
+    <h3>{getFormatedWithWordsDate(date)}</h3>
+    <div className='books-collection'>
+      {orderedBooks.map((book, i) => <BookComponent key={i} book={book}/>)}
+    </div>
+  </div>
+);
 
 const History: React.FC<{}> = () => {
-  const foundBooks = books.filter((book) => personalAccount.books.some((id) => id === book.id));
+  const {account} = useAccount();
+  const {books} = useBooks();
 
-  if(!foundBooks.length) {
-    <div className='histpry-page'>
-      <h2>Вы ещё не покупали у нас книги</h2>
-    </div>
+  if(!account.orders.length) {
+    return (
+      <div className='histpry-page'>
+        <h2>Вы ещё не покупали у нас книги</h2>
+      </div>
+    );
   }
 
   return (
-    <div className='histpry-page books-collection'>
-      {foundBooks.map((book, i) => <BookComponent key={i} book={book}/>)}
+    <div className='histpry-page'>
+      {account.orders.map((order, i) => (
+        <OrderBlock
+          key={i} 
+          date={order.date} 
+          orderedBooks={books.filter((book) => order.booksId.some((id) => book.id === id))}/>)
+      )}
     </div>
   );
 };

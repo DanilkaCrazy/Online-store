@@ -1,0 +1,50 @@
+[
+  {
+    "nominative": "Январь",
+    "genitiveSingular": "Января"
+  },
+  {
+    "nominative": "Февраль",
+    "genitiveSingular": "Февраля"
+  },
+  {
+    "nominative": "Март",
+    "genitiveSingular": "Марта"
+  },
+  {
+    "nominative": "Апрель",
+    "genitiveSingular": "Апреля"
+  },
+  {
+    "nominative": "Май",
+    "genitiveSingular": "Мая"
+  },
+  {
+    "nominative": "Июнь",
+    "genitiveSingular": "Июня"
+  },
+  {
+    "nominative": "Июль",
+    "genitiveSingular": "Июля"
+  },
+  {
+    "nominative": "Август",
+    "genitiveSingular": "Августа"
+  },
+  {
+    "nominative": "Сентябрь",
+    "genitiveSingular": "Сентября"
+  },
+  {
+    "nominative": "Октябрь",
+    "genitiveSingular": "Октября"
+  },
+  {
+    "nominative": "Ноябрь",
+    "genitiveSingular": "Ноября"
+  },
+  {
+    "nominative": "Декабрь",
+    "genitiveSingular": "Декабря"
+  }
+]

@@ -76,3 +76,13 @@
   background-color: #4B4B4B;
   border-radius: 50%;
 }
+
+.review-from {
+  flex-direction: column;
+}
+
+.review-from .buttons-group{
+  width: 300px;
+  display: flex;
+  justify-content: space-between;
+}

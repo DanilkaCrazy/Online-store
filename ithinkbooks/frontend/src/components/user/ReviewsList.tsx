@@ -1,9 +1,11 @@
 import React from 'react';
-import { personalAccount, reviews } from '../mock/mock';
+import { reviews } from '../mock/mock';
 import ReviewComponent from '../books/Review';
+import { useAccount } from '../hooks/AccountProvider';
 
 const ReviewsList: React.FC<{}> = () => {
-  const foundReviews = reviews.filter((review) => personalAccount.reviews.some((bookId) => bookId === review.bookId));
+  const {account} = useAccount();
+  const foundReviews = reviews.filter((review) => account.reviews.some((bookId) => bookId === review.bookId));
 
   if(!foundReviews.length) {
     return (

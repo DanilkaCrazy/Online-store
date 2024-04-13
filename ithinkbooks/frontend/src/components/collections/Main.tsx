@@ -4,10 +4,13 @@ import AdsBlock from './main/AdsBlock';
 import ThemeMenu from './main/ThemeButton';
 import BooksScroller from '../books/BooksScroller';
 import '../../css/Main.css';
-import { books } from '../mock/mock';
 import { isNew, isReleased } from '../date-utils';
+import { useBooks } from '../hooks/BooksProvider';
 
-const Main: React.FC<{}> = () => (
+const Main: React.FC<{}> = () => {
+  const {books} = useBooks();
+
+  return (
     <div className='page'>
       <AdsBlock/>
       <ThemeMenu themes={themes}/>
@@ -16,5 +19,6 @@ const Main: React.FC<{}> = () => (
       <BooksScroller scrollerHeader='Скоро выходят' books={books.filter((book) => !isReleased(book.year, book.month))}/>
     </div>
   );
+};
 
 export default Main;

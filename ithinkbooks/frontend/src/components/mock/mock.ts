@@ -4,10 +4,9 @@ import themes from './themes.json';
 import statuses from './statuses.json';
 import Theme from '../Theme';
 import User from '../User';
+import cities from './cities.json';
 
 const COUNT = 20;
-
-const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Августь', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
 
 const PaperFormat = {
     SOFT: 'Мягкий',
@@ -28,21 +27,28 @@ const randomInteger = (min: number, max: number) => {
 
 const randomThemes = (count: number, themes: Array<Theme>) => Array.from({length: count}, () => themes[randomInteger(0, themes.length - 1)]);
 
-const users = Array.from({length: COUNT}, (_v, i) => ({
-    id: `fghij${i}`,
-    login: faker.word.noun(),
-    password: faker.word.noun(),
-    name: faker.person.fullName(),
-    avatar: faker.image.avatar(),
-    age: randomInteger(18, 70),
-    bio: faker.person.bio(),
-    status: statuses[randomInteger(0, statuses.length - 1)],
-    branches: randomThemes(randomInteger(0, 3), themes),
-    reviewsAmount: randomInteger(0, 10),
-    city: faker.location.city(),
-    books: [],
-    reviews: []
-}));
+const users = Array.from({length: COUNT}, (_v, i) => {
+    const user: User = {
+        id: `fghij${i}`,
+        login: faker.word.noun(),
+        password: faker.word.noun(),
+        name: faker.person.fullName(),
+        avatar: faker.image.avatar(),
+        bio: faker.person.bio(),
+        status: statuses[randomInteger(0, statuses.length - 1)],
+        branches: randomThemes(randomInteger(0, 3), themes),
+        reviewsAmount: randomInteger(0, 10),
+        city: cities[randomInteger(0, cities.length - 1)],
+        reviews: [],
+        orders: [],
+        booksInBasket: [],
+        favoriteBooks: [],
+        email: faker.internet.email(),
+        phoneNumber: faker.phone.number(),
+        birthdate: faker.date.birthdate({min: 18, max: 80, mode: 'age'})
+    }
+    return user;
+});
 
 const generateReviews = (count: number) => Array.from({length: count}, () => ({
     id: nanoid(),
@@ -57,7 +63,7 @@ const generateReviews = (count: number) => Array.from({length: count}, () => ({
  
 const reviews = generateReviews(COUNT);
 
-const books = Array.from({length: COUNT}, (_v, i) => ({
+const mockBooks = Array.from({length: COUNT}, (_v, i) => ({
     id: `${i}`,
     title: faker.commerce.productName(),
     author: faker.person.fullName(),
@@ -82,7 +88,7 @@ const books = Array.from({length: COUNT}, (_v, i) => ({
 
 const getRandomBooks = () => {
     const divider = randomInteger(3, 7)
-    return books.filter((_v, i) => i % divider === 0).map((book) => book.id);
+    return mockBooks.filter((_v, i) => i % divider === 0).map((book) => book.id);
 };
 
 const ownedBooks = getRandomBooks();
@@ -95,14 +101,18 @@ const personalAccount: User = {
     password: faker.word.noun(),
     name: faker.person.fullName(),
     avatar: faker.image.avatar(),
-    age: randomInteger(18, 70),
     bio: faker.person.bio(),
     status: statuses[randomInteger(0, statuses.length - 1)],
     branches: randomThemes(randomInteger(0, 3), themes),
     reviewsAmount: randomInteger(0, 10),
-    city: faker.location.city(),
-    books: ownedBooks,
-    reviews: reviews.filter((review) => ownedBooks.some((book) => book === review.bookId)).map((r) => r.bookId)
+    city: cities[randomInteger(0, cities.length - 1)],
+    reviews: reviews.filter((review) => ownedBooks.some((book) => book === review.bookId)).map((r) => r.bookId),
+    orders: [],
+    booksInBasket: [],
+    favoriteBooks: [],
+    email: faker.internet.email(),
+    phoneNumber: faker.phone.number(),
+    birthdate: faker.date.birthdate({min: 18, max: 80, mode: 'age'})
 }
 
-export {books, users, MONTHS, personalAccount, booksInBasket, favoriteBooks, reviews};
+export {mockBooks, users, personalAccount, booksInBasket, favoriteBooks, reviews};

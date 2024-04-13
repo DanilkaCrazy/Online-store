@@ -27,6 +27,10 @@
   gap: 25px;
 }
 
+.page-right {
+  width: calc(100% - 275px);
+}
+
 .book-page-promo .cover-stumb {
   width: 275px;
   height: 388px;
@@ -75,4 +79,34 @@
 
 .rating-and-sort {
   margin-bottom: 30px;
+}
+
+.ordered-book .cover-stumb{
+  width: 48px;
+  height: 70px;
+}
+
+.ordered-book {
+  display: flex;
+  width: 100%;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.ordered-book:last-child {
+  margin-bottom: 0;
+}
+
+.ordered-book-info p {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 5px;  
+}
+
+.ordered-book-info p:last-child {
+  margin-bottom: 0;
+}
+
+.empty-reviews-block {
+  width: 100%;
 }

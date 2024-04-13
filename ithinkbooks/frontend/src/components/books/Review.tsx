@@ -1,12 +1,12 @@
 import React from 'react';
 import Review from '../Review';
-import Star from './Star';
+import {Star} from './Star';
 import VoteArrow from '../../images/pages/desktop/VoteArrow.svg';
 import '../../css/Review.css';
 import Book from '../Book';
-import { books } from '../mock/mock';
 import User from '../User';
 import { DesktopImages } from '../ui/ImagesCollection';
+import { useBooks } from '../hooks/BooksProvider';
 
 const Reviewer: React.FC<{user: User}> = ({user}) => (
   <div className='review-user'>
@@ -35,6 +35,7 @@ const ReviewedBook: React.FC<{book: Book | undefined}> = ({book}) => {
 };
 
 const ReviewComponent: React.FC<{review: Review, isInBookPage?: boolean}> = ({review, isInBookPage = false}) => {
+  const {books} = useBooks();
   const votingResult = review.positiveVotes - review.negativeVotes;
 
   return (
