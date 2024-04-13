@@ -16,7 +16,7 @@ class Quiz(models.Model):
 
 class Question(models.Model):
     text = models.TextField(max_length=120, verbose_name='Текст вопроса')
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE ,verbose_name='Тест')
+    quiz = models.ForeignKey(Quiz, related_name='question' , on_delete=models.CASCADE ,verbose_name='Тест')
     class QuestionType(models.TextChoices):
         THEME = 'Theme Question' #Выбор темы
         LEVEL = 'Level Question' #Вопрос об уровне знаний
@@ -47,13 +47,27 @@ class Answer(models.Model):
     def __str__(self):
         return self.text
 
+#Модель ответы для цены
+class AnswerPrice(models.Model):
+    text = models.TextField(max_length=120, verbose_name='Текст ответа')
+    question = models.ForeignKey(Question, related_name='answer_price', on_delete=models.CASCADE, verbose_name='Вопрос')
+    answer_low = models.IntegerField(verbose_name='Нижнее значение цены', null=True)
+    answer_high = models.IntegerField(verbose_name='Верхнее значение цены', null=True)
+    class Meta:
+        db_table = 'answer_price'
+        verbose_name = 'Ответ цены'
+        verbose_name_plural = 'Ответы цены'
+
+    def __str__(self):
+        return self.text
+
 class Result(models.Model):
     theme = models.TextField(verbose_name='Тема')
     level = models.TextField(verbose_name='Уровень знаний')
     purpose = models.TextField(verbose_name='Цель')
     language = models.TextField(verbose_name='Язык')
     price = models.TextField(verbose_name='Цена')
-
+    question = models.ForeignKey(Question, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Результат')
     class Meta:
         db_table = 'result'
         verbose_name = 'Результат'

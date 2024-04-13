@@ -1,18 +1,22 @@
 from rest_framework import serializers
 from quiz.models import Quiz, Question, Answer
 
-class QuizSerializer (serializers.ModelSerializer):
-    class Meta:
-        model = Quiz
-        fields = '__all__'
-
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
-        fields = ['text', 'answer_value',]
+        fields = ['id', 'text', 'answer_value',]
 
 class QuestionSerializer (serializers.ModelSerializer):
     answer = AnswerSerializer(many=True, read_only=True)
     class Meta:
         model = Question
-        fields = ['text', 'question_type', 'answer',]
+        fields = ['id', 'text', 'question_type', 'answer',]
+
+class QuizSerializer (serializers.ModelSerializer):
+    question = QuestionSerializer(many=True, read_only=True)
+    class Meta:
+        model = Quiz
+        fields = ['id', 'name', 'quiz_theme', 'question']
+
+class VoteSerializer(serializers.Serializer):
+    answer_id = serializers.IntegerField()

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.apps import AppConfig
 from catalogue.models import Products, Categories, Review, RatingStar
-from quiz.models import Quiz, Question, Answer
+from quiz.models import Quiz, Question, Answer, AnswerPrice
 
 # Register your models here.
 class QuestionInline(admin.TabularInline):
@@ -17,6 +17,9 @@ class AnswerAdmin(admin.ModelAdmin):
 class AnswerInline(admin.TabularInline):
     model = Answer
 
+class AnswerPriceInline(admin.TabularInline):
+    model = AnswerPrice
+
 @admin.register(Question)
 class QuestionAdmin(admin.ModelAdmin):
-    inlines = [AnswerInline]
+    inlines = [AnswerInline, AnswerPriceInline]
