@@ -64,7 +64,6 @@ class AnswerPrice(models.Model):
 class Result(models.Model):
     theme = models.TextField(verbose_name='Тема')
     level = models.TextField(verbose_name='Уровень знаний')
-    purpose = models.TextField(verbose_name='Цель')
     language = models.TextField(verbose_name='Язык')
     price = models.TextField(verbose_name='Цена')
     question = models.ForeignKey(Question, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Результат')

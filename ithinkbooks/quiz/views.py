@@ -40,4 +40,6 @@ class SendResults(APIView):
         serializer = VoteSerializer(data=request.data)
         if serializer.is_valid():
             answer = get_object_or_404(Answer, pk = serializer.validated_data['answer_id'], question=question)
-            result = Result.objects.create(question=question, theme=answer)
+            result = Result.objects.create(question=question, level=answer.answer_value)
+            return Response("Success")
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
