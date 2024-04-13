@@ -66,7 +66,7 @@ class Products(models.Model):
     #Выбор перевода
     translator_choice = models.CharField (max_length=30, choices = Translator, default=Translator.TRANSLATE, verbose_name='Переводчик')
     #Уровень книги - для роадмапа
-    level = models.IntegerField(max_length=2, default=1, verbose_name='Уровень книги')
+    level = models.IntegerField(default=1, verbose_name='Уровень книги')
     class Meta:
         db_table = 'book'
         verbose_name = 'Книга'
