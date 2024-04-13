@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from quiz.models import Quiz, Question, Answer, Result
 from rest_framework import permissions
 from rest_framework.response import Response
-from quiz.serializers import QuizSerializer, QuestionSerializer, VoteSerializer
+from quiz.serializers import QuizSerializer, QuestionSerializer, VoteSerializer, FullVoteSerializer
 # Create your views here.
 #Просмотр всех книг
 class QuizListView(ListAPIView):
@@ -43,3 +43,27 @@ class SendResults(APIView):
             result = Result.objects.create(question=question, level=answer.answer_value)
             return Response("Success")
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SendResultsFull(APIView):
+    def post(self, request, quiz_id):
+        quiz = get_object_or_404(Quiz, pk=quiz_id)
+        serializer = FullVoteSerializer(data=request.data, many=True)
+        theme_val = 0
+        level_val = 0
+        lang_val = 0
+        price_val = 0
+        if serializer.is_valid():
+            for quiz_dict in serializer.validated_data:
+                question = get_object_or_404(Question, pk = quiz_dict['question_id'], quiz=quiz)
+                answer = get_object_or_404(Answer, pk = quiz_dict['answer_id'], question=question)
+                if (question.question_type == 'Theme Question'):
+                    theme_val = answer.answer_value
+                if (question.question_type == "Level Question"):
+                    level_val = answer.answer_value
+                if (question.question_type == "Language Question"):
+                    lang_val = answer.answer_value
+                if (question.question_type == "Price Question"):
+                    price_val = answer.answer_value
+            result = Result.objects.create(quiz=quiz, theme=theme_val, level = level_val, language=lang_val, price=price_val)
+            return Response("Success")
+        return Response(serializer.errors)

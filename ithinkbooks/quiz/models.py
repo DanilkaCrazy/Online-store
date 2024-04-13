@@ -66,7 +66,8 @@ class Result(models.Model):
     level = models.TextField(verbose_name='Уровень знаний')
     language = models.TextField(verbose_name='Язык')
     price = models.TextField(verbose_name='Цена')
-    question = models.ForeignKey(Question, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Результат')
+    #question = models.ForeignKey(Question, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Результат')
+    quiz = models.ForeignKey(Quiz, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Результат')
     class Meta:
         db_table = 'result'
         verbose_name = 'Результат'

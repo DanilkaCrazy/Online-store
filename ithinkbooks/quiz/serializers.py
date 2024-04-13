@@ -20,3 +20,7 @@ class QuizSerializer (serializers.ModelSerializer):
 
 class VoteSerializer(serializers.Serializer):
     answer_id = serializers.IntegerField()
+
+class FullVoteSerializer(serializers.Serializer):
+    question_id = serializers.IntegerField()
+    answer_id = serializers.IntegerField()
