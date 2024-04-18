@@ -15,8 +15,8 @@ class Quiz(models.Model):
         return self.name
 
 class Question(models.Model):
-    text = models.TextField(max_length=120, verbose_name='Текст вопроса')
-    quiz = models.ForeignKey(Quiz, related_name='question' , on_delete=models.CASCADE ,verbose_name='Тест')
+    text = models.TextField(max_length=300, verbose_name='Текст вопроса')
+    quiz = models.ForeignKey(Quiz, related_name='question' , on_delete=models.DO_NOTHING ,verbose_name='Тест')
     class QuestionType(models.TextChoices):
         THEME = 'Theme Question' #Выбор темы
         LEVEL = 'Level Question' #Вопрос об уровне знаний
@@ -37,7 +37,7 @@ class Question(models.Model):
 
 class Answer(models.Model):
     text = models.TextField(max_length=120, verbose_name='Текст ответа')
-    question = models.ForeignKey(Question, related_name='answer', on_delete=models.CASCADE, verbose_name='Вопрос')
+    question = models.ForeignKey(Question, related_name='answer', on_delete=models.DO_NOTHING, verbose_name='Вопрос')
     answer_value = models.IntegerField(verbose_name='Значение вопроса')
     class Meta:
         db_table = 'answer'
