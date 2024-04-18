@@ -20,9 +20,9 @@ class Question(models.Model):
     class QuestionType(models.TextChoices):
         THEME = 'Theme Question' #Выбор темы
         LEVEL = 'Level Question' #Вопрос об уровне знаний
-        PURPOSE = 'Purpose Question' #Вопрос о цели изучения
         LANGUAGE = 'Language Question' #Вопрос о языке
         PRICE = 'Price Question' #Вопрос о цене
+        OTHER = 'Other'
     question_type = models.TextField(choices=QuestionType, default=QuestionType.THEME, verbose_name='Тип вопроса')
     class Meta:
         db_table = 'question'
@@ -43,20 +43,6 @@ class Answer(models.Model):
         db_table = 'answer'
         verbose_name = 'Ответ'
         verbose_name_plural = 'Ответы'
-
-    def __str__(self):
-        return self.text
-
-#Модель ответы для цены
-class AnswerPrice(models.Model):
-    text = models.TextField(max_length=120, verbose_name='Текст ответа')
-    question = models.ForeignKey(Question, related_name='answer_price', on_delete=models.CASCADE, verbose_name='Вопрос')
-    answer_low = models.IntegerField(verbose_name='Нижнее значение цены', null=True)
-    answer_high = models.IntegerField(verbose_name='Верхнее значение цены', null=True)
-    class Meta:
-        db_table = 'answer_price'
-        verbose_name = 'Ответ цены'
-        verbose_name_plural = 'Ответы цены'
 
     def __str__(self):
         return self.text
