@@ -20,11 +20,20 @@ class User(AbstractUser):
         QA = "qa", "Quality Assurance"
         COMPSCI = "CS","Computer Science" #Разбить на несколько
         OTHER = "OT","Other"
-    user_direction = models.CharField(choices=UserDirection, default=UserDirection.OTHER, verbose_name='Направление')
+    user_direction = models.CharField(max_length=20, choices=UserDirection, default=UserDirection.OTHER, verbose_name='Направление')
     class UserStatus(models.TextChoices):
         STUDENT = "student"
         TRAINEE = "trainee"
         JUNIOR = "junior"
         MIDDLE = "middle"
         SENIOR = "senior"
-    user_status = models.CharField(choices=UserStatus, default=UserStatus.STUDENT, verbose_name='Статус')
+    user_status = models.CharField(max_length=20, choices=UserStatus, default=UserStatus.STUDENT, verbose_name='Статус')
+
+    class Meta:
+        db_table = 'user'
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+    
+    def __str__(self):
+        return self.username
+    
