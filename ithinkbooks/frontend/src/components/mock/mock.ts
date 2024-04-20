@@ -5,6 +5,7 @@ import statuses from './statuses.json';
 import Theme from '../Theme';
 import User from '../User';
 import cities from './cities.json';
+import languages from './languages.json';
 
 const COUNT = 20;
 
@@ -12,6 +13,11 @@ const PaperFormat = {
     SOFT: 'Мягкий',
     HARD: 'Твёрдый'
 };
+
+const BookFormat = {
+    PAPERBACK: "Печатный",
+    ELECTRONIC: "Электронный"
+}
 
 const FileType = {
     PDF: 'PDF',
@@ -45,7 +51,8 @@ const users = Array.from({length: COUNT}, (_v, i) => {
         favoriteBooks: [],
         email: faker.internet.email(),
         phoneNumber: faker.phone.number(),
-        birthdate: faker.date.birthdate({min: 18, max: 80, mode: 'age'})
+        birthdate: faker.date.birthdate({min: 18, max: 80, mode: 'age'}),
+        roadmaps: []
     }
     return user;
 });
@@ -83,7 +90,8 @@ const mockBooks = Array.from({length: COUNT}, (_v, i) => ({
     deliveryDays: randomInteger(1, 14),
     description: faker.lorem.sentence(),
     reviews: reviews.filter((review) => review.bookId === `${i}`),
-    isRecommended: randomInteger(0, 1) === 1
+    isRecommended: randomInteger(0, 1) === 1,
+    language: languages[randomInteger(0, languages.length - 1)]
 }));
 
 const getRandomBooks = () => {
@@ -112,7 +120,8 @@ const personalAccount: User = {
     favoriteBooks: [],
     email: faker.internet.email(),
     phoneNumber: faker.phone.number(),
-    birthdate: faker.date.birthdate({min: 18, max: 80, mode: 'age'})
+    birthdate: faker.date.birthdate({min: 18, max: 80, mode: 'age'}),
+    roadmaps: []
 }
 
-export {mockBooks, users, personalAccount, booksInBasket, favoriteBooks, reviews};
+export {mockBooks, users, personalAccount, booksInBasket, favoriteBooks, reviews, BookFormat};

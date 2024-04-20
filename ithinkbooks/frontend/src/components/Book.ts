@@ -1,3 +1,4 @@
+import Language from "./Language";
 import Review from "./Review";
 import Theme from "./Theme";
 
@@ -22,4 +23,5 @@ export default interface Book {
   description: string;
   reviews: Review[];
   isRecommended: boolean;
+  language: Language;
 };

@@ -31,6 +31,9 @@ const ScreensWidth = {
   }
 };
 
+const MIN_PRICE = 0;
+const MAX_PRICE = 10000;
+
 const getArraySum = (array: Array<number>) => array.length ? array.reduce((prev, current) => prev + current, 0) : 0;
 
 const getAverageNumber = (array: Array<number>) => array.length ? getArraySum(array) / array.length : 0;
@@ -45,4 +48,4 @@ const declineNounAfterNumber = (number: number, nominative: string, genitiveSing
   return genitivePlural;
 }
 
-export {getArraySum, getAverageNumber, declineNounAfterNumber, ScreensWidth};
+export {getArraySum, getAverageNumber, declineNounAfterNumber, ScreensWidth, MIN_PRICE, MAX_PRICE};

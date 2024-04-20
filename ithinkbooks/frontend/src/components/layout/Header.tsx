@@ -6,7 +6,7 @@ import StarIcon from '../../images/header/Star.svg';
 import BasketIcon from '../../images/header/Basket.svg';
 import AccountIcon from '../../images/header/Account.svg';
 import '../../css/Header.css';
-import {Link, Outlet} from 'react-router-dom';
+import {Link, Outlet, useNavigate} from 'react-router-dom';
 import { useLightMode } from '../hooks/LightModeProvider';
 import { Button, Dropdown } from 'react-bootstrap';
 import Theme from '../Theme';
@@ -29,6 +29,14 @@ const Catalog: React.FC<{themes: Theme[]}> = ({themes}) => (
 const Search: React.FC<{}> = () => {
   const [foundBooks, setFoundBooks] = useState<Book[]>([]);
   const [seacrhWord, setSearchWord] = useState<string>('');
+  const navigate = useNavigate();
+
+  const redirectToResult = () => {
+    if(seacrhWord) {
+      navigate(`/search/${seacrhWord}`);
+      setSearchWord('');
+    }
+  };
 
   const findBooks = (bookTitle: string) => {
     setSearchWord(bookTitle);
@@ -38,9 +46,20 @@ const Search: React.FC<{}> = () => {
   return (
     <div className='search-panel'>
       <div className='search'>
-        <input type='text' value={seacrhWord} placeholder='Поиск' onChange={(evt: React.ChangeEvent<HTMLInputElement>) => findBooks(evt.target.value.toLowerCase())}/>
-        <img src={SearchIcon} alt='Найти'/>
+        <input 
+          type='text' 
+          value={seacrhWord} 
+          placeholder='Поиск' 
+          onChange={(evt) => findBooks(evt.target.value.toLowerCase())}
+          onKeyDown={(evt) => {
+            if(evt.key === 'Enter') {
+              redirectToResult();
+            }
+          }}/>
+
+        <img src={SearchIcon} alt='Найти' onClick={redirectToResult} className='clickable'/>
       </div>
+      
       <div className='search-result' hidden={seacrhWord === ''}>
         {foundBooks.length 
           ? foundBooks.slice(0, 3).map((book, i) => <SmallBookComponent key={i} book={book} onClick={() => setSearchWord('')}/>)
@@ -58,7 +77,7 @@ const Header: React.FC<{}> = () => {
       <Link to='/'><img className='logo' src={Logo} alt='IThink books'/></Link>
       <Catalog themes={themes}/>
       <Search/>
-      <Link to='/roadmap' className='main-button'>Построить роадмап</Link>
+      <Link to='/quiz/theme' className='main-button'>Построить роадмап</Link>
       <button onClick={toggleLightMode}><img src={DarkMode} alt='Тёмный режим'/></button>
       <Link to='/account/favorities'><img src={StarIcon} alt='Избранное'/></Link>
       <Link to='/account/basket'><img src={BasketIcon} alt='Корзина'/></Link>

@@ -58,7 +58,7 @@ const SignUpForm: React.FC<{}> = () => {
       : newAccount.branches.concat(foundTheme);
 
     setChosenThemes(resultThemes.map((theme) => theme.shortName));
-    setNewAccount((value) => ({...value, branches: resultThemes}))
+    setNewAccount((value) => ({...value, branches: resultThemes}));
   }
 
   return (

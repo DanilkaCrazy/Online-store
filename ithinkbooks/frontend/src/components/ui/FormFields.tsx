@@ -28,6 +28,17 @@ const DateField: React.FC<{
   </div>
 );
 
+const NumberField: React.FC<{
+  fieldHeader: string,
+  defaultValue: number,
+  onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void
+}> = ({fieldHeader, defaultValue, onChange}) => (
+  <div className='form-field'>
+    <h3>{fieldHeader}</h3>
+    <input onChange={onChange} type='number' defaultValue={defaultValue}/>
+  </div>
+);
+
 const DropdownField: React.FC<{
   fieldHeader: string,
   options: string[], 
@@ -92,4 +103,4 @@ const TextareaField: React.FC<{
   </div>
 );
 
-export {TextField, DateField, DropdownField, MultiselectDropdown, TextareaField};
+export {TextField, DateField, NumberField, DropdownField, MultiselectDropdown, TextareaField};
