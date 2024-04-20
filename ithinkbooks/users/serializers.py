@@ -10,6 +10,18 @@ class UserSerializer (serializers.ModelSerializer):
 		model = UserModel
 		fields = '__all__'
 
+
+class UserRegistrationSerializer (serializers.ModelSerializer):
+	class Meta:
+		model = UserModel
+		fields = ('username', 'password', 'email', 'phone_number', 'birthdate', 'location', 'user_direction', 'user_status')
+	def create(self, validated_data):
+		password = validated_data.pop('password')
+		user = User(**validated_data)
+		user.set_password(password)
+		user.save()
+		return user
+
 class UserLoginSerializer(serializers.Serializer):
 	username = serializers.CharField()
 	password = serializers.CharField()
