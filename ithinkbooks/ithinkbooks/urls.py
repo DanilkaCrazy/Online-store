@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('catalogue.urls', namespace ='')),
     path('quiz/', include('quiz.urls')),
-    path('users/', include('users.urls'))
+    path('users/', include('users.urls')),
+    path('cart/', include('cart.urls'))
 ]
