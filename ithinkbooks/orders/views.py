@@ -5,7 +5,7 @@ from cart.models import Cart, CartQueryset
 from rest_framework import permissions
 from rest_framework.response import Response
 from catalogue.models import Products
-from orders.serializers import OrderSerializer
+from orders.serializers import OrderSerializer, OrderItemSerializer
 from orders.models import Order, OrderItem
 
 class CreateOrderView(APIView):
@@ -29,11 +29,17 @@ class CreateOrderView(APIView):
                         product.quantity-=quantity
                         product.save()
                         cart_items.delete()
-                        return Response(status=201)
+            return Response(status=201)
 
 #Только для разработки - просмотр всех заказов
 class OrderListView(ListAPIView):
     permission_classes = (permissions.AllowAny, )
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+    pagination_class = None
+
+class OrderItemListView(ListAPIView):
+    permission_classes = (permissions.AllowAny, )
+    queryset = OrderItem.objects.all()
+    serializer_class = OrderItemSerializer
     pagination_class = None
