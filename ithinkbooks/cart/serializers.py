@@ -17,3 +17,12 @@ class AddToCartSerializer(serializers.Serializer):
     #user_id = serializers.IntegerField()
     product_id = serializers.IntegerField()
     quantity = serializers.IntegerField()
+
+class ChangeCartSerializer(serializers.Serializer):
+    #user_id = serializers.IntegerField()
+    product_id = serializers.IntegerField()
+    cart_id = serializers.IntegerField()
+    quantity = serializers.IntegerField()
+
+class RemoveCartSerializer(serializers.Serializer):
+    cart_id = serializers.IntegerField()
