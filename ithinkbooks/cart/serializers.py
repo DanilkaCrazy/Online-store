@@ -8,7 +8,12 @@ class CartSerializer (serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AddToCartSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Cart
-        fields = ('user', 'product', 'quantity')
+#class AddToCartSerializer(serializers.ModelSerializer):
+ #  class Meta:
+  #      model = Cart
+   #     fields = '__all__'
+
+class AddToCartSerializer(serializers.Serializer):
+    #user_id = serializers.IntegerField()
+    product_id = serializers.IntegerField()
+    quantity = serializers.IntegerField()

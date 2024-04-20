@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from cart.models import Cart, CartQueryset
@@ -13,25 +13,39 @@ class CartItemsView(APIView):
     def get(self, request):
         carts = Cart.objects.filter(user=request.user)
         serializer = CartSerializer(carts, many=True)
-        return Response(serializer.data)
-     
+        return Response(serializer.data) 
+    def post(self, request):
+        serializer = AddToCartSerializer(data=request.data)
+        if serializer.is_valid():
+            product = get_object_or_404(Products, pk = serializer.validated_data['product_id'])
+            if request.user.is_authenticated:
+                carts = Cart.objects.filter(user=request.user, product=product)
+                if carts.exists():
+                    cart = carts.first()
+                    if cart:
+                        cart.quantity += serializer.validated_data['quantity']
+                        cart.save()
+                else:
+                    Cart.objects.create(user=request.user, product=product, quantity=serializer.validated_data['quantity'])
+        return Response(status=201)
+
+
+class ClassProductView(APIView):
+    #Просмотр корзины пользователя с отдельным продуктом
+    def get(self, request):
+        carts = Cart.objects.filter(user=request.user)
+        serializer = CartSerializer(carts, many=True)
+        return Response(serializer.data) 
     #Добавление предмета в корзину
     def post(self, request):
         serializer = AddToCartSerializer(data=request.data)
-        product_id = serializer['product']
-        product = Products.objects.get(id=product_id)
-        #cart_data = AddToCartSerializer(data=request.data)
-        data = request.data
-        #carts = Cart.objects.filter(user=request.user)
-        Cart.objects.create(user=request.user, product=product, quantity=data['quantity'])
-        #if cart_data.is_valid():
-            #Cart.objects.create(user=cart_data.user, product=cart_data.product, quantity=cart_data.quantity)
-        #    Cart.objects.create(cart_data)
-        return Response(status=201) 
-
-
-#class CartItemsView(ListAPIView):
- #   serializer_class = CartSerializer
-  #  def get_queryset(self):
-   #     queryset = Cart.objects.all()
-    #    return queryset.filter(user=request.user)
+        if request.user.is_authenticated:
+            carts = Cart.objects.filter(user=request.user)
+            if carts.exists():
+                cart = carts.first()
+                if cart:
+                    cart.quantity += 1
+                    cart.save()
+            else:
+                Cart.objects.create(user=request.user, product=AddToCartSerializer['product_id'], quantity=AddToCartSerializer['quantity'])
+        return Response(status=201)
