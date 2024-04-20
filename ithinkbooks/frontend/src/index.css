@@ -61,6 +61,10 @@ h3 {
   font-weight: bold;
 }
 
+.normal-h3 {
+  font-weight: normal;
+}
+
 .secondary-color {
   color: #4B4B4B;
 }
@@ -71,6 +75,7 @@ button {
   font-style: normal;
   background-color: rgba(0, 0, 0, 0);
   border: none;
+  cursor: pointer;
 }
 
 a {
@@ -95,6 +100,11 @@ a {
   min-width: 44px;
 }
 
+.main-button .disabled {
+  cursor: default;
+  opacity: 0.5;
+}
+
 .secondary-button {
   color: #262626;
   font-size: 18px;
@@ -106,6 +116,10 @@ a {
   border: 3px solid #3F97E7;
   border-radius: 5px;
   min-width: 44px;
+}
+
+.highlighted-button {
+  color: #1678D2;
 }
 
 ::placeholder {
@@ -121,6 +135,61 @@ input[type="text"] {
   font-size: 18px;
   font-weight: normal;
   font-style: normal;
+}
+
+input[type="radio"], input[type="checkbox"] {
+  appearance: none;
+  margin: 0;
+  min-width: 16px;
+  height: 16px;
+  background-color: #262626;
+  border-radius: 5px;
+  display: grid;
+  margin: auto;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 70%;
+  height: 70%;
+  align-self: center;
+  margin: 0 auto;
+  border-radius: 3px;
+  transform: scale(0);
+  background-color: #3F97E7;
+  transition: 100ms transform;
+}
+
+input[type="checkbox"]::before {
+  content: url('./images/pages/Mark.svg');
+  width: 10px;
+  height: 10px;
+  align-self: center;
+  margin: auto;
+  margin-top: -5px;
+  transform: scale(0);
+  transition: 100ms transform;
+}
+
+input[type="radio"]:checked:before {
+  transform: scale(1);
+}
+
+input[type="checkbox"]:checked:before {
+  transform: scale(1);
+}
+
+body::-webkit-scrollbar {
+  width: 15px;
+}
+
+body::-webkit-scrollbar-track {
+  background-color: #262626;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #3F97E7;
 }
 
 .book-small {
@@ -143,4 +212,8 @@ ul {
 .disabled-link {
   pointer-events: none;
   opacity: 0.5;
+}
+
+.clickable {
+  cursor: pointer;
 }

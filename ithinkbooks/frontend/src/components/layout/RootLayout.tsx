@@ -1,16 +1,15 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import {Routes, Route, Navigate} from 'react-router-dom';
 import Stub from './Stub';
 import AnotherUser from '../user/AnotherUser';
 import BookPage from '../books/BookPage';
 import Main from '../collections/Main';
-import themes from '../mock/themes.json';
 import Basket from '../user/Basket';
 import FavoritiesList from '../user/FavoritiesList';
 import History from '../user/History';
 import RoadmapsList from '../user/RoadmapsList';
 import ReviewsList from '../user/ReviewsList';
-import Quiz from '../roadmap/Quiz';
+import QuizPage from '../roadmap/QuizPage';
 import Roadmap from '../roadmap/Roadmap';
 import ThemeCollection from '../collections/ThemeCollection';
 import PersonalAccount from '../user/PersonalAccount';
@@ -18,15 +17,25 @@ import OrderForm from '../user/OrderForm';
 import EditFrom from '../user/EditForm';
 import LogInForm from '../user/LogInForm';
 import SignUpForm from '../user/SignUpForm';
+import Quiz from '../roadmap/Quiz';
+import QuizTheme from '../roadmap/QuizTheme';
+import QuizWarning from '../roadmap/QuizWarning';
+import { useAccount } from '../hooks/AccountProvider';
+import { MAX_ROADMAPS_COUNT } from '../User';
+import SearchedBooks from '../collections/SearchingBooks';
 
 const RootLayout: React.FC<{}> = () => {
-  const [isCompleted, setIsCompleted] = useReducer((value) => !value, false);
+  const {account} = useAccount();
 
   return (
     <Routes>
       <Route path='/' element={<Main/>}/>
-      <Route path='roadmap' element={isCompleted ? <Roadmap onExit={setIsCompleted}/> : <Navigate to='/quiz'/>}/>
-      <Route path='quiz' element={<Quiz onComplete={setIsCompleted}/>}/>
+      <Route path='roadmap' element={<Roadmap/>}/>
+      <Route path='quiz' element={<QuizPage/>}>
+        <Route path='theme' element={account.roadmaps.length >= MAX_ROADMAPS_COUNT ? <Navigate to='/quiz/warning'/> : <QuizTheme/>}/>
+        <Route path='questions' element={<Quiz/>}/>
+        <Route path='warning' element={<QuizWarning/>}/>
+      </Route>
       <Route path='account' element={<PersonalAccount/>}>
         <Route path='basket' element={<Basket/>}/>
         <Route path='favorities' element={<FavoritiesList/>}/>
@@ -50,7 +59,8 @@ const RootLayout: React.FC<{}> = () => {
       <Route path='editor' element={<EditFrom/>}/>
       <Route path='log-in' element={<LogInForm/>}/>
       <Route path='sign-up' element={<SignUpForm/>}/>
-      {themes.map((theme, i) => <Route key={i} path={theme.title} element={<ThemeCollection theme={theme}/>}/>)}
+      <Route path=':theme' element={<ThemeCollection/>}/>
+      <Route path='search/:bookTitle' element={<SearchedBooks/>}/>
       <Route path='*' element={<Stub pageName='Error'/>}/>
     </Routes>
   );

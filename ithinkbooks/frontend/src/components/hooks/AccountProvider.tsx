@@ -23,7 +23,8 @@ const emptyAccount: User = {
   favoriteBooks: [],
   email: '',
   phoneNumber: '',
-  birthdate: new Date()
+  birthdate: new Date(),
+  roadmaps: []
 }
 
 const defaultAccountValue = {

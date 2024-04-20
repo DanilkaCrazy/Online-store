@@ -16,6 +16,9 @@ const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth();
 
+const MIN_YEAR = 1990;
+const MAX_YEAR = currentYear + 1;
+
 const isReleased = (year: number, month: number) => currentYear > year || (currentYear === year && currentMonth >= month);
 
 const isNew = (year: number, month: number) => 
@@ -41,4 +44,4 @@ const getFormatedWithWordsDate = (date: Date) => {
   );
 };
 
-export {isReleased, isNew, getAge, getFormatedWithDotsDate, getFormatedWithWordsDate};
+export {isReleased, isNew, getAge, getFormatedWithDotsDate, getFormatedWithWordsDate, MIN_YEAR, MAX_YEAR};
