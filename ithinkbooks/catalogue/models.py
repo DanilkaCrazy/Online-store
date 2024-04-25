@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext as _
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django_better_admin_arrayfield.models.fields import ArrayField
 
 
 # Create your models here.
@@ -89,6 +90,7 @@ class Products(models.Model):
         machine_learning = "Методы машинного обучения (нейронные сети, классификация, регрессия, кластеризация и т.д.)"
         os_basic = "Принципы работы операционных систем (Windows, Linux, MacOS и т.д)"
         optimization = "Знание принципов оптимизации (оптимизация кода, оптимизация моделей, оптимизация алгоритмов и т.д.)"
+        other = "Другое"
         #Аналитика
         process_modeling = "Основы моделирования процессов"
         competitor_analysis = "Анализ конкурентов"
@@ -147,7 +149,7 @@ class Products(models.Model):
         cs_architecture = "Архитектура компьютерных систем (процессоры, память, ввод-вывод, сети и т.д.)"
         cs_math = "Математические методы в компьютерных науках (дискретная математика, линейная алгебра, теория вероятностей, статистика и т.д.)"
         cs_tools = "Инструменты разработки программного обеспечения (IDE, отладчики, профайлеры, системы управления версиями и т.д.)"
-
+    theme_category = ArrayField(models.CharField(max_length=300), null=True, blank=True)
     class Meta:
         db_table = 'book'
         verbose_name = 'Книга'
