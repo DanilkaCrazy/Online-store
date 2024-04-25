@@ -52,6 +52,12 @@ class Products(models.Model):
         CLANGUAGE = "C"
         CPLUS = "C++"
         SQL = "SQL"
+        HTMLCSS = "HTMLCSS" #HTML и CSS Вместе, так как один без другого редко
+        RUBY = "Ruby"
+        PHP = "PHP"
+        TYPESCRIPT = "TypeScript"
+        ASSEMBLER = "Assembler"
+        BASH_POWERSHELL = "Bash/Powershell"
         OTHER = "OT","Other"
     book_theme = models.CharField(max_length=30, choices=BookTheme, default = BookTheme.OTHER, verbose_name='Темы')
     programming_language = models.CharField(max_length=30, choices = ProgrammingLanguage, default = ProgrammingLanguage.OTHER, verbose_name='Язык программирования')
