@@ -79,12 +79,12 @@ class Products(models.Model):
     #Категория конкретной темы
     class THEME_CATEGORIES(models.TextChoices):
         #Общее (в нескольких темах)
-        source_control = "Использование систем управлений версиями (Git, SVN и т.д.)"
-        api_work = "Принципы работы с API"
-        team_work = "Умение работать в команде (навыки коммуникации, планирования, координации и совместной работы над проектом и т.д.)."
-        db_basics = "Основы баз данных"
-        db_advanced = "Принципы работы с базами данных (SQL, NoSQL, Oracle, MySQL и т.д.)"
-        developement_methods = "Методологии разработки программного обеспечения (Agile, Scrum, Waterfall и т.д.)"
+        source_control = "sc", "Использование систем управлений версиями (Git, SVN и т.д.)"
+        api_work = "api", "Принципы работы с API"
+        team_work = "team", "Умение работать в команде (навыки коммуникации, планирования, координации и совместной работы над проектом и т.д.)."
+        db_basics = "db_base", "Основы баз данных"
+        db_advanced = "db_adv", "Принципы работы с базами данных (SQL, NoSQL, Oracle, MySQL и т.д.)"
+        developement_methods = "dev_met", "Методологии разработки программного обеспечения (Agile, Scrum, Waterfall и т.д.)"
         networks_protocols = "Принципы работы с сетями и протоколами (HTTP, HTTPS, TCP/IP, FTP и т.д.)"
         math_knowledge = "Знания математики (линейная алгебра, теория вероятности и статистика, дифференциальные уравнения и т.д.)"
         machine_learning = "Методы машинного обучения (нейронные сети, классификация, регрессия, кластеризация и т.д.)"
@@ -149,7 +149,7 @@ class Products(models.Model):
         cs_architecture = "Архитектура компьютерных систем (процессоры, память, ввод-вывод, сети и т.д.)"
         cs_math = "Математические методы в компьютерных науках (дискретная математика, линейная алгебра, теория вероятностей, статистика и т.д.)"
         cs_tools = "Инструменты разработки программного обеспечения (IDE, отладчики, профайлеры, системы управления версиями и т.д.)"
-    theme_category = ArrayField(models.CharField(max_length=300), null=True, blank=True)
+    theme_category = ArrayField(models.CharField(max_length=300, choices=THEME_CATEGORIES), null=True, blank=True)
     class Meta:
         db_table = 'book'
         verbose_name = 'Книга'
