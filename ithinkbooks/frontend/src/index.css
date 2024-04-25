@@ -122,6 +122,21 @@ a {
   color: #1678D2;
 }
 
+.text-button {
+  color: #262626;
+  transition: 200ms color;
+}
+
+.text-button:hover {
+  color: #3F97E7;
+  transition: 200ms color;
+}
+
+.text-button:active {
+  color: #1678D2;
+  transition: 100ms color;
+}
+
 ::placeholder {
   font-family: "Play", sans-serif;
   font-size: 16px;

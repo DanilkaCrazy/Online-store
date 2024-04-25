@@ -129,3 +129,22 @@
   width: 60%;
   align-self: center;
 }
+
+.roadmap-icon {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 25px;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+}
+
+.roadmap-info {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+}
+
+.roadmap-icon .secondary-button {
+  width: 100px;
+}

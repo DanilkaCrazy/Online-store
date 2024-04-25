@@ -10,7 +10,7 @@ import History from '../user/History';
 import RoadmapsList from '../user/RoadmapsList';
 import ReviewsList from '../user/ReviewsList';
 import QuizPage from '../roadmap/QuizPage';
-import Roadmap from '../roadmap/Roadmap';
+import RoadmapPage from '../roadmap/Roadmap';
 import ThemeCollection from '../collections/ThemeCollection';
 import PersonalAccount from '../user/PersonalAccount';
 import OrderForm from '../user/OrderForm';
@@ -30,7 +30,7 @@ const RootLayout: React.FC<{}> = () => {
   return (
     <Routes>
       <Route path='/' element={<Main/>}/>
-      <Route path='roadmap' element={<Roadmap/>}/>
+      <Route path='roadmaps/:id' element={<RoadmapPage/>}/>
       <Route path='quiz' element={<QuizPage/>}>
         <Route path='theme' element={account.roadmaps.length >= MAX_ROADMAPS_COUNT ? <Navigate to='/quiz/warning'/> : <QuizTheme/>}/>
         <Route path='questions' element={<Quiz/>}/>

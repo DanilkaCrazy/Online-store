@@ -38,7 +38,10 @@ const defaultAccountValue = {
   removeOrder: (order: Order) => {},
   addReview: (reviewId: string) => {},
   removeReview: (reviewId: string) => {},
-  updateOrder: (updatedOrder: Order) => {}
+  updateOrder: (updatedOrder: Order) => {},
+  hasRoadmap: (roadmapId: string) => false,
+  addRoadmap: (roadmapId: string) => {},
+  removeRoadmap: (roadmapId: string) => {}
 };
 
 const AccountContext = createContext(defaultAccountValue);
@@ -102,6 +105,20 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     updateAccount({reviews: account.reviews.filter((r) => r !== reviewId)});
   };
 
+  const hasRoadmap = (roadmapId: string) => account.roadmaps.includes(roadmapId);
+
+  const addRoadmap = (roadmapId: string) => {
+    if(!hasRoadmap(roadmapId)) {
+      updateAccount({roadmaps: account.roadmaps.concat(roadmapId)});
+    }
+  };
+
+  const removeRoadmap = (roadmapId: string) => {
+    if(hasRoadmap(roadmapId)) {
+      updateAccount({roadmaps: account.roadmaps.filter((id) => id !== roadmapId)});
+    }
+  };
+
   return (
     <AccountContext.Provider value={{
       account, 
@@ -114,7 +131,10 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       removeOrder,
       updateOrder,
       addReview,
-      removeReview}}>
+      removeReview,
+      hasRoadmap,
+      addRoadmap,
+      removeRoadmap}}>
         {children}
     </AccountContext.Provider>
   );
