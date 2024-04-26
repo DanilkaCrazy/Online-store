@@ -9,7 +9,14 @@ import { useBooks } from '../hooks/BooksProvider';
 
 const Basket: React.FC<{}> = () => {
   const {account, cleanBasket, addOrder} = useAccount();
-  const {books} = useBooks();
+  const {books, loading} = useBooks();
+
+  if(loading) {
+    <div className='basket-page'>
+      <h2>Загрузка...</h2>
+    </div>
+  }
+
   const foundBooks = books.filter((book) => account.booksInBasket.some((id) => id === book.id));
 
   if(!foundBooks.length) {
@@ -31,7 +38,7 @@ const Basket: React.FC<{}> = () => {
     date: new Date()
   };
 
-  const generateOrder = (booksId: string[], price: number) => {
+  const generateOrder = (booksId: number[], price: number) => {
     order.booksId = booksId;
     order.price = price;
     order.date = new Date();

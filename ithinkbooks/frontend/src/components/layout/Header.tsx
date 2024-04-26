@@ -21,7 +21,7 @@ const Catalog: React.FC<{themes: Theme[]}> = ({themes}) => (
   <Dropdown className='dropdown-header'>
     <Dropdown.Toggle>Каталог</Dropdown.Toggle>
     <Dropdown.Menu className='dropdown-menu-header'>
-      {themes.map((theme, i) => <Dropdown.Item as={Button} key={i}><Link to={`/${theme.title}`}>{theme.shortName}</Link></Dropdown.Item>)}
+      {themes.map((theme, i) => <Dropdown.Item as={Button} key={i}><Link to={`/themes/${theme.title}`}>{theme.shortName}</Link></Dropdown.Item>)}
     </Dropdown.Menu>
   </Dropdown>
 );
@@ -40,7 +40,7 @@ const Search: React.FC<{}> = () => {
 
   const findBooks = (bookTitle: string) => {
     setSearchWord(bookTitle);
-    setTimeout(() => setFoundBooks(mockBooks.filter((book) => book.title.toLowerCase().includes(bookTitle))), SEARCH_INTERVAL);
+    setTimeout(() => setFoundBooks(mockBooks.filter((book) => book.name.toLowerCase().includes(bookTitle))), SEARCH_INTERVAL);
   };
 
   return (

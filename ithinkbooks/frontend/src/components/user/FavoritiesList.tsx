@@ -5,7 +5,14 @@ import { useBooks } from '../hooks/BooksProvider';
 
 const FavoritiesList: React.FC<{}> = () => {
   const {account} = useAccount();
-  const {books} = useBooks();
+  const {books, loading} = useBooks();
+
+  if(loading) {
+    <div className='favorities-page'>
+      <h2>Загрузка...</h2>
+    </div>
+  }
+
   const foundBooks = books.filter((book) => account.favoriteBooks.some((id) => id === book.id));
 
   if(!foundBooks.length) {

@@ -23,7 +23,13 @@ const OrderForm: React.FC<{}> = () => {
   const {account, cleanBasket, removeOrder, updateOrder} = useAccount();
 
   const [order, setOrder] = useState<Order | undefined>(account.orders.find((o) => o.id === id));
-  const {books} = useBooks();
+  const {books, loading} = useBooks();
+
+  if(loading) {
+    <div className='page'>
+      <h2>Загрузка...</h2>
+    </div>
+  }
 
   if(!order) {
     return <h2>Ваш заказ пуст. Возможно, произошла ошибка &#40;</h2>

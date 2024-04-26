@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { TextField, TextareaField } from '../ui/FormFields';
-import Review from '../Review';
+import Review, { emptyReview } from '../Review';
 import { ChangingStar } from './Star';
 import { useAccount } from '../hooks/AccountProvider';
 import { useBooks } from '../hooks/BooksProvider';
+import { randomInteger } from '../mock/mock';
 
 const ReviewForm: React.FC<{ 
-  bookId: string
-  emptyReview: Review 
+  bookId: number,
   setFormOpened: React.Dispatch<React.SetStateAction<boolean>>
-}> = ({bookId, emptyReview, setFormOpened}) => {
-  const {addReview} = useAccount();
+}> = ({bookId, setFormOpened}) => {
+  const {account, addReview} = useAccount();
   const {addBookReview} = useBooks();
-  const [newReview, setNewReview] = useState<Review>(emptyReview);
+  const [newReview, setNewReview] = useState<Review>({...emptyReview, user: account, id: randomInteger(100, 99999), product: bookId});
 
-  const onRatingChange = ((rating: number) => {
-    setNewReview({...newReview, rating});
+  const onRatingChange = ((star: number) => {
+    setNewReview({...newReview, star});
   });
 
   const onFormSubmit = () => {
     addReview(newReview.id);
-    addBookReview(bookId, newReview);
+    addBookReview(newReview);
     setFormOpened(false);
   };
 
@@ -30,7 +30,7 @@ const ReviewForm: React.FC<{
   };
 
   return (
-    <form className='review-from review-block'>
+    <div className='review-from review-block'>
       <TextField
         fieldHeader='Тема'
         type='text'
@@ -47,15 +47,15 @@ const ReviewForm: React.FC<{
       <div className='rating-field'>
         <h3>Оценка</h3>
         <ChangingStar
-          rating={newReview.rating}
+          rating={newReview.star}
           onChange={onRatingChange}/>
       </div>
 
       <div className='buttons-group'>
-          <button className='main-button' onClick={onFormSubmit}>Опубликовать</button>
-          <button className='secondary-button' onClick={onFormCancel}>Отменить</button>
-        </div>
-    </form>
+        <button className='main-button' onClick={onFormSubmit}>Опубликовать</button>
+        <button className='secondary-button' onClick={onFormCancel}>Отменить</button>
+      </div>
+    </div>
   );
 };
 

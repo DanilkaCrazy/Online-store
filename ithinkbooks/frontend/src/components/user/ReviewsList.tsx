@@ -5,7 +5,7 @@ import { useAccount } from '../hooks/AccountProvider';
 
 const ReviewsList: React.FC<{}> = () => {
   const {account} = useAccount();
-  const foundReviews = reviews.filter((review) => account.reviews.some((bookId) => bookId === review.bookId));
+  const foundReviews = reviews.filter((review) => account.reviews.some((bookId) => bookId === review.product));
 
   if(!foundReviews.length) {
     return (

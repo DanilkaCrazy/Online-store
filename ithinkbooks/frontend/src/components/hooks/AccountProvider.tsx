@@ -1,13 +1,13 @@
-import React, { ReactNode, createContext, useContext, useState } from 'react';
+import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { personalAccount } from '../mock/mock';
 import User from '../User';
 import Order from '../Order';
-import { nanoid } from 'nanoid';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
+import axios from 'axios';
 
 const emptyAccount: User = {
-  id: nanoid(),
+  id: -1,
   login: '',
   password: '',
   name: '',
@@ -29,19 +29,23 @@ const emptyAccount: User = {
 
 const defaultAccountValue = {
   account: emptyAccount,
+  loading: false,
   updateAccount: (update: object) => {},
-  putInBasket: (bookId: string) => {},
-  removeFromBasket: (bookId: string) => {},
+  putInBasket: (bookId: number) => {},
+  removeFromBasket: (bookId: number) => {},
   cleanBasket: () => {},
-  markAsFavotite: (bookId: string) => {},
+  markAsFavotite: (bookId: number) => {},
   addOrder: (order: Order) => {},
   removeOrder: (order: Order) => {},
-  addReview: (reviewId: string) => {},
-  removeReview: (reviewId: string) => {},
+  addReview: (reviewId: number) => {},
+  removeReview: (reviewId: number) => {},
   updateOrder: (updatedOrder: Order) => {},
   hasRoadmap: (roadmapId: string) => false,
   addRoadmap: (roadmapId: string) => {},
-  removeRoadmap: (roadmapId: string) => {}
+  removeRoadmap: (roadmapId: string) => {},
+  logIn: (user: User) => {},
+  logOut: (user: User) => {},
+  signUp: (user: User) => {},
 };
 
 const AccountContext = createContext(defaultAccountValue);
@@ -50,6 +54,9 @@ const useAccount = () => useContext(AccountContext);
 
 const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [account, setAccount] = useState<User>(personalAccount);
+  const [newAccount, setNewAccount] = useState<User>(emptyAccount);
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   const updateAccount = (update: object) => {
     const updatedAccount: User = {
@@ -59,13 +66,13 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setAccount(updatedAccount);
   };
 
-  const putInBasket = (bookId: string) => {
+  const putInBasket = (bookId: number) => {
     updateAccount({
       booksInBasket: account.booksInBasket.concat(bookId)
     });
   };
 
-  const removeFromBasket = (bookId: string) => {
+  const removeFromBasket = (bookId: number) => {
     updateAccount({
       booksInBasket: account.booksInBasket.filter((id) => id !== bookId)
     });
@@ -77,7 +84,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     });
   };
 
-  const markAsFavotite = (bookId: string) => {
+  const markAsFavotite = (bookId: number) => {
     const bookIndex = account.favoriteBooks.indexOf(bookId);
 
     updateAccount({
@@ -97,11 +104,11 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     account.orders = account.orders.map((order) => order.id === updatedOrder.id ? updatedOrder : order);
   };
 
-  const addReview = (reviewId: string) => {
+  const addReview = (reviewId: number) => {
     updateAccount({reviews: account.reviews.concat(reviewId)});
   };
 
-  const removeReview = (reviewId: string) => {
+  const removeReview = (reviewId: number) => {
     updateAccount({reviews: account.reviews.filter((r) => r !== reviewId)});
   };
 
@@ -119,9 +126,59 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   };
 
+  const logIn = (user: User) => {
+    updateAccount(user);
+  };
+
+  const logOut = () => {
+    updateAccount(emptyAccount);
+  }
+
+  const signUp = (newUser: User) => {
+    setNewAccount(newUser);
+  };
+
+  /*const postLogin = useCallback(() => {
+    axios
+      .post('http://127.0.0.1:8000/users/login', account)
+      .then((resp) => resp.data)
+      .then(() => setLoading(false));
+  }, [account]);
+
+  const postLogout = useCallback(() => {
+    axios
+      .post('http://127.0.0.1:8000/users/logout', account)
+      .then((resp) => console.log(resp.data))
+      .then(() => setLoading(false));
+  }, [account]);
+
+  const postSignUp = useCallback(() => {
+    axios
+      .post('http://127.0.0.1:8000/users/register',newAccount)
+      .then((resp) => console.log(resp.data))
+      .then(() => setLoading(false));
+  }, [newAccount]);
+
+  useEffect(() => {
+    setLoading(true);
+    if(account.id < 0) {
+      postLogout();
+    } else {
+      postLogin();
+    }
+  }, [postLogin, postLogout, account]);
+
+  useEffect(() => {
+    if(newAccount.id >= 0) {
+      setLoading(true);
+      postSignUp();
+    }
+  }, [postSignUp, newAccount]);*/
+
   return (
     <AccountContext.Provider value={{
       account, 
+      loading,
       updateAccount, 
       putInBasket, 
       removeFromBasket, 
@@ -134,7 +191,10 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       removeReview,
       hasRoadmap,
       addRoadmap,
-      removeRoadmap}}>
+      removeRoadmap,
+      logIn,
+      logOut,
+      signUp}}>
         {children}
     </AccountContext.Provider>
   );

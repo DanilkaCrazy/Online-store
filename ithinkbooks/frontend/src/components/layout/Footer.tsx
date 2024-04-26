@@ -36,7 +36,7 @@ const Catalog: React.FC<{themes: Array<Theme>}> = ({themes}) => (
   <div className='footer-part'>
     <h3>Каталог:</h3>
     <ul className='footer-nav'>
-      {themes.map((theme, i) => <li key={i}><Link to={`/${theme.title}`}>{theme.name}</Link></li>)}
+      {themes.map((theme, i) => <li key={i}><Link to={`/themes/${theme.title}`}>{theme.name}</Link></li>)}
     </ul>
   </div>
 );

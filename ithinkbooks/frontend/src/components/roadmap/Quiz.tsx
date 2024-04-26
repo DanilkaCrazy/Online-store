@@ -51,7 +51,7 @@ const QuestionBlock: React.FC<{ question: Question }> = ({question}) => {
             Ответить
         </button>
         <Link 
-          to='/roadmap'
+          to='/roadmaps/1'
           onClick={finishQuiz}
           className='secondary-button'
           hidden={!isEveryQuestionCompleted()}>

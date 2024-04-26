@@ -59,7 +59,7 @@ const RootLayout: React.FC<{}> = () => {
       <Route path='editor' element={<EditFrom/>}/>
       <Route path='log-in' element={<LogInForm/>}/>
       <Route path='sign-up' element={<SignUpForm/>}/>
-      <Route path=':theme' element={<ThemeCollection/>}/>
+      <Route path='/themes/:theme' element={<ThemeCollection/>}/>
       <Route path='search/:bookTitle' element={<SearchedBooks/>}/>
       <Route path='*' element={<Stub pageName='Error'/>}/>
     </Routes>

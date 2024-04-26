@@ -16,7 +16,13 @@ const OrderBlock: React.FC<{date: Date, orderedBooks: Book[]}> = ({date, ordered
 
 const History: React.FC<{}> = () => {
   const {account} = useAccount();
-  const {books} = useBooks();
+  const {books, loading} = useBooks();
+
+  if(loading) {
+    <div className='histpry-page'>
+      <h2>Загрузка...</h2>
+    </div>
+  }
 
   if(!account.orders.length) {
     return (

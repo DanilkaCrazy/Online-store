@@ -110,7 +110,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, [theme, getQuiz]);
 
   useEffect(() => {
-    if(!isFinished) {
+    if(isFinished) {
       setLoading(true);
       postQuizResult();
     }

@@ -5,49 +5,45 @@
   "nodes": [
     {
       "id": 0,
-      "bookId": ["0"],
+      "bookId": [12],
       "next": 1
     },
     {
       "id": 1,
-      "bookId": ["1"],
-      "next": 2,
-      "prev": 0
+      "bookId": [1],
+      "next": 2
     },
     {
       "id": 2,
-      "bookId": ["2"],
-      "next": 3,
-      "prev": 1
+      "bookId": [2],
+      "next": 3
     },
     {
       "id": 3,
-      "bookId": ["3", "4"],
+      "bookId": [3, 4],
       "next": 4,
-      "prev": 2
+      "recommended": 3
     },
     {
       "id": 4,
-      "bookId": ["5"],
-      "next": 5,
-      "prev": 3
+      "bookId": [5],
+      "next": 5
     },
     {
       "id": 5,
-      "bookId": ["6", "7", "8"],
+      "bookId": [6, 7, 8],
       "next": 6, 
-      "prev": 4
+      "recommended": 7
     },
     {
       "id": 6,
-      "bookId": ["9", "10"],
+      "bookId": [9, 10],
       "next": 7,
-      "prev": 5
+      "recommended": 10
     },
     {
       "id": 7,
-      "bookId": ["11"],
-      "prev":6
+      "bookId": [11]
     }
   ]
 }
