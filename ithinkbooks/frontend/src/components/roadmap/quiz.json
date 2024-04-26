@@ -1,62 +1,71 @@
 {
-  "title": "Тест",
-  "theme": "Theme",
-  "questions": [
+  "id": 1,
+  "name": "Тест",
+  "quiz_theme": "Theme",
+  "question": [
     {
+      "id": 1,
       "text": "Оцените свой уровень знаний в этой области.",
-      "type": "level",
-      "answers": [
+      "question_type": "level",
+      "answer": [
         {
+          "id": 1,
           "text": "Новичок (только начинаю знакомство с этим);",
-          "value": 1
+          "answer_value": 1
         },
         {
+          "id": 2,
           "text": "Средний (есть базовые знания, но хотелось бы их расширить);",
-          "value": 2
+          "answer_value": 2
         },
         {
+          "id": 3,
           "text": "Профессионал (обладаю продвинутыми знаниями).",
-          "value": 3
+          "answer_value": 3
         }
       ]
     },
     {
+      "id": 2,
       "text": "Сколько Вы готовы заплатить за одну книгу?",
-      "type": "price",
-      "answers": [
+      "question_type": "price",
+      "answer": [
         {
+          "id": 1,
           "text": "До 500 руб;",
-          "bottomLine": 0,
-          "value": 500
+          "answer_value": 500
         },
         {
+          "id": 2,
           "text": "От 500 до 1000 руб;",
-          "bottomLine": 500,
-          "value": 1000
+          "answer_value": 1000
         },
         {
+          "id": 3,
           "text": "От 1000 до 2000 руб;",
-          "bottomLine": 1000,
-          "value": 2000
+          "answer_value": 2000
         },
         {
+          "id": 4,
           "text": "От 2000 руб.",
-          "bottomLine": 2000,
-          "value": 100000
+          "answer_value": 100000
         }
       ]
     },
     {
+      "id": 3,
       "text": "На каких языках Вы готовы читать?",
-      "type": "Language",
-      "answers": [
+      "question_type": "Language",
+      "answer": [
         {
+          "id": 1,
           "text": "Русский;",
-          "value": 1
+          "answer_value": 1
         },
         {
+          "id": 2,
           "text": "Английский.",
-          "value": 2
+          "answer_value": 2
         }
       ]
     }

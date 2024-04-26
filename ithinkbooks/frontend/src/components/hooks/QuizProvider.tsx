@@ -1,14 +1,16 @@
-import React, { ReactNode, createContext, useContext, useState } from 'react';
+import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import mockQuiz from '../roadmap/quiz.json';
 import { Answer, AnswerToQuestion, Quiz } from '../Quiz';
 import themes from '../mock/themes.json';
 import Theme from '../Theme';
+import axios from 'axios';
 
 const defaultResponce: AnswerToQuestion = {
-  question: mockQuiz.questions[0],
+  question: mockQuiz.question[0],
   answer: {
+    id: 0,
     text: '',
-    value: -1
+    answer_value: -1
   },
   isCompleted: false
 };
@@ -23,7 +25,8 @@ const defaultQuizContext = {
   isEveryQuestionCompleted: () => false,
   questionNumber: 0,
   moveToQuestion: (number: number) => {},
-  finishQuiz: () => {}
+  finishQuiz: () => {},
+  loading: false
 };
 
 const QuizContext = createContext(defaultQuizContext);
@@ -33,25 +36,32 @@ const useQuiz = () => useContext(QuizContext);
 const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [quiz, setQuiz] = useState<Quiz>(mockQuiz);
   const [theme, setTheme] = useState<string>(themes[0].title);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const updateTheme = (newTheme: Theme) => {
-    setTheme(newTheme.title);
-  };
-
-  const [responces, setResponces] = useState<AnswerToQuestion[]>(quiz.questions.map((question) => ({
-    question,
-    answer: {
-      text: '',
-      value: -1
-    },
-    isCompleted: false
-  })));
+  const [responces, setResponces] = useState<AnswerToQuestion[]>([]);
 
   const [responce, setResponce] = useState<AnswerToQuestion>(defaultResponce);
 
   const [questionNumber, setQuestionNumber] = useState<number>(0);
 
   const [isFinished, setFinish] = useState<boolean>(false);
+
+  const updateQuiz = (data: Quiz) => {
+    setQuiz(data);
+    setResponces(data.question.map((question) => ({
+      question,
+      answer: {
+        id: 0,
+        text: '',
+        answer_value: -1
+      },
+      isCompleted: false
+    })));
+  };
+
+  const updateTheme = (newTheme: Theme) => {
+    setTheme(newTheme.title);
+  };
 
   const sendResponce = () => {
     setResponces(responces.map((r, i) => i === questionNumber ? responce : r));
@@ -65,7 +75,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const isEveryQuestionCompleted = () => responces.every((responce) => responce.isCompleted);
 
   const moveToQuestion = (number: number) => {
-    const next = number >= quiz.questions.length ? number % quiz.questions.length : number;
+    const next = number >= quiz.question.length ? number % quiz.question.length : number;
     setQuestionNumber(next);
     setResponce(responces[next]);
   };
@@ -73,6 +83,38 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const finishQuiz = () => {
     setFinish(true);
   };
+
+  const getQuiz = useCallback(() => {
+    axios
+      .get('http://127.0.0.1:8000/quiz')
+      .then((resp) => resp.data[0])
+      .then(updateQuiz)
+      .then(() => setLoading(false));
+  }, []);
+
+  const postQuizResult = useCallback(() => {
+    const data = responces.map((r) => (
+      {question_id: r.question.id, answer_id: r.answer.id}
+    ));
+
+    axios
+      .post(`http://127.0.0.1:8000/quiz/quizes/${quiz.id}/vote`, data)
+      .then((resp) => console.log(resp.data))
+      .then(() => setLoading(false))
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    getQuiz();
+  }, [theme, getQuiz]);
+
+  useEffect(() => {
+    if(!isFinished) {
+      setLoading(true);
+      postQuizResult();
+    }
+  }, [isFinished, postQuizResult]);
 
   return (
     <QuizContext.Provider value={{
@@ -85,7 +127,8 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
       isEveryQuestionCompleted, 
       questionNumber, 
       moveToQuestion, 
-      finishQuiz}}>
+      finishQuiz,
+      loading}}>
         {children}
     </QuizContext.Provider>
   );

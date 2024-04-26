@@ -64,7 +64,7 @@ const SignUpForm: React.FC<{}> = () => {
   return (
     <div className='page'>
       <form className='separated-form' action='' method='post'>
-        <h2>Редактирование профиля</h2>
+        <h2>Регистрация</h2>
         
         <TextField 
           fieldHeader='Логин*'

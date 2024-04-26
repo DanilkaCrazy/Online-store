@@ -5,18 +5,18 @@ import { Link } from 'react-router-dom';
 
 const AnswerBlock: React.FC<{
   answer: Answer, 
-  questionType: string, 
+  questionId: number, 
   responce: AnswerToQuestion,
   updateResponce: (answer: Answer) => void
-}> = ({answer, questionType, responce, updateResponce}) => (
-  <label className={`answer ${responce.answer.value === answer.value ? 'highlight-label': ''}`} htmlFor={answer.value.toString()}>
+}> = ({answer, questionId, responce, updateResponce}) => (
+  <label className={`answer ${responce.answer.answer_value === answer.answer_value ? 'highlight-label': ''}`} htmlFor={answer.id.toString()}>
     <input 
       type='radio' 
-      value={answer.value} 
-      id={answer.value.toString()} 
-      name={questionType} 
+      value={answer.answer_value} 
+      id={answer.id.toString()} 
+      name={questionId.toString()} 
       onChange={() => updateResponce(answer)}
-      checked={responce.answer.value === answer.value}/>
+      checked={responce.answer.answer_value === answer.answer_value}/>
     <p className='main-p'>{answer.text}</p>
   </label>
 );
@@ -33,11 +33,11 @@ const QuestionBlock: React.FC<{ question: Question }> = ({question}) => {
       <h3>{questionNumber + 1}. {question.text}</h3>
 
       <div className='answers-block'>
-        {question.answers.map((answer, i) => (
+        {question.answer.map((answer, i) => (
           <AnswerBlock 
             key={i} 
             answer={answer} 
-            questionType={question.type}
+            questionId={question.id}
             responce={responce}
             updateResponce={updateResponce}/>
         ))}
@@ -63,11 +63,16 @@ const QuestionBlock: React.FC<{ question: Question }> = ({question}) => {
 };
 
 const Quiz: React.FC<{}> = () => {
-  const {questionNumber, moveToQuestion, responces, quiz} = useQuiz();
+  const {questionNumber, moveToQuestion, responces, quiz, loading} = useQuiz();
 
+  if(loading) {
+    return (
+      <h2>Загрузка...</h2>
+    );
+  }
   return (
     <>
-      <h2>{quiz.title}</h2>
+      <h2>{quiz.name}</h2>
 
       <div className='quiz-inner-page quiz'>
         <div className='quiz-pagination'>
@@ -81,7 +86,7 @@ const Quiz: React.FC<{}> = () => {
           ))}
         </div>
 
-        <QuestionBlock question={quiz.questions[questionNumber]}/>
+        <QuestionBlock question={quiz.question[questionNumber]}/>
       </div>
     </>
   );

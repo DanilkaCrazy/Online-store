@@ -1,20 +1,21 @@
 interface Answer {
+  id: number;
   text: string;
-  value: number;
-  bottomLine?: number;
-  topLine?: number;
+  answer_value: number;
 };
 
 interface Question {
+  id: number;
   text: string;
-  type: string;
-  answers: Answer[];
+  question_type: string;
+  answer: Answer[];
 };
 
 interface Quiz {
-  title: string;
-  theme: string;
-  questions: Question[];
+  id: number;
+  name: string;
+  quiz_theme: string;
+  question: Question[];
 };
 
 interface AnswerToQuestion {

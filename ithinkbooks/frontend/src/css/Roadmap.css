@@ -1,0 +1,88 @@
+.roadmap {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.roadmap-node {
+  display: flex;
+  flex-direction: column;
+}
+
+.roadmap-node-books {
+  display: flex;
+  flex-direction: row;
+  gap: 130px;
+  margin: 0 auto;
+}
+
+.node-branch {
+  margin: 0 auto;
+}
+
+.node-book { 
+  display: block;
+  min-width: 80px;
+  max-width: min-content;
+  min-height: 122px;
+  max-height: min-content; 
+  padding: 10px;
+  padding-top: 7px;
+  background-color: #262626;
+  color: #E5E5E5;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.active-node {
+  background-color: #3F97E7;
+  color: #FFFFFF;
+} 
+
+.node-book p {
+  margin-bottom: 5px;
+  line-height: 120%;
+}
+
+.node-book .cover-stumb {
+  width: 60px;
+  height: 84px;
+  background-color: #B3B3B3;
+  margin: 0 auto;
+}
+
+.book-panel {
+  position: sticky;
+  top: 0;
+  padding: 20px 80px;
+  width: 400px;
+  align-self: flex-start;
+  overflow-y: auto;
+}
+
+.book-panel-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.book-panel .cover-stumb {
+  width: 100%;
+  height: 324px;
+}
+
+.book-panel .chosen-book-description {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.roadmap-block {
+  width: 850px;
+  text-align: center;
+}
+
+.roadmap-block h1 {
+  margin-bottom: 30px;
+}
