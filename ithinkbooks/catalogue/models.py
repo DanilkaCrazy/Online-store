@@ -149,7 +149,7 @@ class Products(models.Model):
         cs_architecture = "Архитектура компьютерных систем (процессоры, память, ввод-вывод, сети и т.д.)"
         cs_math = "Математические методы в компьютерных науках (дискретная математика, линейная алгебра, теория вероятностей, статистика и т.д.)"
         cs_tools = "Инструменты разработки программного обеспечения (IDE, отладчики, профайлеры, системы управления версиями и т.д.)"
-    theme_category = ArrayField(models.CharField(max_length=300, choices=THEME_CATEGORIES), null=True, blank=True)
+    theme_category = ArrayField(models.CharField(max_length=300, choices=THEME_CATEGORIES, default=THEME_CATEGORIES.other), null=True, blank=True)
     class Meta:
         db_table = 'book'
         verbose_name = 'Книга'
