@@ -150,6 +150,22 @@ class Products(models.Model):
         cs_math = "Математические методы в компьютерных науках (дискретная математика, линейная алгебра, теория вероятностей, статистика и т.д.)"
         cs_tools = "Инструменты разработки программного обеспечения (IDE, отладчики, профайлеры, системы управления версиями и т.д.)"
     theme_category = ArrayField(models.CharField(max_length=300, choices=THEME_CATEGORIES, default=THEME_CATEGORIES.other), null=True, blank=True)
+    #Настоящий язык книги
+    class BookLanguage(models.TextChoices):
+        ENGLISH = "en", "English"
+        RUSSIAN = "ru", "Russian"
+        SPANISH = "es", "Spanish"
+        FRENCH = "fr", "French"
+        CHINESE = "zh", "Chinese"
+        GERMAN = "de", "German"
+        JAPANESE = "ja", "Japanese"
+    book_language = models.CharField(max_length=30, choices=BookLanguage, default=BookLanguage.ENGLISH, verbose_name='Язык книги')
+    #Форма книги - бумажная или электронная
+    class BookFormat(models.TextChoices):
+        PAPER = "paper", "Бумажная"
+        ONLINE = "online", "Электронная"
+    book_format = models.CharField(max_length=30, choices=BookFormat, default=BookFormat.ONLINE, verbose_name="Формат книги")
+
     class Meta:
         db_table = 'book'
         verbose_name = 'Книга'

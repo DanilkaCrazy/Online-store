@@ -62,7 +62,7 @@ class Result(models.Model):
     programmed_before = models.TextField(verbose_name='Программировал ранее') #Если нет, то понижаем уровень
     prog_lang = models.TextField(verbose_name='Язык программирования') #Фильтруем книги по языку программирования
     level_specific = models.TextField(verbose_name='Уровень(для категории)') #Фильтруем книги по уровную знания темы
-
+    user = models.ForeignKey(User, related_name='user_result', on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Тест')
     class Meta:
         db_table = 'result'
