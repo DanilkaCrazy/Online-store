@@ -49,4 +49,4 @@ class TestView(ListAPIView):
     serializer_class = ProductsSerializer
     def get_queryset(self):
         queryset = Products.objects.all()
-        return queryset.filter(description__search="API")
+        return queryset.filter(theme_category__contains=['office'])

@@ -94,7 +94,7 @@ class Products(models.Model):
         #Аналитика
         process_modeling = "Основы моделирования процессов"
         competitor_analysis = "Анализ конкурентов"
-        office_apps = "Офисные приложения (MS Office)"
+        office_apps = "office", "Офисные приложения (MS Office)"
         metrics_work = "Работа с метриками"
         #Фронтенд
         frontend_framework = "Знание фреймворков и библиотек (React, Angular, Vue.js и т.д.)"

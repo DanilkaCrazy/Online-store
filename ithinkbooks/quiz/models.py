@@ -24,6 +24,8 @@ class Question(models.Model):
         PRICE = 'Price Question' #Вопрос о цене
         PROG_BEFORE = 'Programmed Before' #Программировали ли ранее
         PROG_LANG = 'Programming Language Question'
+        LEVEL_SPECIFIC = 'Specific Level Question' #Вопрос об уровне знаний в определенной теме
+        THEME_FOR_OTHER = 'Theme for Other' #Выбор темы для других
         OTHER = 'Other'
     question_type = models.TextField(choices=QuestionType, default=QuestionType.THEME, verbose_name='Тип вопроса')
     class Meta:
