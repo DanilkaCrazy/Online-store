@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from quiz.models import Quiz, Question, Answer
+from quiz.models import Quiz, Question, Answer, Result
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,3 +24,8 @@ class VoteSerializer(serializers.Serializer):
 class FullVoteSerializer(serializers.Serializer):
     question_id = serializers.IntegerField()
     answer_id = serializers.IntegerField()
+
+class ResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Result
+        fields = '__all__'

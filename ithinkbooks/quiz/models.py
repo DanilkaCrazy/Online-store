@@ -1,4 +1,6 @@
 from django.db import models
+from users.models import User
+from catalogue.models import Products
 
 # Create your models here.
 #Тест для роадмапа
@@ -23,7 +25,8 @@ class Question(models.Model):
         LANGUAGE = 'Language Question' #Вопрос о языке (настоящем языке)
         PRICE = 'Price Question' #Вопрос о цене
         PROG_BEFORE = 'Programmed Before' #Программировали ли ранее
-        PROG_LANG = 'Programming Language Question'
+        PROG_LANG = 'Programming Language Question' #Язык программирования
+        THEME_SPECIFIC = 'Theme Specific Question' # Что конкретно интересно в данной теме
         LEVEL_SPECIFIC = 'Specific Level Question' #Вопрос об уровне знаний в определенной теме
         THEME_FOR_OTHER = 'Theme for Other' #Выбор темы для других
         OTHER = 'Other'
@@ -57,9 +60,21 @@ class Result(models.Model):
     language = models.TextField(verbose_name='Язык') #Фильтруем по языку - выдаем книги только на этом языке
     price = models.TextField(verbose_name='Цена') #Фильтруем по цене выдаём книги только ниже заданной цены
     programmed_before = models.TextField(verbose_name='Программировал ранее') #Если нет, то понижаем уровень
-    #question = models.ForeignKey(Question, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Результат')
-    quiz = models.ForeignKey(Quiz, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Результат')
+    prog_lang = models.TextField(verbose_name='Язык программирования') #Фильтруем книги по языку программирования
+    level_specific = models.TextField(verbose_name='Уровень(для категории)') #Фильтруем книги по уровную знания темы
+    user = models.ForeignKey(User, related_name='user_result', on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Тест')
     class Meta:
         db_table = 'result'
         verbose_name = 'Результат'
         verbose_name_plural = 'Результаты'
+
+class Roadmap(models.Model):
+    title = models.TextField(max_length=150, verbose_name='Заголовок')
+    user = models.ForeignKey(User, related_name='roadmap_user', on_delete=models.CASCADE)
+    result = models.ForeignKey(Result, related_name='result', on_delete=models.CASCADE) #Результат теста, на котором основан роадмап
+
+class RoadmapNode(models.Model):
+    roadmap = models.ForeignKey(Roadmap, related_name='roadmap', on_delete=models.DO_NOTHING) #Роадмап
+    product = models.ManyToManyField(Products, related_name='roadmap_book') #Книга (Может быть несколько)
+    node_level = models.IntegerField(verbose_name='Уровень узла') #Определяет позицию в роадмапе
