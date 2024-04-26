@@ -48,10 +48,11 @@ class SendResultsFull(APIView):
     def post(self, request, quiz_id):
         quiz = get_object_or_404(Quiz, pk=quiz_id)
         serializer = FullVoteSerializer(data=request.data, many=True)
-        theme_val = 0
-        level_val = 0
-        lang_val = 0
-        price_val = 0
+        theme_val = ''
+        level_val = ''
+        lang_val = ''
+        price_val = ''
+        prog_bef_val = ''
         if serializer.is_valid():
             for quiz_dict in serializer.validated_data:
                 question = get_object_or_404(Question, pk = quiz_dict['question_id'], quiz=quiz)
@@ -64,6 +65,9 @@ class SendResultsFull(APIView):
                     lang_val = answer.answer_value
                 if (question.question_type == "Price Question"):
                     price_val = answer.answer_value
-            result = Result.objects.create(quiz=quiz, theme=theme_val, level = level_val, language=lang_val, price=price_val)
+                if (question.question_type == "Programmed Before"):
+                    prog_bef_val = answer.answer_value
+            #if prog_before ==1, answer_value-=1
+            result = Result.objects.create(quiz=quiz, theme=theme_val, level = level_val, language=lang_val, price=price_val, programmed_before=prog_bef_val)
             return Response("Success")
         return Response(serializer.errors)

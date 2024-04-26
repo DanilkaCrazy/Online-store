@@ -44,3 +44,9 @@ class CreateReviewView(APIView):
 def front(request):
     context = {}
     return render(request, "index.html", context)
+
+class TestView(ListAPIView):
+    serializer_class = ProductsSerializer
+    def get_queryset(self):
+        queryset = Products.objects.all()
+        return queryset.filter(theme_category__contains=['office'])
