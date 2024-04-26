@@ -92,10 +92,10 @@ class Products(models.Model):
         optimization = "Знание принципов оптимизации (оптимизация кода, оптимизация моделей, оптимизация алгоритмов и т.д.)"
         other = "Другое"
         #Аналитика
-        process_modeling = "Основы моделирования процессов"
-        competitor_analysis = "Анализ конкурентов"
+        process_modeling = "process", "Основы моделирования процессов"
+        competitor_analysis = "competitor", "Анализ конкурентов"
         office_apps = "office", "Офисные приложения (MS Office)"
-        metrics_work = "Работа с метриками"
+        metrics_work = "metrics", "Работа с метриками"
         #Фронтенд
         frontend_framework = "Знание фреймворков и библиотек (React, Angular, Vue.js и т.д.)"
         frontend_automatization = "Знание инстурментов автоматизации (Webpack, Gulp, Grunt и т.д.)"
