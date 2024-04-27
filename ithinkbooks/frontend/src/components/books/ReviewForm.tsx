@@ -19,7 +19,7 @@ const ReviewForm: React.FC<{
   });
 
   const onFormSubmit = () => {
-    addReview(newReview.id);
+    addReview(newReview);
     addBookReview(newReview);
     setFormOpened(false);
   };

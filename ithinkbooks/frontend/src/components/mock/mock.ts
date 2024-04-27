@@ -98,7 +98,7 @@ const generateReviews = (count: number) => Array.from({length: count}, (_v, i) =
  
 const reviews = generateReviews(COUNT);
 
-const mockBooks = Array.from({length: COUNT}, (_v, i) => {
+/*const mockBooks = Array.from({length: COUNT}, (_v, i) => {
     const book: Book = {
         author: faker.person.fullName(),
         book_bindings: randomInteger(0, 1) === 1 ? PaperFormat.HARD : PaperFormat.SOFT,
@@ -132,7 +132,7 @@ const getRandomBooks = () => {
 
 const ownedBooks = getRandomBooks();
 const booksInBasket = getRandomBooks();
-const favoriteBooks = getRandomBooks();
+const favoriteBooks = getRandomBooks();*/
 
 const personalAccount: User = {
     id: 1,
@@ -145,7 +145,7 @@ const personalAccount: User = {
     branches: randomThemes(randomInteger(0, 3), themes),
     reviewsAmount: randomInteger(0, 10),
     city: cities[randomInteger(0, cities.length - 1)],
-    reviews: reviews.filter((review) => ownedBooks.some((book) => book === review.product)).map((r) => r.product),
+    reviews: [],
     orders: [],
     booksInBasket: [],
     favoriteBooks: [],
@@ -155,4 +155,4 @@ const personalAccount: User = {
     roadmaps: []
 }
 
-export {mockBooks, users, personalAccount, booksInBasket, favoriteBooks, reviews, BookFormat, FileType, randomInteger, randomFormats, BookFormats};
+export { users, personalAccount, reviews, BookFormat, FileType, randomInteger, randomFormats, BookFormats};

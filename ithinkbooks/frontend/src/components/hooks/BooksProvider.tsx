@@ -1,5 +1,5 @@
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { mockBooks, randomInteger } from '../mock/mock';
+import { randomInteger } from '../mock/mock';
 import Book from '../Book';
 import Review, { emptyReview } from '../Review';
 import axios from 'axios';
@@ -22,7 +22,7 @@ const BooksContext = createContext(defaultBooksContextValue);
 const useBooks = () => useContext(BooksContext);
 
 const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
-  const [books, setBooks] = useState<Book[]>(mockBooks);
+  const [books, setBooks] = useState<Book[]>([]);
   const [filteredBooks, setFilteredBooks] = useState<Book[]>(books);
   const [loading, setLoading] = useState<boolean>(true);
   const [newReview, setReview] = useState<Review>(emptyReview);

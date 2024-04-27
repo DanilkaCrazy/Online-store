@@ -5,7 +5,7 @@ import themes from '../mock/themes.json';
 import {NodeBook, Branch} from './RoadmapNode';
 import { useBooks } from '../hooks/BooksProvider';
 import '../../css/Roadmap.css';
-import Book from '../Book';
+import Book, { emptyBook } from '../Book';
 import BookPanel from '../books/BookPanel';
 import { Roadmap } from '../Roadmap';
 import { useParams } from 'react-router-dom';
@@ -16,10 +16,14 @@ const RoadmapPage: React.FC<{}> = () => {
   const {books, loading} = useBooks();
   const [roadmap, setRoadmap] = useState<Roadmap>(mockRoadmap);
 
+  const [chosenBook, setChosenBook] = useState<Book>(emptyBook);
+
   if(loading) {
-    <div className='page'>
-      <h2>Загрузка...</h2>
-    </div>
+    return (
+      <div className='page'>
+        <h2>Загрузка...</h2>
+      </div>
+    );
   }
 
   const booksId = roadmap.nodes.map((node) => node.bookId).reduce((prevArray, nextArray) => prevArray.concat(nextArray), []);
@@ -28,7 +32,9 @@ const RoadmapPage: React.FC<{}> = () => {
 
   const theme = themes.find((t) => t.title === roadmap.theme);
 
-  const [chosenBook, setChosenBook] = useState<Book>(booksByNodes[0][0]);
+  if(chosenBook.id < 0) {
+    setChosenBook(booksByNodes[0][0]);
+  }
 
   if(roadmap.id !== id) {
     return <div className='page'>

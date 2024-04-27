@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useBooks } from '../hooks/BooksProvider';
 import { useParams } from 'react-router-dom';
 import FiltersMenu from './FiltersMenu';
@@ -11,7 +11,8 @@ const SearchedBooks: React.FC<{}> = () => {
   const {books, loading} = useBooks();
   const {bookTitle} = useParams();
 
-  const [foundBooks, setFoundBooks] = useState<Book[]>(SortBooks[SortTypes.POPULARITY](books.filter((book) => book.name.toLowerCase().includes(!bookTitle ? '' : bookTitle))));
+  const searchBooks = useMemo(() => books.filter((book) => book.name.toLowerCase().includes(!bookTitle ? '' : bookTitle)), [books, bookTitle]);
+  const [foundBooks, setFoundBooks] = useState<Book[]>(SortBooks[SortTypes.POPULARITY](searchBooks));
 
   if(loading) {
     <div className='page'>
@@ -28,7 +29,7 @@ const SearchedBooks: React.FC<{}> = () => {
   }
 
   const applyFilters = (filter: Filter) => {
-    setFoundBooks(filterBooks(books, filter));
+    setFoundBooks(filterBooks(searchBooks, filter));
   };
 
   return (

@@ -11,7 +11,6 @@ import { useLightMode } from '../hooks/LightModeProvider';
 import { Button, Dropdown } from 'react-bootstrap';
 import Theme from '../Theme';
 import themes from '../mock/themes.json';
-import { mockBooks } from '../mock/mock';
 import Book from '../Book';
 import SmallBookComponent from '../books/SmallBookComponent';
 import axios from 'axios';

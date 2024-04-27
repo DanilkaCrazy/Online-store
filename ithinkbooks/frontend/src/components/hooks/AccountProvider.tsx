@@ -5,6 +5,7 @@ import Order from '../Order';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import axios from 'axios';
+import Review, { emptyReview } from '../Review';
 
 const emptyAccount: User = {
   id: -1,
@@ -30,6 +31,7 @@ const emptyAccount: User = {
 const defaultAccountValue = {
   account: emptyAccount,
   loading: false,
+  reviews: [emptyReview],
   updateAccount: (update: object) => {},
   putInBasket: (bookId: number) => {},
   removeFromBasket: (bookId: number) => {},
@@ -37,7 +39,7 @@ const defaultAccountValue = {
   markAsFavotite: (bookId: number) => {},
   addOrder: (order: Order) => {},
   removeOrder: (order: Order) => {},
-  addReview: (reviewId: number) => {},
+  addReview: (review: Review) => {},
   removeReview: (reviewId: number) => {},
   updateOrder: (updatedOrder: Order) => {},
   hasRoadmap: (roadmapId: string) => false,
@@ -57,6 +59,8 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
 
   const [loading, setLoading] = useState<boolean>(false);
+
+  const [reviews, setReviews] = useState<Review[]>([]); //mock reviews
 
   const updateAccount = (update: object) => {
     const updatedAccount: User = {
@@ -104,8 +108,9 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     account.orders = account.orders.map((order) => order.id === updatedOrder.id ? updatedOrder : order);
   };
 
-  const addReview = (reviewId: number) => {
-    updateAccount({reviews: account.reviews.concat(reviewId)});
+  const addReview = (review: Review) => {
+    updateAccount({reviews: account.reviews.concat(review.id)});
+    setReviews(reviews.concat(review));
   };
 
   const removeReview = (reviewId: number) => {
@@ -179,6 +184,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     <AccountContext.Provider value={{
       account, 
       loading,
+      reviews,
       updateAccount, 
       putInBasket, 
       removeFromBasket, 

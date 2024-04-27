@@ -23,3 +23,29 @@ export default interface Book {
   book_language: string;
   book_format: string;
 };
+
+const emptyBook: Book = {
+  author: '',
+  book_bindings: '',
+  book_theme: '',
+  description: '',
+  id: -1,
+  isbn: '',
+  level: 0,
+  name: '',
+  number_of_pages: 0,
+  price: 0,
+  programming_language: '',
+  publisher: '',
+  quantity: 0,
+  review: [],
+  slug: '',
+  theme_category: '',
+  translator_choice: '',
+  year: 0,
+  month: 0,
+  book_language: '',
+  book_format: ''
+};
+
+export {emptyBook};
