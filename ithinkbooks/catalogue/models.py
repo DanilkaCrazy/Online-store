@@ -60,8 +60,10 @@ class Products(models.Model):
         ASSEMBLER = "Assembler"
         BASH_POWERSHELL = "Bash/Powershell"
         OTHER = "OT","Other"
-    book_theme = models.CharField(max_length=30, choices=BookTheme, default = BookTheme.OTHER, verbose_name='Темы')
+    book_theme = models.CharField(max_length=30, choices=BookTheme, default = BookTheme.OTHER, verbose_name='Тема')
+    book_themes = ArrayField( models.CharField(max_length=30, choices=BookTheme, default = BookTheme.OTHER), null=True, blank=True , verbose_name='Темы')
     programming_language = models.CharField(max_length=30, choices = ProgrammingLanguage, default = ProgrammingLanguage.OTHER, verbose_name='Язык программирования')
+    programming_languages = ArrayField(models.CharField(max_length=30, choices = ProgrammingLanguage, default = ProgrammingLanguage.OTHER), null=True, blank=True, verbose_name='Языки программирования')
     #Типы переплета
     class BookBinding(models.TextChoices):
         SOFTCOVER = "Мягкий переплет"
@@ -100,7 +102,7 @@ class Products(models.Model):
         frontend_framework = "Знание фреймворков и библиотек (React, Angular, Vue.js и т.д.)"
         frontend_automatization = "Знание инстурментов автоматизации (Webpack, Gulp, Grunt и т.д.)"
         frontend_testing = "Владение инструментами тестирования (Jest, Mocha, Jasmine и т.д.)"
-        frontend_design = "Знание принципов верстки и дизайна"
+        frontend_design = "fr_des", "Знание принципов верстки и дизайна"
         frontend_optimization = "Принципы оптимизации производительности"
         frontend_graphic = "Навыки работы с графическими редакторами (Photoshop, Illustrator, Figma и т.д.)"
         #Бэкенд
@@ -191,7 +193,7 @@ class Review(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='review')
     title = models.TextField(max_length=100, verbose_name = 'Заголовок отзыва')
     text = models.TextField( max_length=5000, verbose_name = 'Текст отзыва')
-    star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name='Звезда', related_name='review')
+    star = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name='Звезда рейтинга')
     #Реализовать Upvote/Downvote
     class Meta:
         db_table = 'review'
