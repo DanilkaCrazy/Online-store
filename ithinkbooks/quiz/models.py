@@ -61,7 +61,9 @@ class Result(models.Model):
     price = models.TextField(verbose_name='Цена') #Фильтруем по цене выдаём книги только ниже заданной цены
     programmed_before = models.TextField(verbose_name='Программировал ранее') #Если нет, то понижаем уровень
     prog_lang = models.TextField(verbose_name='Язык программирования') #Фильтруем книги по языку программирования
+    theme_specific = models.TextField(verbose_name='Подтема') #Что конкретно в теме интересует
     level_specific = models.TextField(verbose_name='Уровень(для категории)') #Фильтруем книги по уровную знания темы
+    theme_other = models.TextField(verbose_name='Тема(другое)', null=True, blank=True) #Тема для другого
     user = models.ForeignKey(User, related_name='user_result', on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Тест')
     class Meta:
@@ -75,6 +77,8 @@ class Roadmap(models.Model):
     result = models.ForeignKey(Result, related_name='result', on_delete=models.CASCADE) #Результат теста, на котором основан роадмап
 
 class RoadmapNode(models.Model):
-    roadmap = models.ForeignKey(Roadmap, related_name='roadmap', on_delete=models.DO_NOTHING) #Роадмап
+    roadmap = models.ForeignKey(Roadmap, related_name='node', on_delete=models.DO_NOTHING) #Роадмап
     product = models.ManyToManyField(Products, related_name='roadmap_book') #Книга (Может быть несколько)
     node_level = models.IntegerField(verbose_name='Уровень узла') #Определяет позицию в роадмапе
+    class Meta:
+        ordering = ['node_level', 'pk']
