@@ -1,0 +1,62 @@
+[
+  {
+    "title": "frontend",
+    "name": "Frontend",
+    "shortName": "Frontend"
+  },
+  {
+    "title": "backend",
+    "name": "Backend",
+    "shortName": "Backend"
+  },
+  {
+    "title": "network",
+    "name": "Компьютерные сети",
+    "shortName": "Комп. сети"
+  },
+  {
+    "title": "gamedev",
+    "name": "Gamedev",
+    "shortName": "Gamedev"
+  },
+  {
+    "title": "design",
+    "name": "Дизайн и компьютерная графика",
+    "shortName": "Дизайн"
+  },
+  {
+    "title": "analytics",
+    "name": "Аналитика",
+    "shortName": "Аналитика"
+  },
+  {
+    "title": "ai",
+    "name": "Искусственный интеллект",
+    "shortName": "ИИ"
+  },
+  {
+    "title": "data",
+    "name": "Data Science",
+    "shortName": "Data Sceince"
+  },
+  {
+    "title": "software",
+    "name": "Разработка ПО",
+    "shortName": "Разработка ПО"
+  },
+  {
+    "title": "devops",
+    "name": "DevOps",
+    "shortName": "DevOps"
+  },
+  {
+    "title": "qa",
+    "name": "Тестирование",
+    "shortName": "Тестирование"
+  },
+  {
+    "title": "cs",
+    "name": "Computer Science",
+    "shortName": "Computer Science"
+  }
+]
