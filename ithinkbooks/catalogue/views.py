@@ -33,6 +33,18 @@ class CategoryView(ListAPIView):
             return queryset.filter(book_theme=book_theme)
     
 
+#Просмотр книг по новым категории
+class CategoriesView(APIView):
+    def get(request, self, book_theme):
+        products = Products.objects.all()
+        #serializer_class = ProductsSerializer(products, many=True)
+        if book_theme == "all":
+            return Products.objects.all()
+        else:
+            products_filter = products.filter(book_themes__contains = [book_theme])
+            serializer_class = ProductsSerializer(products_filter, many=True)
+            return Response(serializer_class.data)
+
 #Создание отзыва
 class CreateReviewView(APIView):
     def post(self, request):

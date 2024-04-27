@@ -193,7 +193,7 @@ class Review(models.Model):
     product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='review')
     title = models.TextField(max_length=100, verbose_name = 'Заголовок отзыва')
     text = models.TextField( max_length=5000, verbose_name = 'Текст отзыва')
-    star = models.ForeignKey(RatingStar, on_delete=models.CASCADE, verbose_name='Звезда', related_name='review')
+    star = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name='Звезда рейтинга')
     #Реализовать Upvote/Downvote
     class Meta:
         db_table = 'review'

@@ -1,5 +1,5 @@
 from django.urls import path
-from catalogue.views import ProductsListView, ProductView, CreateReviewView, CategoryView, front, TestView
+from catalogue.views import ProductsListView, ProductView, CreateReviewView, CategoryView, front, TestView, CategoriesView
 
 app_name = 'catalogue'
 urlpatterns = [
@@ -10,5 +10,6 @@ urlpatterns = [
     #path('<slug:category_slug>/', CategoryView.as_view(), name='Category'),
     path('review/', CreateReviewView.as_view(), name='Review'),
     path("", front, name='Front'),
-    path("test", TestView.as_view(), name='Test')
+    path("test", TestView.as_view(), name='Test'),
+    path("categories/<book_theme>", CategoriesView.as_view())
 ]
