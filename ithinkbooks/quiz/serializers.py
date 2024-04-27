@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from quiz.models import Quiz, Question, Answer, Result
+from quiz.models import Quiz, Question, Answer, Result, Roadmap, RoadmapNode
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,3 +29,14 @@ class ResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = Result
         fields = '__all__'
+
+class RoadmapNodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RoadmapNode
+        fields = '__all__'
+
+class RoadmapSerializer(serializers.ModelSerializer):
+    node = RoadmapNodeSerializer(many=True)
+    class Meta:
+        model = Roadmap
+        fields = ['title', 'user', 'node']

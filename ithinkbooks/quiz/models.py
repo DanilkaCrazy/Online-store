@@ -76,6 +76,6 @@ class Roadmap(models.Model):
     result = models.ForeignKey(Result, related_name='result', on_delete=models.CASCADE) #Результат теста, на котором основан роадмап
 
 class RoadmapNode(models.Model):
-    roadmap = models.ForeignKey(Roadmap, related_name='roadmap', on_delete=models.DO_NOTHING) #Роадмап
+    roadmap = models.ForeignKey(Roadmap, related_name='node', on_delete=models.DO_NOTHING) #Роадмап
     product = models.ManyToManyField(Products, related_name='roadmap_book') #Книга (Может быть несколько)
     node_level = models.IntegerField(verbose_name='Уровень узла') #Определяет позицию в роадмапе
