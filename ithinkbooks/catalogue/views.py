@@ -39,7 +39,8 @@ class CreateReviewView(APIView):
         review = CreateReviewSerializer(data=request.data)
         if review.is_valid():
             review.save()
-        return Response(status=201) 
+            return Response(status=201)
+        return Response("Review not valid") 
 
 def front(request):
     context = {}

@@ -5,6 +5,8 @@ from quiz.models import Quiz, Question, Answer, Result
 from rest_framework import permissions
 from rest_framework.response import Response
 from quiz.serializers import QuizSerializer, QuestionSerializer, VoteSerializer, FullVoteSerializer, ResultSerializer
+from catalogue.models import Products
+from catalogue.serializers import ProductsSerializer
 # Create your views here.
 #Просмотр всех книг
 class QuizListView(ListAPIView):
@@ -47,8 +49,15 @@ class SendResultsFull(APIView):
                     price_val = answer.answer_value
                 if (question.question_type == "Programmed Before"):
                     prog_bef_val = answer.answer_value
+                if (question.question_type == "Programming Language Question"):
+                    prog_lang = answer.answer_value
+                if (question.question_type == "Theme Specific Question"):
+                     theme_specific = answer.answer_value
+                if (question.question_type == "Specific Level Question"):
+                    level_specific = answer.answer_value
             #if prog_before ==1, answer_value-=1
-            result = Result.objects.create(quiz=quiz, theme=theme_val, level = level_val, language=lang_val, price=price_val, programmed_before=prog_bef_val, user=request.user)
+            result = Result.objects.create(quiz=quiz, theme=theme_val, level = level_val, language=lang_val, price=price_val, 
+            programmed_before=prog_bef_val, user=request.user, prog_lang=prog_lang, theme_specific=theme_specific, level_specific=level_specific)
             return Response("Success")
         return Response(serializer.errors)
 
@@ -57,4 +66,11 @@ class ViewResults(APIView):
     def get(self, request):
         results = Result.objects.all()
         serializer = ResultSerializer(results, many=True)
+        return Response(serializer.data)
+
+class ViewProductsBasedOnResult(APIView):
+    def get(self, request, result_id):
+        results = get_object_or_404(Result, pk=result_id)
+        products = Products.objects.filter(book_theme=results.theme)
+        serializer = ProductsSerializer(products, many=True)
         return Response(serializer.data)

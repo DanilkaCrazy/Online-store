@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django_better_admin_arrayfield.models.fields import ArrayField
 
 # Create your models here.
 class User(AbstractUser):
@@ -22,6 +23,7 @@ class User(AbstractUser):
         COMPSCI = "CS","Computer Science" #Разбить на несколько
         OTHER = "OT","Other"
     user_direction = models.CharField(max_length=20, choices=UserDirection, default=UserDirection.OTHER, verbose_name='Направление')
+    user_directions = ArrayField(models.CharField(max_length=20, choices=UserDirection, default=UserDirection.OTHER), null=True, blank=True  ,verbose_name='Направление')
     class UserStatus(models.TextChoices):
         STUDENT = "student"
         TRAINEE = "trainee"

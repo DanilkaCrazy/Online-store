@@ -61,6 +61,7 @@ class Result(models.Model):
     price = models.TextField(verbose_name='Цена') #Фильтруем по цене выдаём книги только ниже заданной цены
     programmed_before = models.TextField(verbose_name='Программировал ранее') #Если нет, то понижаем уровень
     prog_lang = models.TextField(verbose_name='Язык программирования') #Фильтруем книги по языку программирования
+    theme_specific = models.TextField(verbose_name='Подтема') #Что конкретно в теме интересует
     level_specific = models.TextField(verbose_name='Уровень(для категории)') #Фильтруем книги по уровную знания темы
     user = models.ForeignKey(User, related_name='user_result', on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, related_name='result', on_delete=models.DO_NOTHING, verbose_name='Тест')
