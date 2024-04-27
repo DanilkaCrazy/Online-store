@@ -8,7 +8,7 @@ import themes from '../mock/themes.json';
 import Filter, { filterBooks } from '../Filter';
 
 const ThemeCollection: React.FC<{}> = () => {
-  const {books, loading, updateBooks} = useBooks();
+  const {books, filteredBooks, loading, updateBooks} = useBooks();
   const {theme} = useParams();
 
   const foundTheme = themes.find((t) => t.title === theme);
@@ -39,7 +39,7 @@ const ThemeCollection: React.FC<{}> = () => {
       <div>
         <h1>{foundTheme.name}</h1>
         <div className='books-collection'>
-          {books.map((book, i) => <BookComponent key={i} book={book}/>)}
+          {filteredBooks.map((book, i) => <BookComponent key={i} book={book}/>)}
         </div>
       </div>
     </div>

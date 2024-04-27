@@ -12,7 +12,7 @@ import months from '../mock/months.json';
 import ReviewForm from './ReviewForm';
 import User from '../User';
 import { useBooks } from '../hooks/BooksProvider';
-import { BookFormat, FileType } from '../mock/mock';
+import { BookFormat, BookFormats, FileType } from '../mock/mock';
 import themes from '../mock/themes.json';
 
 const BookPromo: React.FC<{
@@ -30,14 +30,15 @@ const BookPromo: React.FC<{
     <h2>{book.price} ₽</h2>
 
     <div className='bool-page-formats'>
-      {book.formats.map((format, i) => (
+      {/*book.formats.map((format, i) => (
         <button
           key={i}
           className={format === chosenFormat ? 'main-button' : 'secondary-button'}
           onClick={() => setFormat(format)}>
             {format}
         </button>
-      ))}
+      ))*/
+        <button className='main-button'>{BookFormats.find((format) => format.key === book.book_format)?.name}</button>}
     </div>
 
     <button className='main-button' onClick={() => putInBasket(book.id)}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
@@ -144,7 +145,7 @@ const BookPage: React.FC<{}> = () => {
 
   const [isReviewFormOpened, setReviewFormOpen] = useState<boolean>(false);
   const {account, putInBasket, markAsFavotite} = useAccount();
-  const [chosenFormat, setFormat] = useState<string>(!book ? 'Электронный' : book.formats[0]);
+  const [chosenFormat, setFormat] = useState<string>(!book ? 'online' : book.book_format);
 
   if(loading) {
     return (

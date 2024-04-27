@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Logo from '../../images/header/Logo.svg';
 import SearchIcon from '../../images/header/Search.svg';
 import DarkMode from '../../images/header/Dark.svg';
@@ -14,6 +14,7 @@ import themes from '../mock/themes.json';
 import { mockBooks } from '../mock/mock';
 import Book from '../Book';
 import SmallBookComponent from '../books/SmallBookComponent';
+import axios from 'axios';
 
 const SEARCH_INTERVAL = 750;
 
@@ -31,26 +32,43 @@ const Search: React.FC<{}> = () => {
   const [seacrhWord, setSearchWord] = useState<string>('');
   const navigate = useNavigate();
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const redirectToResult = () => {
     if(seacrhWord) {
       navigate(`/search/${seacrhWord}`);
       setSearchWord('');
+      if(inputRef.current?.value !== undefined) {
+        inputRef.current.value = '';
+      }
     }
   };
 
-  const findBooks = (bookTitle: string) => {
-    setSearchWord(bookTitle);
-    setTimeout(() => setFoundBooks(mockBooks.filter((book) => book.name.toLowerCase().includes(bookTitle))), SEARCH_INTERVAL);
+  const findBooks = () => {
+    setTimeout(() => setSearchWord(!inputRef.current?.value ? '' : inputRef.current.value.toLowerCase()), SEARCH_INTERVAL);
   };
+
+  const getFoundBooks = useCallback(() => {
+    axios
+      .get('http://127.0.0.1:8000/products')
+      .then((resp) => resp.data)
+      .then((data) => setFoundBooks(data.filter((book: Book) => book.name.toLowerCase().includes(seacrhWord))))
+  }, [seacrhWord]); 
+
+  useEffect(() => {
+    if(seacrhWord !== '') {
+      getFoundBooks();
+    }
+  }, [seacrhWord, getFoundBooks]);
 
   return (
     <div className='search-panel'>
       <div className='search'>
         <input 
+          ref={inputRef}
           type='text' 
-          value={seacrhWord} 
           placeholder='Поиск' 
-          onChange={(evt) => findBooks(evt.target.value.toLowerCase())}
+          onChange={findBooks}
           onKeyDown={(evt) => {
             if(evt.key === 'Enter') {
               redirectToResult();

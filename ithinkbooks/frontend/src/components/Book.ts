@@ -20,6 +20,6 @@ export default interface Book {
   translator_choice: string;
   year: number;
   month: number;
-  language: string;
-  formats: string[];
+  book_language: string;
+  book_format: string;
 };

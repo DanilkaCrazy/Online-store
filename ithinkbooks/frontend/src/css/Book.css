@@ -97,6 +97,10 @@
   margin-bottom: 0;
 }
 
+.ordered-book-info { 
+  width: 100%;
+}
+
 .ordered-book-info p {
   margin: 0;
   padding: 0;

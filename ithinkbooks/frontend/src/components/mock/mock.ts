@@ -20,6 +20,17 @@ const BookFormat = {
     ELECTRONIC: "Электронный"
 }
 
+const BookFormats = [
+    {
+        key: 'online',
+        name: 'Электронный'
+    },
+    {
+        key: 'paper',
+        name: 'Печатный'
+    }
+];
+
 const FileType = {
     PDF: 'PDF',
     EPUB: 'EBUP',
@@ -108,8 +119,8 @@ const mockBooks = Array.from({length: COUNT}, (_v, i) => {
         translator_choice: faker.person.firstName(),
         year: randomInteger(1990, 2025),
         month: randomInteger(1, 12),
-        language: languages[randomInteger(0, languages.length - 1)].language,
-        formats: randomFormats()
+        book_language: languages[randomInteger(0, languages.length - 1)].code,
+        book_format: BookFormats[randomInteger(0, 1)].key
     }
     return book;
 });
@@ -144,4 +155,4 @@ const personalAccount: User = {
     roadmaps: []
 }
 
-export {mockBooks, users, personalAccount, booksInBasket, favoriteBooks, reviews, BookFormat, FileType, randomInteger, randomFormats};
+export {mockBooks, users, personalAccount, booksInBasket, favoriteBooks, reviews, BookFormat, FileType, randomInteger, randomFormats, BookFormats};

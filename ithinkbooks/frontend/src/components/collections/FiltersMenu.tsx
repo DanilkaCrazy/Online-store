@@ -6,7 +6,7 @@ import { MAX_PRICE, MIN_PRICE } from '../utils';
 import ReactSlider from 'react-slider';
 import { MAX_YEAR, MIN_YEAR } from '../date-utils';
 import languages from '../mock/languages.json';
-import { BookFormat } from '../mock/mock';
+import { BookFormats } from '../mock/mock';
 
 const SliderField: React.FC<{
   fieldHeader: string,
@@ -50,17 +50,18 @@ const FiltersListBlock: React.FC<{
   fieldHeader: string,
   type: string,
   options: string[],
+  optionsNames: string[],
   listTitle: string,
   updateFilters: (newValue: string) => void
-}> = ({fieldHeader, type, options, listTitle, updateFilters}) => (
+}> = ({fieldHeader, type, options, optionsNames, listTitle, updateFilters}) => (
   <div className='filter-field'>
     <h3 className='normal-h3'>{fieldHeader}</h3>
 
     <div className='filters-options'>
       {options.map((option, i) => (
-        <label key={i} className='list-option' htmlFor={option.toLowerCase()}>
-          <input type={type} name={listTitle} id={option.toLowerCase()} onChange={() => updateFilters(option)}/>
-          <p className='main-p'>{option}</p>
+        <label key={i} className='list-option' htmlFor={option}>
+          <input type={type} name={listTitle} id={option} onChange={() => updateFilters(option)}/>
+          <p className='main-p'>{optionsNames[i]}</p>
         </label>
       ))}
     </div>
@@ -174,14 +175,16 @@ const FiltersMenu: React.FC<{
         <FiltersListBlock
           fieldHeader='Языки:'
           type='checkbox'
-          options={languages.map((language) => language.language)}
+          options={languages.map((language) => language.code)}
+          optionsNames={languages.map((language) => language.language)}
           listTitle='languages'
           updateFilters={changeLanguages}/>
 
         <FiltersListBlock
           fieldHeader='Форматы:'
           type='checkbox'
-          options={Object.values(BookFormat)}
+          options={BookFormats.map((format) => format.key)}
+          optionsNames={BookFormats.map((format) => format.name)}
           listTitle='formats'
           updateFilters={changeBookFormats}/>
 
