@@ -1,12 +1,15 @@
 import React from 'react';
 import Book from '../Book';
 import { RoadmapNode } from '../Roadmap';
+import NodeStar from '../../images/pages/NodeStar.svg';
+import NodeStarDark from '../../images/pages/NodeStarDark.svg';
 
 const NODES_V_GAP = 50;
 const NODES_H_GAP = 130;
 const NODE_WIDTH = 80;
 const BRANCH_COLOR = '#262626';
 const BRANCH_STROKE_WIDTH = 4;
+const MAX_TITLE_LENGTH = 50;
 
 const BRANCHES_GAP = NODES_H_GAP + NODE_WIDTH;
 
@@ -47,11 +50,13 @@ const Branch: React.FC<{upperNode: RoadmapNode, downNode: RoadmapNode}> = ({uppe
 
 const NodeBook:React.FC<{
   book: Book, 
-  chosenBookId: string,
+  chosenBookId: number,
+  isRecommended: boolean,
   setChosenBook: React.Dispatch<React.SetStateAction<Book>>
-}> = ({book, chosenBookId ,setChosenBook}) => (
+}> = ({book, isRecommended, chosenBookId ,setChosenBook}) => (
   <button onClick={() => setChosenBook(book)} className={`node-book ${book.id === chosenBookId ? 'active-node' : ''}`}>
-    <p className='secondary-p'>{book.title}</p>
+    <img hidden={!isRecommended} className='node-star' src={book.id === chosenBookId ? NodeStarDark : NodeStar} alt='Рекомендовано'/>
+    <p className='secondary-p'>{book.name.length > MAX_TITLE_LENGTH ? `${book.name.slice(0, MAX_TITLE_LENGTH)}...` : book.name}</p>
     <div className='cover-stumb'></div>
   </button>
 );

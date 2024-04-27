@@ -1,8 +1,8 @@
 interface RoadmapNode {
   id: number;
-  bookId: string[];
+  bookId: number[];
   next?: number;
-  prev?: number;
+  recommended?: number;
 }
 
 interface Roadmap {

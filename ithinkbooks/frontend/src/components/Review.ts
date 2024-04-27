@@ -3,14 +3,25 @@ import User from './User';
 const getVoteValue = (review: Review) => review.positiveVotes - review.negativeVotes;
 
 export default interface Review {
-  id: string;
-  rating: number;
+  id: number;
+  star: number;
   title: string;
   text: string;
-  user: User;
+  user: User | undefined;
   positiveVotes: number;
   negativeVotes: number;
-  bookId: string;
+  product: number;
 };
 
-export {getVoteValue};
+const emptyReview: Review = {
+  id: -1,
+  star: 0,
+  title: '',
+  text: '',
+  user: undefined,
+  positiveVotes: 0,
+  negativeVotes: 0,
+  product: -1
+};
+
+export {getVoteValue, emptyReview};

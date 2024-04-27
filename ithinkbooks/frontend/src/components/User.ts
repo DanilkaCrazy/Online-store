@@ -6,7 +6,7 @@ import Theme from './Theme';
 const MAX_ROADMAPS_COUNT = 3;
 
 export default interface User {
-  id: string;
+  id: number;
   login: string;
   password: string;
   name: string;
@@ -16,10 +16,10 @@ export default interface User {
   branches: Theme[];
   reviewsAmount: number;
   city: City;
-  reviews: string[];
+  reviews: number[];
   orders: Order[];
-  booksInBasket: string[];
-  favoriteBooks: string[];
+  booksInBasket: number[];
+  favoriteBooks: number[];
   email: string;
   phoneNumber: string;
   birthdate: Date;

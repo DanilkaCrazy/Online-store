@@ -29,22 +29,30 @@ const ReviewedBook: React.FC<{book: Book | undefined}> = ({book}) => {
   return (
     <div className='review-book'>
       <div className='cover-stumb'></div>
-      <p className='secondary-p'>{book.title}</p>
+      <p className='secondary-p'>{book.name}</p>
     </div>
   );
 };
 
 const ReviewComponent: React.FC<{review: Review, isInBookPage?: boolean}> = ({review, isInBookPage = false}) => {
-  const {books} = useBooks();
+  const {books, loading} = useBooks();
   const votingResult = review.positiveVotes - review.negativeVotes;
+
+  if(loading) {
+    return (
+      <div className='review-block'>
+        <h2>Загрузка...</h2>
+      </div>
+    );
+  }
 
   return (
     <div className='review-block'>
-      {isInBookPage 
+      {isInBookPage && review.user
       ? <Reviewer user={review.user}/>
-      : <ReviewedBook book={books.find((book) => book.id === review.bookId)}/>}
+      : <ReviewedBook book={books.find((book) => book.id === review.product)}/>}
       <div className='review'>
-        <Star rating={review.rating}/>
+        <Star rating={review.star}/>
         <p className='price-p'>{review.title}</p>
         <p className='main-p'>{review.text}</p>
         <div className='review-voting'>

@@ -13,8 +13,14 @@ import { useParams } from 'react-router-dom';
 const RoadmapPage: React.FC<{}> = () => {
   const {id} = useParams();
 
-  const {books} = useBooks();
+  const {books, loading} = useBooks();
   const [roadmap, setRoadmap] = useState<Roadmap>(mockRoadmap);
+
+  if(loading) {
+    <div className='page'>
+      <h2>Загрузка...</h2>
+    </div>
+  }
 
   const booksId = roadmap.nodes.map((node) => node.bookId).reduce((prevArray, nextArray) => prevArray.concat(nextArray), []);
   const roadmapBooks = books.filter((book) => booksId.includes(book.id));
@@ -38,7 +44,14 @@ const RoadmapPage: React.FC<{}> = () => {
         <div className='roadmap'>
           {roadmap.nodes.map((node, i) => <div key={i} className='roadmap-node'>
               <div className='roadmap-node-books'>
-                {booksByNodes[i].map((book, j) => <NodeBook key={j} book={book} chosenBookId={chosenBook.id} setChosenBook={setChosenBook}/>)}
+                {booksByNodes[i].map((book, j) => (
+                  <NodeBook 
+                    key={j} 
+                    book={book} 
+                    isRecommended={node.recommended !== undefined && book.id === node.recommended} 
+                    chosenBookId={chosenBook.id} 
+                    setChosenBook={setChosenBook}/>
+                ))}
               </div>
               {i === roadmap.nodes.length - 1 ? <></> : <Branch upperNode={node} downNode={roadmap.nodes[i + 1]}/>}
             </div>)}

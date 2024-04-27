@@ -6,7 +6,8 @@ import { declineNounAfterNumber } from '../utils';
 
 const AnotherUser: React.FC<{}> = () => {
   const {id} = useParams();
-  const user = users.find((u) => u.id === id);
+  const intId = !id ? -1 : parseInt(id);
+  const user = users.find((u) => u.id === intId);
 
   if(!user) {
     return <Stub pageName='Error'/>

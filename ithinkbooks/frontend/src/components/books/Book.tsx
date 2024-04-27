@@ -13,7 +13,7 @@ const BookComponent: React.FC<{
   isInBasket?: boolean, 
   isFavorite?: boolean
 }> = ({book, isInBasket = false, isFavorite = false}) => {
-  const rating = getAverageNumber(book.reviews.map((review) => review.rating));
+  const rating = getAverageNumber(book.review.map((review) => review.star));
   const {putInBasket, removeFromBasket, markAsFavotite} = useAccount();
 
   return (
@@ -27,10 +27,10 @@ const BookComponent: React.FC<{
         </div>
       </Link>
       <div className='book-title'>
-        <Link className='main-p' to={`/book/${book.id}`}>{book.title}</Link>
+        <Link className='main-p' to={`/book/${book.id}`}>{book.name}</Link>
         <p className='secondary-p secondary-color'>{book.author}</p>
       </div>
-      {book.reviews.length
+      {book.review.length
       ? <Star rating={rating}/>
       : <p className='main-p'>Нет отзывов</p>}
       <Price price={book.price}/>

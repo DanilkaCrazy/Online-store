@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import {useParams} from 'react-router-dom';
 import Stub from '../layout/Stub';
 import { getAverageNumber, declineNounAfterNumber } from '../utils';
 import ReviewComponent from './Review';
@@ -11,38 +10,35 @@ import { SortTypes, SortTranslations, SortReviews } from '../sort';
 import { useAccount } from '../hooks/AccountProvider';
 import months from '../mock/months.json';
 import ReviewForm from './ReviewForm';
-import Review from '../Review';
-import { nanoid } from 'nanoid';
 import User from '../User';
 import { useBooks } from '../hooks/BooksProvider';
+import { BookFormat, BookFormats, FileType } from '../mock/mock';
+import themes from '../mock/themes.json';
 
 const BookPromo: React.FC<{
   book: Book, 
   canBuy: boolean, 
-  isPaperback: boolean, 
-  setIsPaperback: React.Dispatch<React.SetStateAction<boolean>>,
+  chosenFormat: string,
+  setFormat: React.Dispatch<React.SetStateAction<string>>,
   isFavorite: boolean,
-  putInBasket: (bookId: string) => void,
-  markAsFavotite: (bookId: string) => void
-}> = ({book, canBuy, isPaperback, setIsPaperback, isFavorite, putInBasket, markAsFavotite}) => (
+  putInBasket: (bookId: number) => void,
+  markAsFavotite: (bookId: number) => void
+}> = ({book, canBuy, chosenFormat, setFormat, isFavorite, putInBasket, markAsFavotite}) => (
   <div className='book-page-promo'>
     <div className='cover-stumb'> 
     </div>
     <h2>{book.price} ₽</h2>
 
     <div className='bool-page-formats'>
-      <button 
-        className={isPaperback ? 'main-button' : 'secondary-button'} 
-        hidden={!book.canBePaperback} 
-        onClick={() => setIsPaperback(true)}>
-          Печатный
-      </button>
-
-      <button 
-        className={isPaperback && book.canBePaperback ? 'secondary-button' : 'main-button'} 
-        onClick={() => setIsPaperback(false)}>
-          Электронный
-      </button>
+      {/*book.formats.map((format, i) => (
+        <button
+          key={i}
+          className={format === chosenFormat ? 'main-button' : 'secondary-button'}
+          onClick={() => setFormat(format)}>
+            {format}
+        </button>
+      ))*/
+        <button className='main-button'>{BookFormats.find((format) => format.key === book.book_format)?.name}</button>}
     </div>
 
     <button className='main-button' onClick={() => putInBasket(book.id)}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
@@ -51,28 +47,28 @@ const BookPromo: React.FC<{
       onClick={() => markAsFavotite(book.id)}>
         {isFavorite ? 'В избранном' : 'Добавить в избранное'}
     </button>
-    {canBuy 
-      ? <p className='main-p' hidden={!isPaperback}>Доставка до <b>{book.deliveryDays}</b> дней</p>
-      : <p className='main-p'>{months[book.month - 1].nominative} {book.year}</p>}
+    <p className='main-p' hidden={canBuy}>{months[book.month - 1].nominative} {book.year}</p>
   </div>
 );
 
-const BookCharacteristics: React.FC<{book: Book, isPaperback: boolean}> = ({book, isPaperback}) => (
-  <div className='book-page-block'>
-    <h2>Характеристики</h2>
-    <ul className='book-characterisctics'>
-      <li className='main-p'><b>Издательство:</b> {book.publisher}</li>
-      <li className='main-p'><b>Год:</b> {book.year}</li>
-      <li className='main-p'><b>Количество страниц:</b> {book.pagesAmount}</li>
-      <li className='main-p'><b>ISBN:</b> {book.isbn}</li>
-      <li className='main-p' hidden={!book.canBePaperback || !isPaperback}><b>Тип обложки:</b> {book.paperFormat}</li>
-      <li className='main-p' hidden={isPaperback}><b>Форматы книги:</b> {book.fileTypes.join(', ')}</li>
-      <li className='main-p'><b>Переводчик:</b> {book.translator}</li>
-      <li className='main-p'><b>Темы:</b> {book.themes.map((theme) => theme.name).join(', ')}</li>
-    </ul>
-  </div>
-);
-
+const BookCharacteristics: React.FC<{book: Book, chosenFormat: string}> = ({book, chosenFormat}) => {
+  const theme = themes.find((t) => t.title === book.book_theme)?.name;
+  return (
+    <div className='book-page-block'>
+      <h2>Характеристики</h2>
+      <ul className='book-characterisctics'>
+        <li className='main-p'><b>Издательство:</b> {book.publisher}</li>
+        <li className='main-p'><b>Год:</b> {book.year}</li>
+        <li className='main-p'><b>Количество страниц:</b> {book.number_of_pages}</li>
+        <li className='main-p'><b>ISBN:</b> {book.isbn}</li>
+        <li className='main-p' hidden={chosenFormat !== BookFormat.PAPERBACK}><b>Тип обложки:</b> {book.book_bindings}</li>
+        <li className='main-p' hidden={chosenFormat !== BookFormat.ELECTRONIC}><b>Форматы книги:</b> {Object.values(FileType).join(', ')}</li>
+        <li className='main-p'><b>Переводчик:</b> {book.translator_choice}</li>
+        <li className='main-p' hidden={!theme}><b>Тема:</b> {theme}</li>
+      </ul>
+    </div>
+  );
+}
 const BookReviewsBlock: React.FC<{
   book: Book, 
   rating: number, 
@@ -82,17 +78,6 @@ const BookReviewsBlock: React.FC<{
 }> = ({book, rating, isFormOpened, setFormOpen, account}) => {
   const [sortType, setSortType] = useState<string>(SortTypes.POPULARITY);
 
-  const emptyReview: Review = {
-    id: nanoid(),
-    rating: 0,
-    title: '',
-    text: '',
-    user: account,
-    positiveVotes: 0,
-    negativeVotes: 0,
-    bookId: book.id
-  };
-
   const onSortTypeSelect = (eventKey: string | null) => {
     if(!eventKey) {
       return;
@@ -101,7 +86,7 @@ const BookReviewsBlock: React.FC<{
     setSortType(eventKey);
   }
 
-  const sortedReviews = SortReviews[sortType](book.reviews);
+  const sortedReviews = SortReviews[sortType](book.review);
 
   return (
     <div className='book-page-block'>
@@ -146,7 +131,7 @@ const BookReviewsBlock: React.FC<{
           </div>
         }
         <div className='reviews'>
-          {isFormOpened ? <ReviewForm bookId={book.id} emptyReview={emptyReview} setFormOpened={setFormOpen}/> : <></>}
+          {isFormOpened ? <ReviewForm bookId={book.id} setFormOpened={setFormOpen}/> : <></>}
           {sortedReviews.map((review, i) => <ReviewComponent key={i} review={review} isInBookPage/>)}
         </div>
       </div>
@@ -155,41 +140,47 @@ const BookReviewsBlock: React.FC<{
 };
 
 const BookPage: React.FC<{}> = () => {
-  const {id} = useParams();
-  const {books} = useBooks();
-  const book = books.find((b) => b.id === id);
+  const {books, loading} = useBooks();
+  const book = books[0];
 
   const [isReviewFormOpened, setReviewFormOpen] = useState<boolean>(false);
   const {account, putInBasket, markAsFavotite} = useAccount();
-  const isFavorite = account.favoriteBooks.some((bookId) => bookId === id);
+  const [chosenFormat, setFormat] = useState<string>(!book ? 'online' : book.book_format);
 
-  const [isPaperback, setIsPaperback] = useState<boolean>(false);
-
+  if(loading) {
+    return (
+      <div className='page'>
+        <h2>Загрузка...</h2>
+      </div>
+    );
+  }
   if(!book) {
     return <Stub pageName='Error'/>
   }
   
+  const isFavorite = account.favoriteBooks.some((bookId) => bookId === book.id);
+
   const canBuy = isReleased(book.year, book.month);
-  const rating = getAverageNumber(book.reviews.map((review) => review.rating));
+  const rating = getAverageNumber(book.review.map((review) => review.star));
 
   return(
     <div className='divided-page'>
       <BookPromo 
         book={book} 
         canBuy={canBuy} 
-        isPaperback={isPaperback} 
-        setIsPaperback={setIsPaperback} 
+        chosenFormat={chosenFormat}
+        setFormat={setFormat}
         isFavorite={isFavorite} 
         putInBasket={putInBasket}
         markAsFavotite={markAsFavotite}/>
 
       <div className='page-right page'>
         <div className='book-page-title'>
-          <h1>{book.title}</h1>
+          <h1>{book.name}</h1>
           <h2 className='secondary-color'>{book.author}</h2>
         </div>
 
-        <BookCharacteristics book={book} isPaperback={isPaperback}/>
+        <BookCharacteristics book={book} chosenFormat={chosenFormat}/>
 
         <div className='book-page-block'>
           <h2>Описание</h2>

@@ -8,10 +8,16 @@ import Filter, { filterBooks } from '../Filter';
 import Book from '../Book';
 
 const SearchedBooks: React.FC<{}> = () => {
-  const {books} = useBooks();
+  const {books, loading} = useBooks();
   const {bookTitle} = useParams();
 
-  const [foundBooks, setFoundBooks] = useState<Book[]>(SortBooks[SortTypes.POPULARITY](books.filter((book) => book.title.toLowerCase().includes(!bookTitle ? '' : bookTitle))));
+  const [foundBooks, setFoundBooks] = useState<Book[]>(SortBooks[SortTypes.POPULARITY](books.filter((book) => book.name.toLowerCase().includes(!bookTitle ? '' : bookTitle))));
+
+  if(loading) {
+    <div className='page'>
+      <h2>Загрузка...</h2>
+    </div>
+  }
 
   if(!foundBooks) {
     return (
@@ -22,7 +28,7 @@ const SearchedBooks: React.FC<{}> = () => {
   }
 
   const applyFilters = (filter: Filter) => {
-    setFoundBooks(filterBooks(foundBooks, filter));
+    setFoundBooks(filterBooks(books, filter));
   };
 
   return (

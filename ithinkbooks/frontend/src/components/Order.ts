@@ -4,7 +4,7 @@ export default interface Order {
   id: string;
   city: City;
   address: string;
-  booksId: string[];
+  booksId: number[];
   price: number;
   date: Date;
 };

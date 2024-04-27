@@ -27,27 +27,27 @@ const SortTranslations = {
 }
 
 const SortBooks = {
-  [SortTypes.POPULARITY]: (array: Book[]) => [...array].sort((bookA, bookB) => bookB.reviews.length - bookA.reviews.length),
+  [SortTypes.POPULARITY]: (array: Book[]) => [...array].sort((bookA, bookB) => bookB.review.length - bookA.review.length),
   [SortTypes.ASCENDING_RATING]: (array: Book[]) => [...array].sort(
     (bookA, bookB) => (
-      getAverageNumber(bookA.reviews.map((review) => review.rating)) - getAverageNumber(bookB.reviews.map((review) => review.rating))
+      getAverageNumber(bookA.review.map((review) => review.star)) - getAverageNumber(bookB.review.map((review) => review.star))
     )),
   [SortTypes.DESCENDING_RATING]: (array: Book[]) => [...array].sort(
     (bookA, bookB) => (
-      getAverageNumber(bookB.reviews.map((review) => review.rating)) - getAverageNumber(bookA.reviews.map((review) => review.rating))
+      getAverageNumber(bookB.review.map((review) => review.star)) - getAverageNumber(bookA.review.map((review) => review.star))
     )),
   [SortTypes.ASCENDING_PRICE]: (array: Book[]) => [...array].sort((bookA, bookB) => bookA.price - bookB.price),
   [SortTypes.DESCENDING_PRICE]: (array: Book[]) => [...array].sort((bookA, bookB) => bookB.price - bookA.price),
-  [SortTypes.A_Z]: (array: Book[]) => [...array].sort((bookA, bookB) => bookA.title.localeCompare(bookB.title)),
-  [SortTypes.Z_A]: (array: Book[]) => [...array].sort((bookA, bookB) => bookB.title.localeCompare(bookA.title)),
+  [SortTypes.A_Z]: (array: Book[]) => [...array].sort((bookA, bookB) => bookA.name.localeCompare(bookB.name)),
+  [SortTypes.Z_A]: (array: Book[]) => [...array].sort((bookA, bookB) => bookB.name.localeCompare(bookA.name)),
   [SortTypes.ASCENDING_YEAR]: (array: Book[]) => [...array].sort((bookA, bookB) => bookA.year - bookB.year),
   [SortTypes.DESCENDING_YEAR]: (array: Book[]) => [...array].sort((bookA, bookB) => bookB.year - bookA.year)
 }
 
 const SortReviews = {
   [SortTypes.POPULARITY]: (array: Review[]) => [...array].sort((reviewA, reviewB) => getVoteValue(reviewB) - getVoteValue(reviewA)),
-  [SortTypes.ASCENDING_RATING]: (array: Review[]) => [...array].sort((reviewA, reviewB) => reviewA.rating - reviewB.rating),
-  [SortTypes.DESCENDING_RATING]: (array: Review[]) => [...array].sort((reviewA, reviewB) => reviewB.rating - reviewA.rating),
+  [SortTypes.ASCENDING_RATING]: (array: Review[]) => [...array].sort((reviewA, reviewB) => reviewA.star - reviewB.star),
+  [SortTypes.DESCENDING_RATING]: (array: Review[]) => [...array].sort((reviewA, reviewB) => reviewB.star - reviewA.star),
 };
 
 export {SortTypes, SortTranslations, SortBooks, SortReviews};
