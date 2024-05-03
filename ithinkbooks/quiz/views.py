@@ -37,6 +37,8 @@ class SendResultsFull(APIView):
         price_val = ''
         prog_bef_val = ''
         theme_other = ''
+        theme_specific = ''
+        level_specific = ''
         user = request.user
         if serializer.is_valid():
             for quiz_dict in serializer.validated_data:
