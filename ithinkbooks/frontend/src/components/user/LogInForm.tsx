@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField } from '../ui/FormFields';
 import LogInInfo from '../LogInInfo';
 import { Link } from 'react-router-dom';
-import Validation, {validationScheme} from '../Validation';
+import Validation, {fieldsValidation} from '../Validation';
 
 const LogInForm: React.FC<{}> = () => {
   const [logInInfo, setLogInInfo] = useState<LogInInfo>({
@@ -29,9 +29,9 @@ const LogInForm: React.FC<{}> = () => {
           type='text'
           placeholder='Введите логин'
           isValid={validation.login}
-          warning='Можно использовать только английский алфавит и цифры'
+          warning={fieldsValidation.login.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({...validation, login: !validationScheme.validate({login: evt.target.value}).error});
+            setValidation({...validation, login: fieldsValidation.login.isValid(evt.target.value)});
             setLogInInfo({...logInInfo, login: evt.target.value.trim()});
           }}/>
 
@@ -40,10 +40,10 @@ const LogInForm: React.FC<{}> = () => {
           type='text'
           placeholder='Введите пароль'
           isValid={validation.password}
-          warning='Можно использовать только английский алфавит, цифры и символы ~!@#$%^&*()_-+={[}]|:;<,>.?/'
+          warning={fieldsValidation.password.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             const password = evt.target.value.trim();
-            setValidation({...validation, password: !validationScheme.validate({password: evt.target.value}).error});
+            setValidation({...validation, password: fieldsValidation.password.isValid(evt.target.value)});
             setLogInInfo({...logInInfo, password});
           }}/>
 
@@ -52,13 +52,9 @@ const LogInForm: React.FC<{}> = () => {
           type='text'
           placeholder='Введите пароль'
           isValid={validation.repeatedPassword}
-          warning='Пароли не совпадают'
+          warning={fieldsValidation.repeatPassword.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({
-              ...validation, 
-              repeatedPassword: !validationScheme.validate({repeatPassword: evt.target.value.trim()}, {context: {password: logInInfo.password}}).error
-            });
-          }}/>
+            setValidation({...validation, repeatedPassword: fieldsValidation.repeatPassword.isValid(evt.target.value, logInInfo.password)});}}/>
         
         <Link 
           to='/account/basket' 

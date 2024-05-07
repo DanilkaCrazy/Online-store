@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import mockQuiz from '../roadmap/quiz.json';
 import { Answer, AnswerToQuestion, Quiz } from '../Quiz';
@@ -103,11 +104,6 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then(() => setLoading(false))
       .catch(console.error);
   }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    getQuiz();
-  }, [theme, getQuiz]);
 
   useEffect(() => {
     if(isFinished) {

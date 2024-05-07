@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
+import ImageFieldIcon from '../../images/pages/ImageFieldIcon.svg';
+import DefaultAvatar from '../../images/pages/DefaultAvatar.svg';
 
 const TextField: React.FC<{
   fieldHeader: string, 
@@ -38,6 +40,29 @@ const NumberField: React.FC<{
     <input onChange={onChange} type='number' defaultValue={defaultValue}/>
   </div>
 );
+
+const ImageField: React.FC<{
+  fieldHeader: string,
+  image: string,
+  onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void
+}> = ({fieldHeader, image, onChange}) => {
+  const [iconOpacity, setIconOpacity] = useState<number>();
+
+  return (
+    <div className='image-field' onMouseEnter={() => setIconOpacity(1)} onMouseLeave={() => setIconOpacity(!image ? 1 : 0)}>
+      <img className='field-avatar' src={!image ? DefaultAvatar : image} alt='Новый аватар'/>
+
+      <div className='image-field-icon' style={{opacity: iconOpacity}}>
+        <img src={ImageFieldIcon} alt={fieldHeader}/>
+        <p className='main-p secondary-color'>{fieldHeader}</p>
+      </div>
+      
+      <label className='image-field-input' htmlFor='avatar'>
+        <input type='file' id='avatar' onChange={onChange}/>
+      </label>
+    </div>
+  );
+};
 
 const DropdownField: React.FC<{
   fieldHeader: string,
@@ -103,4 +128,4 @@ const TextareaField: React.FC<{
   </div>
 );
 
-export {TextField, DateField, NumberField, DropdownField, MultiselectDropdown, TextareaField};
+export {TextField, DateField, NumberField, ImageField, DropdownField, MultiselectDropdown, TextareaField};

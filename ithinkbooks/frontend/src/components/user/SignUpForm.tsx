@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { emptyAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
-import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
+import {DateField, DropdownField, ImageField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
 import User from '../User';
-import Validation, {validationScheme} from '../Validation';
+import Validation, {fieldsValidation} from '../Validation';
 
 const SignUpForm: React.FC<{}> = () => {
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
@@ -66,14 +66,23 @@ const SignUpForm: React.FC<{}> = () => {
       <form className='separated-form' action='' method='post'>
         <h2>Регистрация</h2>
         
+        <ImageField
+          fieldHeader='Добавить фото'
+          image={newAccount.avatar}
+          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+            setNewAccount({
+              ...newAccount, 
+              avatar: !evt.target.files || evt.target.files.length <= 0 ? newAccount.avatar : URL.createObjectURL(evt.target.files[0])})
+          }}/>
+
         <TextField 
           fieldHeader='Логин*'
           type='text'
           placeholder='Введите логин'
           isValid={validation.login}
-          warning='Можно использовать только английский алфавит и цифры'
+          warning={fieldsValidation.login.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({...validation, login: !validationScheme.validate({login: evt.target.value}).error});
+            setValidation({...validation, login: fieldsValidation.login.isValid(evt.target.value)});
             setNewAccount({...newAccount, login: evt.target.value.trim()});
           }}/>
 
@@ -82,10 +91,10 @@ const SignUpForm: React.FC<{}> = () => {
           type='text'
           placeholder='Введите пароль'
           isValid={validation.password}
-          warning='Можно использовать только английский алфавит, цифры и символы ~!@#$%^&*()_-+={[}]|:;<,>.?/'
+          warning={fieldsValidation.password.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             const password = evt.target.value.trim();
-            setValidation({...validation, password: !validationScheme.validate({password: evt.target.value}).error});
+            setValidation({...validation, password: fieldsValidation.password.isValid(evt.target.value)});
             setNewAccount({...newAccount, password});
           }}/>
 
@@ -94,12 +103,9 @@ const SignUpForm: React.FC<{}> = () => {
           type='text'
           placeholder='Введите пароль'
           isValid={validation.repeatedPassword}
-          warning='Пароли не совпадают'
+          warning={fieldsValidation.repeatPassword.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({
-              ...validation, 
-              repeatedPassword: !validationScheme.validate({repeatPassword: evt.target.value.trim()}, {context: {password: newAccount.password}}).error
-            });
+            setValidation({...validation, repeatedPassword: fieldsValidation.repeatPassword.isValid(evt.target.value, newAccount.password)});
           }}/>
 
         <TextField 
@@ -108,9 +114,9 @@ const SignUpForm: React.FC<{}> = () => {
           placeholder='Введите имя'
           defaultValue={newAccount.name} 
           isValid={validation.name}
-          warning='Можно использовать только английский и русский алфавиты, цифры, символы ~!@#$%^&*()_-+={[}]|:;<,>.?/ и пробел'
+          warning={fieldsValidation.name.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({...validation,  name: !validationScheme.validate({name: evt.target.value}).error});
+            setValidation({...validation,  name: fieldsValidation.name.isValid(evt.target.value)});
             setNewAccount({...newAccount, name: evt.target.value.trim()});
           }}/>
 
@@ -120,9 +126,9 @@ const SignUpForm: React.FC<{}> = () => {
           placeholder='Введите адрес элктронной почты'
           defaultValue={newAccount.email}
           isValid={validation.email}
-          warning='Обязательно использование доменного имени через @. Можно использовать только английский алфавит, цифры и символ @'
+          warning={fieldsValidation.email.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({...validation,  email: !validationScheme.validate({email: evt.target.value}).error});
+            setValidation({...validation,  email: fieldsValidation.email.isValid(evt.target.value)});
             setNewAccount({...newAccount, email: evt.target.value.trim()});
           }}/>
 
@@ -132,9 +138,9 @@ const SignUpForm: React.FC<{}> = () => {
           defaultValue={newAccount.phoneNumber}
           placeholder='Введите номер телефона'
           isValid={validation.phoneNumber}
-          warning='Можно использовать только цифры'
+          warning={fieldsValidation.phoneNumber.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({...validation, phoneNumber: !validationScheme.validate({phoneNumber: evt.target.value}).error});
+            setValidation({...validation, phoneNumber: fieldsValidation.phoneNumber.isValid(evt.target.value)});
             setNewAccount({...newAccount, phoneNumber: evt.target.value.trim()});
           }}/>
 

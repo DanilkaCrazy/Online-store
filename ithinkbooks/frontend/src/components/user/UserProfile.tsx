@@ -29,7 +29,9 @@ const UserProfile: React.FC<{user: User, isPersonal?: boolean}> = ({user, isPers
         <img src={EditorImage} alt='Редактировать профиль'/>
       </Link>
 
-      <img className='user-avatar' src={user.avatar} alt={user.name}/>
+      <div className='user-avatar-holder'>
+        <img className='user-avatar' src={user.avatar} alt={user.name}/>
+      </div>
 
       <div className='user-bio'>
         <h1>{user.name}</h1>

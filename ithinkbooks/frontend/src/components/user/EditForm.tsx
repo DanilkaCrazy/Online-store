@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
-import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
+import {DateField, DropdownField, ImageField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
 import User from '../User';
-import Validation, { validationScheme } from '../Validation';
+import Validation, { fieldsValidation } from '../Validation';
 
 const EditFrom: React.FC<{}> = () => {
   const {account, updateAccount} = useAccount();
@@ -71,16 +71,24 @@ const EditFrom: React.FC<{}> = () => {
       <form className='separated-form' action='' method='post'>
         <h2>Редактирование профиля</h2>
         
+        <ImageField
+          fieldHeader='Добавить фото'
+          image={updatingAccount.avatar}
+          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
+            setUpdatingAccount({
+              ...updatingAccount, 
+              avatar: !evt.target.files || evt.target.files.length <= 0 ? updatingAccount.avatar : URL.createObjectURL(evt.target.files[0])})
+          }}/>
+
         <TextField 
           fieldHeader='Имя*'
           type='text'
           placeholder='Введите имя'
           defaultValue={updatingAccount.name}
           isValid={validation.name}
-          warning='Можно использовать только английский и русский алфавиты, цифры, символы ~!@#$%^&*()_-+={[}]|:;<,>.?/ и пробел'
+          warning={fieldsValidation.name.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            console.log(validationScheme.validate({name: evt.target.value}));
-            setValidation({...validation,  name: !validationScheme.validate({name: evt.target.value}).error});
+            setValidation({...validation,  name: fieldsValidation.name.isValid(evt.target.value)});
             setUpdatingAccount({...updatingAccount, name: evt.target.value.trim()});
           }}/>
 
@@ -90,9 +98,9 @@ const EditFrom: React.FC<{}> = () => {
           placeholder='Введите адрес элктронной почты'
           defaultValue={updatingAccount.email}
           isValid={validation.email}
-          warning='Обязательно использование доменного имени через @. Можно использовать только английский алфавит, цифры и символ @'
+          warning={fieldsValidation.email.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({...validation,  email: !validationScheme.validate({email: evt.target.value}).error});
+            setValidation({...validation,  email: fieldsValidation.email.isValid(evt.target.value)});
             setUpdatingAccount({...updatingAccount, email: evt.target.value.trim()});
           }}/>
 
@@ -102,9 +110,9 @@ const EditFrom: React.FC<{}> = () => {
           defaultValue={updatingAccount.phoneNumber}
           placeholder='Введите номер телефона'
           isValid={validation.phoneNumber}
-          warning='Можно использовать только цифры'
+          warning={fieldsValidation.phoneNumber.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({...validation, phoneNumber: !validationScheme.validate({phoneNumber: evt.target.value}).error});
+            setValidation({...validation, phoneNumber: fieldsValidation.phoneNumber.isValid(evt.target.value)});
             setUpdatingAccount({...updatingAccount, phoneNumber: evt.target.value.trim()});
           }}/>
 
