@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import ImageFieldIcon from '../../images/pages/ImageFieldIcon.svg';
 import DefaultAvatar from '../../images/pages/DefaultAvatar.svg';
+import ReactSlider from 'react-slider';
 
 const TextField: React.FC<{
   fieldHeader: string, 
@@ -63,6 +64,27 @@ const ImageField: React.FC<{
     </div>
   );
 };
+
+const RangeField: React.FC<{
+  minValue: number,
+  maxValue: number,
+  value: number,
+  step: number,
+  onChange: (value: number) => void
+}> = ({minValue, maxValue, value, step, onChange}) => (
+  <div className='form-field range-field'>
+    <h3>{value}x</h3>
+    <ReactSlider
+        className="slider"
+        thumbClassName="slider-thumb"
+        trackClassName="slider-track"
+        min={minValue}
+        max={maxValue}
+        defaultValue={minValue}
+        step={step}
+        onChange={onChange}/>
+  </div>
+);
 
 const DropdownField: React.FC<{
   fieldHeader: string,
@@ -128,4 +150,4 @@ const TextareaField: React.FC<{
   </div>
 );
 
-export {TextField, DateField, NumberField, ImageField, DropdownField, MultiselectDropdown, TextareaField};
+export {TextField, DateField, NumberField, ImageField, RangeField, DropdownField, MultiselectDropdown, TextareaField};

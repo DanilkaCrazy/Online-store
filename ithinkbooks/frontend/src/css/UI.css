@@ -154,6 +154,32 @@
   color: #E5E5E5;
 }
 
+.slider {
+  height: 20px;
+  width: 100%;
+}
+
+.slider-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background-color: #3F97E7;
+}
+
+.slider-thumb:focus-visible {
+  outline: none;
+}
+
+.slider-track {
+  height: 4px;
+  background-color: #262626;
+  top: 8px;
+}
+
+.slider-track-0 {
+  background-color: #3F97E7;
+}
+
 .dual-slider {
   height: 20px;
 }
@@ -213,7 +239,13 @@
   width: 100%;
   height: 100%;
   background-color: #262626;
+  opacity: 0;
+  transition: 300ms opacity;
+}
+
+.image-field-input:hover {
   opacity: 0.25;
+  transition: 300ms opacity;
 }
 
 .field-avatar {
@@ -221,4 +253,48 @@
   top: 0;
   left: 0;
   width: 100%;
+}
+
+.avatar-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rotation-buttons {
+  width: 100%;
+  display: flex;
+  gap: 50px;
+}
+
+.rotation-button {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+}
+
+.rotation-button img {
+  display: block;
+  margin: 0 auto;
+}
+
+.rotation-reversed {
+  transform: scaleX(-1);
+}
+
+.range-field {
+  display: flex;
+  justify-content: space-between;
+}
+
+.range-field h3 {
+  width: 20%;
+  margin: 0;
+}
+
+.form-field .slider {
+  margin: auto 0;
 }

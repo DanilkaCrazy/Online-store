@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
-import {DateField, DropdownField, ImageField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
+import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
 import User from '../User';
 import Validation, { fieldsValidation } from '../Validation';
+import AvatarField from './AvatarField';
 
 const EditFrom: React.FC<{}> = () => {
   const {account, updateAccount} = useAccount();
@@ -71,14 +72,9 @@ const EditFrom: React.FC<{}> = () => {
       <form className='separated-form' action='' method='post'>
         <h2>Редактирование профиля</h2>
         
-        <ImageField
-          fieldHeader='Добавить фото'
-          image={updatingAccount.avatar}
-          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setUpdatingAccount({
-              ...updatingAccount, 
-              avatar: !evt.target.files || evt.target.files.length <= 0 ? updatingAccount.avatar : URL.createObjectURL(evt.target.files[0])})
-          }}/>
+        <AvatarField
+          accountAvatar={updatingAccount.avatar}
+          changeAccount={(resultImage: string) => setUpdatingAccount({...updatingAccount, avatar: resultImage})}/>
 
         <TextField 
           fieldHeader='Имя*'

@@ -31,6 +31,12 @@ const ScreensWidth = {
   }
 };
 
+const AvatarWidth = {
+  DESKTOP: 400,
+  TABLET: 300,
+  MOBILE: 250
+};
+
 const MIN_PRICE = 0;
 const MAX_PRICE = 10000;
 
@@ -48,4 +54,4 @@ const declineNounAfterNumber = (number: number, nominative: string, genitiveSing
   return genitivePlural;
 }
 
-export {getArraySum, getAverageNumber, declineNounAfterNumber, ScreensWidth, MIN_PRICE, MAX_PRICE};
+export {getArraySum, getAverageNumber, declineNounAfterNumber, ScreensWidth, AvatarWidth, MIN_PRICE, MAX_PRICE};

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { emptyAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
-import {DateField, DropdownField, ImageField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
+import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
 import User from '../User';
 import Validation, {fieldsValidation} from '../Validation';
+import AvatarField from './AvatarField';
 
 const SignUpForm: React.FC<{}> = () => {
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
@@ -65,15 +66,10 @@ const SignUpForm: React.FC<{}> = () => {
     <div className='page'>
       <form className='separated-form' action='' method='post'>
         <h2>Регистрация</h2>
-        
-        <ImageField
-          fieldHeader='Добавить фото'
-          image={newAccount.avatar}
-          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setNewAccount({
-              ...newAccount, 
-              avatar: !evt.target.files || evt.target.files.length <= 0 ? newAccount.avatar : URL.createObjectURL(evt.target.files[0])})
-          }}/>
+
+        <AvatarField
+          accountAvatar={newAccount.avatar}
+          changeAccount={(resultImage: string) => setNewAccount({...newAccount, avatar: resultImage})}/>
 
         <TextField 
           fieldHeader='Логин*'
