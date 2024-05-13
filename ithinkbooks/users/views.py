@@ -36,3 +36,10 @@ class UserLogin(APIView):
 			user = serializer.check_user(data)
 			login(request, user)
 			return Response(serializer.data, status=status.HTTP_200_OK)
+
+#Получать информацию о пользователе
+class GetUser(APIView):
+	permission_classes = (permissions.IsAuthenticated,)
+	def get(self, request):
+		serializer = UserSerializer(request.user)
+		return Response(serializer.data)
