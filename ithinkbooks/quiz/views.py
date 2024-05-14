@@ -104,10 +104,17 @@ class GetRoadMap(APIView):
        # for i in products:
             #roadmap_node = RoadmapNode.objects.create(product=i, node_level=i.level, roadmap=Roadmap) 
       #  return Response("Success")
-#Просмотр всех роадмапов
+#Просмотр всех роадмапов - для разработки
 class RoadmapListView(ListAPIView):
     permission_classes = (permissions.AllowAny, )
     #RoadmapNode = 
     queryset = Roadmap.objects.all()
     serializer_class = RoadmapSerializer
     pagination_class = None
+
+class RoadMapUserView(APIView):
+    def get(self, request):
+        queryset = Roadmap.objects.all()
+        roadmap = queryset.filter(user=request.user)
+        serializer = RoadmapSerializer(roadmap, many=True)
+        return Response(serializer.data)
