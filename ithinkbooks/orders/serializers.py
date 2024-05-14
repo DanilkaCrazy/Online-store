@@ -12,3 +12,8 @@ class OrderItemSerializer (serializers.ModelSerializer):
         model = OrderItem
         #fields = ('user', 'product', 'quantity')
         fields = '__all__'
+
+class OrderByUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ('is_paid', 'status')

@@ -1,5 +1,5 @@
 from django.urls import path
-from quiz.views import QuizListView, QuestionListView, QuestionView, SendResultsFull, ViewResults,ViewProductsBasedOnResult, GetRoadMap, RoadmapListView
+from quiz.views import QuizListView, QuestionListView, QuestionView, SendResultsFull, ViewResults,ViewProductsBasedOnResult, GetRoadMap, RoadmapListView, RoadMapUserView
 
 app_name = 'quiz'
 urlpatterns = [
@@ -10,5 +10,6 @@ urlpatterns = [
     path('results', ViewResults.as_view()),
     path('results/<int:result_id>', ViewProductsBasedOnResult.as_view()),
     path('roadmap/<int:roadmap_id>', GetRoadMap.as_view()),
-    path('roadmaps', RoadmapListView.as_view())
+    path('roadmaps', RoadmapListView.as_view()),
+    path('user_roadmaps', RoadMapUserView.as_view(), name = 'User Roadmaps'),
 ]

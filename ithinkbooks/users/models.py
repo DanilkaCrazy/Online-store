@@ -22,7 +22,6 @@ class User(AbstractUser):
         QA = "qa", "Quality Assurance"
         COMPSCI = "CS","Computer Science" #Разбить на несколько
         OTHER = "OT","Other"
-    user_direction = models.CharField(max_length=20, choices=UserDirection, default=UserDirection.OTHER, verbose_name='Направление')
     user_directions = ArrayField(models.CharField(max_length=20, choices=UserDirection, default=UserDirection.OTHER), null=True, blank=True  ,verbose_name='Направление')
     class UserStatus(models.TextChoices):
         STUDENT = "student"
