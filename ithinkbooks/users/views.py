@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import login, logout
 from users.models import User
 from django.contrib import auth, messages
@@ -40,6 +40,7 @@ class UserLogin(APIView):
 #Получать информацию о пользователе
 class GetUser(APIView):
 	permission_classes = (permissions.IsAuthenticated,)
-	def get(self, request):
-		serializer = UserSerializer(request.user)
+	def get(self, request, username):
+		user = get_object_or_404(User, username=username)
+		serializer = UserSerializer(user)
 		return Response(serializer.data)

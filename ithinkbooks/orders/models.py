@@ -15,7 +15,7 @@ class OrderitemQueryset(models.QuerySet):
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_DEFAULT, null=True, verbose_name="Пользователь", default=None)
     created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания заказа")
-    pick_up_point = models.TextField(max_length=100, verbose_name='Пункт выдачи')
+    pick_up_point = models.TextField(max_length=100, verbose_name='Пункт выдачи', null=True, blank=True)
     is_paid = models.BooleanField(default=False, verbose_name="Оплачено")
     status = models.CharField(max_length=50, default='В обработке', verbose_name="Статус заказа")
 

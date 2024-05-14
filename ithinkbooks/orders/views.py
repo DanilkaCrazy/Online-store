@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from cart.models import Cart, CartQueryset
 from rest_framework import permissions
 from rest_framework.response import Response
 from catalogue.models import Products
-from orders.serializers import OrderSerializer, OrderItemSerializer
+from orders.serializers import OrderSerializer, OrderItemSerializer, OrderByUserSerializer
 from orders.models import Order, OrderItem
 
 class CreateOrderView(APIView):
@@ -43,3 +43,14 @@ class OrderItemListView(ListAPIView):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     pagination_class = None
+
+
+class OrderByUser(APIView):
+    def get(self, request):
+        queryset = Order.objects.all()
+        order = queryset.filter(user=request.user)
+        #order_items_queryset = OrderItem.objects.all()
+        #order_items = order_items_queryset.filter(order=order)
+        serializer = OrderSerializer(order, many=True)
+        #serializer = OrderItemSerializer(order_items, many=True)
+        return Response(serializer.data)
