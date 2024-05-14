@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
-from catalogue.models import Categories, Products
+from catalogue.models import Categories, Products, Review
 from rest_framework import permissions
 from rest_framework.response import Response
 from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer
@@ -63,3 +63,10 @@ class TestView(ListAPIView):
     def get_queryset(self):
         queryset = Products.objects.all()
         return queryset.filter(theme_category__contains=['office'])
+
+class ReviewUserView(APIView):
+    def get(self, request,user_id):
+        queryset = Review.objects.all()
+        review = queryset.filter(user=user_id)
+        serializer = CreateReviewSerializer(review, many=True)
+        return Response(serializer.data)

@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django_better_admin_arrayfield.models.fields import ArrayField
+from users.models import User
 
 
 # Create your models here.
@@ -194,6 +195,7 @@ class Review(models.Model):
     title = models.TextField(max_length=100, verbose_name = 'Заголовок отзыва')
     text = models.TextField( max_length=5000, verbose_name = 'Текст отзыва')
     star = models.IntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)], verbose_name='Звезда рейтинга')
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='review_user')
     #Реализовать Upvote/Downvote
     class Meta:
         db_table = 'review'
