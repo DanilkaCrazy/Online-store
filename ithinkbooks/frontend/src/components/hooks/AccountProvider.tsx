@@ -1,39 +1,41 @@
-import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { personalAccount } from '../mock/mock';
 import User from '../User';
 import Order from '../Order';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
+import themes from '../mock/themes.json';
 import axios from 'axios';
 import Review, { emptyReview } from '../Review';
+import Book from '../Book';
+import { useLocation, useNavigate } from 'react-router-dom';
+import LogInInfo from '../LogInInfo';
 
 const emptyAccount: User = {
   id: -1,
-  login: '',
+  username: '',
   password: '',
-  name: '',
-  avatar: '',
-  bio: '',
-  status: statuses[0],
-  branches: [],
-  reviewsAmount: 0,
-  city: cities[0],
-  reviews: [],
-  orders: [],
-  booksInBasket: [],
-  favoriteBooks: [],
+  first_name: '',
+  image: '',
+  about_self: '',
+  user_status: statuses[0],
+  user_directions: [],
+  location: cities[0],
   email: '',
-  phoneNumber: '',
+  phone_number: '',
   birthdate: new Date(),
-  roadmaps: []
-}
+  second_name: '',
+  is_staff: false,
+  is_active: false,
+  is_superuser: false
+};
 
 const defaultAccountValue = {
   account: emptyAccount,
   loading: false,
   reviews: [emptyReview],
   updateAccount: (update: object) => {},
-  putInBasket: (bookId: number) => {},
+  putInBasket: (book: Book) => {},
   removeFromBasket: (bookId: number) => {},
   cleanBasket: () => {},
   markAsFavotite: (bookId: number) => {},
@@ -45,7 +47,7 @@ const defaultAccountValue = {
   hasRoadmap: (roadmapId: string) => false,
   addRoadmap: (roadmapId: string) => {},
   removeRoadmap: (roadmapId: string) => {},
-  logIn: (user: User) => {},
+  logIn: (info: LogInInfo) => {},
   logOut: (user: User) => {},
   signUp: (user: User) => {},
 };
@@ -57,10 +59,16 @@ const useAccount = () => useContext(AccountContext);
 const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [account, setAccount] = useState<User>(personalAccount);
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
+  const [logInInfo, setLogInInfo] = useState<LogInInfo>({username: '', password: ''});
+
+  const location = useLocation();
+  const endpoints = useMemo(() => location.pathname.split('/'), [location]);
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [reviews, setReviews] = useState<Review[]>([]); //mock reviews
+  const [booksInBasket, setBooksInBasket] = useState<Book[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]); //mock reviews 
 
   const updateAccount = (update: object) => {
     const updatedAccount: User = {
@@ -70,69 +78,63 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setAccount(updatedAccount);
   };
 
-  const putInBasket = (bookId: number) => {
-    updateAccount({
-      booksInBasket: account.booksInBasket.concat(bookId)
-    });
+  const putInBasket = (book: Book) => {
+    setBooksInBasket([...booksInBasket, book]);
   };
 
   const removeFromBasket = (bookId: number) => {
-    updateAccount({
-      booksInBasket: account.booksInBasket.filter((id) => id !== bookId)
-    });
+    setBooksInBasket(booksInBasket.filter((book) => book.id !== bookId));
   };
 
   const cleanBasket = () => {
-    updateAccount({
-      booksInBasket: []
-    });
+    setBooksInBasket([]);
   };
 
   const markAsFavotite = (bookId: number) => {
-    const bookIndex = account.favoriteBooks.indexOf(bookId);
+    /*const bookIndex = account.favoriteBooks.indexOf(bookId);
 
     updateAccount({
       favoriteBooks: bookIndex < 0 ? account.favoriteBooks.concat(bookId) : account.favoriteBooks.filter((id) => id !== bookId)
-    })
+    })*/
   };
 
   const addOrder = (order: Order) => {
-    updateAccount({orders: account.orders.concat(order)});
+    //updateAccount({orders: account.orders.concat(order)});
   };
 
   const removeOrder = (order: Order) => {
-    updateAccount({orders: account.orders.filter((o) => o.id !== order.id)});
+    //updateAccount({orders: account.orders.filter((o) => o.id !== order.id)});
   };
 
   const updateOrder = (updatedOrder: Order) => {
-    account.orders = account.orders.map((order) => order.id === updatedOrder.id ? updatedOrder : order);
+    //account.orders = account.orders.map((order) => order.id === updatedOrder.id ? updatedOrder : order);
   };
 
   const addReview = (review: Review) => {
-    updateAccount({reviews: account.reviews.concat(review.id)});
-    setReviews(reviews.concat(review));
+    /*updateAccount({reviews: account.reviews.concat(review.id)});
+    setReviews(reviews.concat(review));*/
   };
 
   const removeReview = (reviewId: number) => {
-    updateAccount({reviews: account.reviews.filter((r) => r !== reviewId)});
+    //updateAccount({reviews: account.reviews.filter((r) => r !== reviewId)});
   };
 
-  const hasRoadmap = (roadmapId: string) => account.roadmaps.includes(roadmapId);
+  const hasRoadmap = (roadmapId: string) => /*account.roadmaps.includes(roadmapId)*/ false;
 
   const addRoadmap = (roadmapId: string) => {
     if(!hasRoadmap(roadmapId)) {
-      updateAccount({roadmaps: account.roadmaps.concat(roadmapId)});
+      //updateAccount({roadmaps: account.roadmaps.concat(roadmapId)});
     }
   };
 
   const removeRoadmap = (roadmapId: string) => {
     if(hasRoadmap(roadmapId)) {
-      updateAccount({roadmaps: account.roadmaps.filter((id) => id !== roadmapId)});
+      //updateAccount({roadmaps: account.roadmaps.filter((id) => id !== roadmapId)});
     }
   };
 
-  const logIn = (user: User) => {
-    updateAccount(user);
+  const logIn = (info: LogInInfo) => {
+    setLogInInfo(info);
   };
 
   const logOut = () => {
@@ -143,42 +145,78 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setNewAccount(newUser);
   };
 
-  /*const postLogin = useCallback(() => {
+  // account fetch
+  const getAccount = useCallback(() =>  {
     axios
-      .post('http://127.0.0.1:8000/users/login', account)
+      .get(`http://127.0.0.1:8000/users/user/${logInInfo.username}`)
       .then((resp) => resp.data)
-      .then(() => setLoading(false));
-  }, [account]);
+      .then((data) => setAccount(
+        {
+          ...data, 
+          user_status: statuses.find((s) => s.title === data.status), 
+          user_directions: themes.filter((t) => data.user_directions.includes(t.title)),
+          location: cities.find((c) => c.city === data.location)
+        }
+      ))
+      .then(() => setLogInInfo({username: '', password: ''}))
+      .then(() => navigate('/account/basket'))
+      .catch(console.error);
+  }, [logInInfo]);
 
-  const postLogout = useCallback(() => {
+  const postLogIn = useCallback(() => {
     axios
-      .post('http://127.0.0.1:8000/users/logout', account)
-      .then((resp) => console.log(resp.data))
-      .then(() => setLoading(false));
-  }, [account]);
+      .post('http://127.0.0.1:8000/users/login', logInInfo)
+      .then(resp => console.log(resp.data))
+      .then(() => getAccount())
+      .catch((err) => console.error(err));
+  }, [logInInfo, getAccount]);
 
-  const postSignUp = useCallback(() => {
+  const postNewAccount = useCallback(() => {
     axios
-      .post('http://127.0.0.1:8000/users/register',newAccount)
+      .post('http://127.0.0.1:8000/users/register', {
+        ...newAccount, 
+        user_status: newAccount.user_status.title,
+        user_directions: newAccount.user_directions.map((theme) => theme.title),
+        location: newAccount.location.city,
+        birthdate: `${newAccount.birthdate.getFullYear()}-${newAccount.birthdate.getMonth()}-${newAccount.birthdate.getDay()}`,
+        is_active: true
+      })
       .then((resp) => console.log(resp.data))
-      .then(() => setLoading(false));
+      .then(() => updateAccount(newAccount))
+      .then(() => setLoading(false))
+      .then(() => navigate('/account/basket'))
   }, [newAccount]);
-
+  
   useEffect(() => {
-    setLoading(true);
-    if(account.id < 0) {
-      postLogout();
-    } else {
-      postLogin();
+    if(logInInfo.username) {
+      console.log(logInInfo);
+      setLoading(true);
+      postLogIn()
     }
-  }, [postLogin, postLogout, account]);
+  }, [postLogIn, account, logInInfo]);
 
   useEffect(() => {
     if(newAccount.id >= 0) {
+      console.log(newAccount);
       setLoading(true);
-      postSignUp();
+      postNewAccount();
     }
-  }, [postSignUp, newAccount]);*/
+  }, [postNewAccount, newAccount]);
+
+  // basket fetch
+
+  const getBooksInBasket = useCallback(() => {
+    axios
+      .get('http://127.0.0.1:8000/cart/items')
+      .then((resp) => console.log(resp.data))
+      .catch(console.error);
+  }, []);
+
+  useEffect(() => {
+    if(endpoints[endpoints.length - 1] === 'basket') {
+      getBooksInBasket();
+    }
+  }, [getBooksInBasket, endpoints]);
 
   return (
     <AccountContext.Provider value={{

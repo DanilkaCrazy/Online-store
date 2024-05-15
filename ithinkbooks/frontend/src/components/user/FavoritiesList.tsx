@@ -13,7 +13,7 @@ const FavoritiesList: React.FC<{}> = () => {
     </div>
   }
 
-  const foundBooks = books.filter((book) => account.favoriteBooks.some((id) => id === book.id));
+  /*const foundBooks = books.filter((book) => account.favoriteBooks.some((id) => id === book.id));
 
   if(!foundBooks.length) {
     return (
@@ -29,7 +29,8 @@ const FavoritiesList: React.FC<{}> = () => {
         {foundBooks.map((book, i) => <BookComponent key={i} book={book} isFavorite/>)}
       </div>
     </div>
-  );
+  );*/
+  return <></>
 };
 
 

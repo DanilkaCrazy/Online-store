@@ -50,8 +50,6 @@ const AvatarField: React.FC<{
     );
   }
 
-  console.log(scale);
-
   return (
     <div className='avatar-editor'>
       <AvatarEditor

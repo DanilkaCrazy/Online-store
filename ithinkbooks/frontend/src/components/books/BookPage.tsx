@@ -21,7 +21,7 @@ const BookPromo: React.FC<{
   chosenFormat: string,
   setFormat: React.Dispatch<React.SetStateAction<string>>,
   isFavorite: boolean,
-  putInBasket: (bookId: number) => void,
+  putInBasket: (book: Book) => void,
   markAsFavotite: (bookId: number) => void
 }> = ({book, canBuy, chosenFormat, setFormat, isFavorite, putInBasket, markAsFavotite}) => (
   <div className='book-page-promo'>
@@ -41,7 +41,7 @@ const BookPromo: React.FC<{
         <button className='main-button'>{BookFormats.find((format) => format.key === book.book_format)?.name}</button>}
     </div>
 
-    <button className='main-button' onClick={() => putInBasket(book.id)}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
+    <button className='main-button' onClick={() => putInBasket(book)}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
     <button
       className={isFavorite ? 'main-button' : 'secondary-button'}
       onClick={() => markAsFavotite(book.id)}>
@@ -158,7 +158,7 @@ const BookPage: React.FC<{}> = () => {
     return <Stub pageName='Error'/>
   }
   
-  const isFavorite = account.favoriteBooks.some((bookId) => bookId === book.id);
+  const isFavorite = /*account.favoriteBooks.some((bookId) => bookId === book.id);*/ false;
 
   const canBuy = isReleased(book.year, book.month);
   const rating = getAverageNumber(book.review.map((review) => review.star));

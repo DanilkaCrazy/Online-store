@@ -2,7 +2,6 @@ import React from 'react';
 import {useParams} from 'react-router-dom';
 import { users } from '../mock/mock';
 import Stub from '../layout/Stub';
-import { declineNounAfterNumber } from '../utils';
 
 const AnotherUser: React.FC<{}> = () => {
   const {id} = useParams();
@@ -15,12 +14,11 @@ const AnotherUser: React.FC<{}> = () => {
 
   return(
     <>
-      <img src={user.avatar} alt={user.name}/>
-      <h1>{user.name}</h1>
-      <p>{user.bio}</p>
-      <h3>{user.status.name}</h3>
-      {user.branches.map((branch, i) => <h2 key={i}>{branch.name}</h2>)}
-      <h2>{user.reviewsAmount} {declineNounAfterNumber(user.reviewsAmount, 'отзыв', 'отзыва', 'отзывов')}</h2>
+      <img src={user.image} alt={user.first_name}/>
+      <h1>{user.first_name}</h1>
+      <p>{user.about_self}</p>
+      <h3>{user.user_status.name}</h3>
+      {user.user_directions.map((branch, i) => <h2 key={i}>{branch.name}</h2>)}
     </>
   );
 }; 

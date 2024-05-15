@@ -10,7 +10,7 @@ const RoadmapsList: React.FC<{}> = () => {
   //search roadmaps here
   const roadmaps: Roadmap[] = [roadmap];
 
-  if(!account.roadmaps.length) {
+  /*if(!account.roadmaps.length) {
     return (
       <div className='roadmaps-page'>
         <h2>Вы ещё не строили роадмапы</h2>
@@ -22,7 +22,8 @@ const RoadmapsList: React.FC<{}> = () => {
     <div className='roadmaps-page'>
       {roadmaps.map((rm, i) => <RoadmapIcon key={i} roadmap={rm} removeRoadmap={removeRoadmap}/>)}
     </div>
-  );
+  );*/
+  return <></>
 };
 
 export default RoadmapsList;

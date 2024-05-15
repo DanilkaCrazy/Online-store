@@ -3,10 +3,13 @@ import { TextField } from '../ui/FormFields';
 import LogInInfo from '../LogInInfo';
 import { Link } from 'react-router-dom';
 import Validation, {fieldsValidation} from '../Validation';
+import { useAccount } from '../hooks/AccountProvider';
 
 const LogInForm: React.FC<{}> = () => {
+  const {logIn} = useAccount();
+
   const [logInInfo, setLogInInfo] = useState<LogInInfo>({
-    login: '',
+    username: '',
     password: ''
   });
 
@@ -32,7 +35,7 @@ const LogInForm: React.FC<{}> = () => {
           warning={fieldsValidation.login.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation, login: fieldsValidation.login.isValid(evt.target.value)});
-            setLogInInfo({...logInInfo, login: evt.target.value.trim()});
+            setLogInInfo({...logInInfo, username: evt.target.value.trim()});
           }}/>
 
         <TextField
@@ -56,11 +59,14 @@ const LogInForm: React.FC<{}> = () => {
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation, repeatedPassword: fieldsValidation.repeatPassword.isValid(evt.target.value, logInInfo.password)});}}/>
         
-        <Link 
-          to='/account/basket' 
+        <button 
+          onClick={(evt) => {
+            evt.preventDefault();
+            logIn(logInInfo);
+          }}
           className={`main-button sign-button ${Object.values(validation).every((isValid) => isValid) ? '' : 'disabled-link'}`}>
             Войти
-        </Link>
+        </button>
 
         <div className='form-field sign-field'>
           <h3>Ещё не регистрировались?</h3>

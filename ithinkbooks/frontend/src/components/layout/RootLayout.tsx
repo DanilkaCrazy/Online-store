@@ -32,7 +32,7 @@ const RootLayout: React.FC<{}> = () => {
       <Route path='/' element={<Main/>}/>
       <Route path='roadmaps/:id' element={<RoadmapPage/>}/>
       <Route path='quiz' element={<QuizPage/>}>
-        <Route path='theme' element={account.roadmaps.length >= MAX_ROADMAPS_COUNT ? <Navigate to='/quiz/warning'/> : <QuizTheme/>}/>
+        <Route path='theme' element={/*account.roadmaps.length >= MAX_ROADMAPS_COUNT ? <Navigate to='/quiz/warning'/> :*/ <QuizTheme/>}/>
         <Route path='questions' element={<Quiz/>}/>
         <Route path='warning' element={<QuizWarning/>}/>
       </Route>

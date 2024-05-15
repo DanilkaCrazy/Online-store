@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { getArraySum } from '../utils';
 import { useAccount } from '../hooks/AccountProvider';
 import { useBooks } from '../hooks/BooksProvider';
+import Book from '../Book';
 
 const Basket: React.FC<{}> = () => {
   const {account, cleanBasket, addOrder} = useAccount();
@@ -17,7 +18,7 @@ const Basket: React.FC<{}> = () => {
     </div>
   }
 
-  const foundBooks = books.filter((book) => account.booksInBasket.some((id) => id === book.id));
+  /*const foundBooks: Book[] = /*books.filter((book) => account.booksInBasket.some((id) => id === book.id)) [];
 
   if(!foundBooks.length) {
     return (
@@ -31,8 +32,8 @@ const Basket: React.FC<{}> = () => {
 
   const order: Order = {
     id: nanoid(),
-    city: account.city,
-    address: account.city.addresses[0],
+    city: account.location,
+    address: account.location.addresses[0],
     booksId: [],
     price: 0,
     date: new Date()
@@ -63,7 +64,9 @@ const Basket: React.FC<{}> = () => {
         {foundBooks.map((book, i) => <BookComponent key={i} book={book} isInBasket/>)}
       </div>
     </div>
-  );
+  );*/
+
+  return <></>
 };
 
 export default Basket;

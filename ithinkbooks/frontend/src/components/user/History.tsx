@@ -24,7 +24,7 @@ const History: React.FC<{}> = () => {
     </div>
   }
 
-  if(!account.orders.length) {
+  /*if(!account.orders.length) {
     return (
       <div className='histpry-page'>
         <h2>Вы ещё не покупали у нас книги</h2>
@@ -41,7 +41,9 @@ const History: React.FC<{}> = () => {
           orderedBooks={books.filter((book) => order.booksId.some((id) => book.id === id))}/>)
       )}
     </div>
-  );
+  );*/
+
+  return <></>
 };
 
 export default History;

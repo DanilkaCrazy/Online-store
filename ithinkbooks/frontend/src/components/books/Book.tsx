@@ -37,7 +37,7 @@ const BookComponent: React.FC<{
       <button 
         className='main-button'
         hidden={isInBasket} 
-        onClick={() => putInBasket(book.id)}>
+        onClick={() => putInBasket(book)}>
           {isReleased(book.year, book.month) ? 'В корзину' : 'Предзаказ'}
       </button>
       <button 

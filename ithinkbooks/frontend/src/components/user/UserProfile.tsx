@@ -30,19 +30,19 @@ const UserProfile: React.FC<{user: User, isPersonal?: boolean}> = ({user, isPers
       </Link>
 
       <div className='user-avatar-holder'>
-        <img className='user-avatar' src={user.avatar} alt={user.name}/>
+        <img className='user-avatar' src={user.image} alt={user.first_name}/>
       </div>
 
       <div className='user-bio'>
-        <h1>{user.name}</h1>
-        <p className='main-p secondary-color'>{user.bio}</p>
+        <h1>{user.first_name}</h1>
+        <p className='main-p secondary-color'>{user.about_self}</p>
         <p className='main-p secondary-color'>{`${age} ${declineNounAfterNumber(age, 'год', 'года', 'лет')}`}</p>
-        <p className='main-p secondary-color' hidden={!isPersonal}>{user.city.city}</p>
+        <p className='main-p secondary-color' hidden={!isPersonal}>{user.location.city}</p>
       </div>
 
       <div className='user-statuses'>
-        <Status title={user.status.title} name={user.status.name}/>
-        {user.branches.map((theme, i) => <Job key={i} title={theme.title} shortName={theme.shortName}/>)}
+        <Status title={user.user_status.title} name={user.user_status.name}/>
+        {user.user_directions.map((theme, i) => <Job key={i} title={theme.title} shortName={theme.shortName}/>)}
       </div>
     </div>
   );

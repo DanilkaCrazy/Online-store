@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { emptyAccount } from '../hooks/AccountProvider';
+import { emptyAccount, useAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
 import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
 import cities from '../mock/cities.json';
@@ -8,13 +8,16 @@ import themes from '../mock/themes.json';
 import User from '../User';
 import Validation, {fieldsValidation} from '../Validation';
 import AvatarField from './AvatarField';
+import { randomInteger } from '../mock/mock';
 
 const SignUpForm: React.FC<{}> = () => {
+  const {signUp} = useAccount();
+
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
 
-  const [city, setCity] = useState<string | undefined>(newAccount.city.city);
-  const [status, setStatus] = useState<string | undefined>(newAccount.status.name);
-  const [chosenThemes, setChosenThemes] = useState<string[]>(newAccount.branches.map((theme) => theme.shortName));
+  const [city, setCity] = useState<string | undefined>(newAccount.location.city);
+  const [status, setStatus] = useState<string | undefined>(newAccount.user_status.name);
+  const [chosenThemes, setChosenThemes] = useState<string[]>(newAccount.user_directions.map((theme) => theme.shortName));
 
   const [validation, setValidation] = useState<Validation>({
     login: false,
@@ -33,7 +36,7 @@ const SignUpForm: React.FC<{}> = () => {
     }
 
     setCity(foundCity.city);
-    setNewAccount((value) => ({...value, city: foundCity}))
+    setNewAccount((value) => ({...value, location: foundCity}))
   };
 
   const onStatusSelect = (eventKey: string | null) => {
@@ -44,7 +47,7 @@ const SignUpForm: React.FC<{}> = () => {
     }
 
     setStatus(foundStatus.name);
-    setNewAccount((value) => ({...value, status: foundStatus}))
+    setNewAccount((value) => ({...value, user_status: foundStatus}))
   };
 
   const onThemeClick = (eventKey: string, isChosen: boolean) => {
@@ -55,11 +58,11 @@ const SignUpForm: React.FC<{}> = () => {
     }
 
     const resultThemes = isChosen 
-      ? newAccount.branches.filter((t) => t.shortName !== foundTheme.shortName) 
-      : newAccount.branches.concat(foundTheme);
+      ? newAccount.user_directions.filter((t) => t.shortName !== foundTheme.shortName) 
+      : newAccount.user_directions.concat(foundTheme);
 
     setChosenThemes(resultThemes.map((theme) => theme.shortName));
-    setNewAccount((value) => ({...value, branches: resultThemes}));
+    setNewAccount((value) => ({...value, user_directions: resultThemes}));
   }
 
   return (
@@ -68,8 +71,8 @@ const SignUpForm: React.FC<{}> = () => {
         <h2>Регистрация</h2>
 
         <AvatarField
-          accountAvatar={newAccount.avatar}
-          changeAccount={(resultImage: string) => setNewAccount({...newAccount, avatar: resultImage})}/>
+          accountAvatar={newAccount.image}
+          changeAccount={(resultImage: string) => setNewAccount({...newAccount, image: resultImage})}/>
 
         <TextField 
           fieldHeader='Логин*'
@@ -79,7 +82,7 @@ const SignUpForm: React.FC<{}> = () => {
           warning={fieldsValidation.login.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation, login: fieldsValidation.login.isValid(evt.target.value)});
-            setNewAccount({...newAccount, login: evt.target.value.trim()});
+            setNewAccount({...newAccount, username: evt.target.value.trim()});
           }}/>
 
         <TextField
@@ -108,12 +111,12 @@ const SignUpForm: React.FC<{}> = () => {
           fieldHeader='Имя*'
           type='text'
           placeholder='Введите имя'
-          defaultValue={newAccount.name} 
+          defaultValue={newAccount.first_name} 
           isValid={validation.name}
           warning={fieldsValidation.name.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation,  name: fieldsValidation.name.isValid(evt.target.value)});
-            setNewAccount({...newAccount, name: evt.target.value.trim()});
+            setNewAccount({...newAccount, first_name: evt.target.value.trim()});
           }}/>
 
         <TextField
@@ -131,13 +134,13 @@ const SignUpForm: React.FC<{}> = () => {
         <TextField
           fieldHeader='Номер Телефона*'
           type='tel'
-          defaultValue={newAccount.phoneNumber}
+          defaultValue={newAccount.phone_number}
           placeholder='Введите номер телефона'
           isValid={validation.phoneNumber}
           warning={fieldsValidation.phoneNumber.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation, phoneNumber: fieldsValidation.phoneNumber.isValid(evt.target.value)});
-            setNewAccount({...newAccount, phoneNumber: evt.target.value.trim()});
+            setNewAccount({...newAccount, phone_number: evt.target.value.trim()});
           }}/>
 
         <DateField
@@ -165,15 +168,18 @@ const SignUpForm: React.FC<{}> = () => {
 
         <TextareaField
           fieldHeader='О себе'
-          defaultValue={newAccount.bio}
+          defaultValue={newAccount.about_self}
           placeholder='Введите информацию о себе'
-          onChange={(evt: React.ChangeEvent<HTMLTextAreaElement>) => setNewAccount({...newAccount, bio: evt.target.value})}/>
+          onChange={(evt: React.ChangeEvent<HTMLTextAreaElement>) => setNewAccount({...newAccount, about_self: evt.target.value})}/>
 
-        <Link
-          to='/account/basket' 
+        <button
+          onClick={(evt) => {
+            evt.preventDefault();
+            signUp({...newAccount, id: randomInteger(11000, 22000)});
+          }}
           className={`main-button sign-button ${Object.values(validation).every((isValid) => isValid) ? '' : 'disabled-link'}`}>
             Зарегистрироваться
-        </Link>
+        </button>
 
         <div className='form-field sign-field'>
           <h3>Уже есть аккаунт?</h3>

@@ -4,16 +4,9 @@ import statuses from './statuses.json';
 import Theme from '../Theme';
 import User from '../User';
 import cities from './cities.json';
-import languages from './languages.json';
-import Book from '../Book';
 import Review from '../Review';
 
 const COUNT = 20;
-
-const PaperFormat = {
-    SOFT: 'Мягкий переплёт',
-    HARD: 'Твёрдый переплёт'
-};
 
 const BookFormat = {
     PAPERBACK: "Печатный",
@@ -38,9 +31,6 @@ const FileType = {
     FB2: 'FB2'
 };
 
-const PROGRAMMING_LANGUAGES = ['C/C++', 'C#', 'Java', 'JavaScript', 'TypeScript', 
-    'HTML/CSS', 'Python', 'Ruby', 'Swift', 'Go', 'Kotlin', 'Lua'];
-
 const randomInteger = (min: number, max: number) => {
     const rand = min + Math.random() * (max + 1 - min);
     return Math.floor(rand);
@@ -61,23 +51,21 @@ const randomFormats = () => {
 const users = Array.from({length: COUNT}, (_v, i) => {
     const user: User = {
         id: i + 2,
-        login: faker.word.noun(),
+        username: faker.word.noun(),
         password: faker.word.noun(),
-        name: faker.person.fullName(),
-        avatar: faker.image.avatar(),
-        bio: faker.person.bio(),
-        status: statuses[randomInteger(0, statuses.length - 1)],
-        branches: randomThemes(randomInteger(0, 3), themes),
-        reviewsAmount: randomInteger(0, 10),
-        city: cities[randomInteger(0, cities.length - 1)],
-        reviews: [],
-        orders: [],
-        booksInBasket: [],
-        favoriteBooks: [],
+        first_name: faker.person.fullName(),
+        image: faker.image.avatar(),
+        about_self: faker.person.bio(),
+        user_status: statuses[randomInteger(0, statuses.length - 1)],
+        user_directions: randomThemes(randomInteger(0, 3), themes),
+        location: cities[randomInteger(0, cities.length - 1)],
         email: faker.internet.email(),
-        phoneNumber: faker.phone.number(),
-        birthdate: faker.date.birthdate({min: 18, max: 80, mode: 'age'}),
-        roadmaps: []
+        phone_number: faker.phone.number(),
+        birthdate: faker.date.birthdate({ min: 18, max: 80, mode: 'age' }),
+        second_name: '',
+        is_staff: false,
+        is_active: false,
+        is_superuser: false
     }
     return user;
 });
@@ -136,23 +124,21 @@ const favoriteBooks = getRandomBooks();*/
 
 const personalAccount: User = {
     id: 1,
-    login: faker.word.noun(),
+    username: faker.word.noun(),
     password: faker.word.noun(),
-    name: faker.person.fullName(),
-    avatar: faker.image.avatar(),
-    bio: faker.person.bio(),
-    status: statuses[randomInteger(0, statuses.length - 1)],
-    branches: randomThemes(randomInteger(0, 3), themes),
-    reviewsAmount: randomInteger(0, 10),
-    city: cities[randomInteger(0, cities.length - 1)],
-    reviews: [],
-    orders: [],
-    booksInBasket: [],
-    favoriteBooks: [],
+    first_name: faker.person.fullName(),
+    image: faker.image.avatar(),
+    about_self: faker.person.bio(),
+    user_status: statuses[randomInteger(0, statuses.length - 1)],
+    user_directions: randomThemes(randomInteger(0, 3), themes),
+    location: cities[randomInteger(0, cities.length - 1)],
     email: faker.internet.email(),
-    phoneNumber: faker.phone.number(),
-    birthdate: faker.date.birthdate({min: 18, max: 80, mode: 'age'}),
-    roadmaps: []
+    phone_number: faker.phone.number(),
+    birthdate: faker.date.birthdate({ min: 18, max: 80, mode: 'age' }),
+    second_name: '',
+    is_staff: false,
+    is_active: false,
+    is_superuser: false
 }
 
 export { users, personalAccount, reviews, BookFormat, FileType, randomInteger, randomFormats, BookFormats};

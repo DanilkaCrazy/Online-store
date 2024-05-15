@@ -22,7 +22,7 @@ const OrderForm: React.FC<{}> = () => {
   const {id} = useParams();
   const {account, cleanBasket, removeOrder, updateOrder} = useAccount();
 
-  const [order, setOrder] = useState<Order | undefined>(account.orders.find((o) => o.id === id));
+  const [order, setOrder] = useState<Order | undefined>(undefined);
   const {books, loading} = useBooks();
 
   if(loading) {

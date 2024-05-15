@@ -11,12 +11,12 @@ import { useBooks } from '../hooks/BooksProvider';
 const Reviewer: React.FC<{user: User}> = ({user}) => (
   <div className='review-user'>
     <div className='review-user-name'>
-      <img src={user.avatar} alt={user.name}></img>
-      <p className='secondary-p'>{user.name}</p>
+      <img src={user.image} alt={user.first_name}></img>
+      <p className='secondary-p'>{user.first_name}</p>
     </div>
     <div className='review-user-status'>
-      <img src={DesktopImages.find((image) => image.theme === user.status.title)?.image} alt={user.status.name}></img>
-      <p className='secondary-p'>{user.status.name}</p>
+      <img src={DesktopImages.find((image) => image.theme === user.user_status.title)?.image} alt={user.user_status.name}></img>
+      <p className='secondary-p'>{user.user_status.name}</p>
     </div>
   </div>
 );

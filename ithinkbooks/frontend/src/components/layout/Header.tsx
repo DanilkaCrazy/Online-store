@@ -14,6 +14,7 @@ import themes from '../mock/themes.json';
 import Book from '../Book';
 import SmallBookComponent from '../books/SmallBookComponent';
 import axios from 'axios';
+import { useAccount } from '../hooks/AccountProvider';
 
 const SEARCH_INTERVAL = 750;
 
@@ -88,6 +89,7 @@ const Search: React.FC<{}> = () => {
 
 const Header: React.FC<{}> = () => {
   const {toggleLightMode} = useLightMode();
+  const {account} = useAccount();
 
   return (
     <header>
@@ -96,9 +98,9 @@ const Header: React.FC<{}> = () => {
       <Search/>
       <Link to='/quiz/theme' className='main-button'>Построить роадмап</Link>
       <button onClick={toggleLightMode}><img src={DarkMode} alt='Тёмный режим'/></button>
-      <Link to='/account/favorities'><img src={StarIcon} alt='Избранное'/></Link>
-      <Link to='/account/basket'><img src={BasketIcon} alt='Корзина'/></Link>
-      <Link to='/account/basket'><img src={AccountIcon} alt='Личный кабиент'/></Link>
+      <Link to={account.id < 0 ? '/log-in' : '/account/favorities'}><img src={StarIcon} alt='Избранное'/></Link>
+      <Link to={account.id < 0 ? '/log-in' : '/account/basket'}><img src={BasketIcon} alt='Корзина'/></Link>
+      <Link to={account.id < 0 ? '/log-in' : '/account/basket'}><img src={AccountIcon} alt='Личный кабиент'/></Link>
       <Outlet/>
     </header>
   );

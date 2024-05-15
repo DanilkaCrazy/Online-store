@@ -13,9 +13,9 @@ const EditFrom: React.FC<{}> = () => {
   const {account, updateAccount} = useAccount();
 
   const [updatingAccount, setUpdatingAccount] = useState<User>({...account});
-  const [city, setCity] = useState<string | undefined>(account.city.city);
-  const [status, setStatus] = useState<string | undefined>(account.status.name);
-  const [chosenThemes, setChosenThemes] = useState<string[]>(account.branches.map((theme) => theme.shortName));
+  const [city, setCity] = useState<string | undefined>(account.location.city);
+  const [status, setStatus] = useState<string | undefined>(account.user_status.name);
+  const [chosenThemes, setChosenThemes] = useState<string[]>(account.user_directions.map((theme) => theme.shortName));
 
   const [validation, setValidation] = useState<Validation>({
     login: true,
@@ -56,8 +56,8 @@ const EditFrom: React.FC<{}> = () => {
     }
 
     const resultThemes = isChosen 
-      ? updatingAccount.branches.filter((t) => t.shortName !== foundTheme.shortName) 
-      : updatingAccount.branches.concat(foundTheme);
+      ? updatingAccount.user_directions.filter((t) => t.shortName !== foundTheme.shortName) 
+      : updatingAccount.user_directions.concat(foundTheme);
 
     setChosenThemes(resultThemes.map((theme) => theme.shortName));
     setUpdatingAccount((value) => ({...value, branches: resultThemes}))
@@ -73,19 +73,19 @@ const EditFrom: React.FC<{}> = () => {
         <h2>Редактирование профиля</h2>
         
         <AvatarField
-          accountAvatar={updatingAccount.avatar}
-          changeAccount={(resultImage: string) => setUpdatingAccount({...updatingAccount, avatar: resultImage})}/>
+          accountAvatar={updatingAccount.image}
+          changeAccount={(resultImage: string) => setUpdatingAccount({...updatingAccount, image: resultImage})}/>
 
         <TextField 
           fieldHeader='Имя*'
           type='text'
           placeholder='Введите имя'
-          defaultValue={updatingAccount.name}
+          defaultValue={updatingAccount.first_name}
           isValid={validation.name}
           warning={fieldsValidation.name.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation,  name: fieldsValidation.name.isValid(evt.target.value)});
-            setUpdatingAccount({...updatingAccount, name: evt.target.value.trim()});
+            setUpdatingAccount({...updatingAccount, first_name: evt.target.value.trim()});
           }}/>
 
         <TextField
@@ -103,13 +103,13 @@ const EditFrom: React.FC<{}> = () => {
         <TextField
           fieldHeader='Номер Телефона*'
           type='tel'
-          defaultValue={updatingAccount.phoneNumber}
+          defaultValue={updatingAccount.phone_number}
           placeholder='Введите номер телефона'
           isValid={validation.phoneNumber}
           warning={fieldsValidation.phoneNumber.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation, phoneNumber: fieldsValidation.phoneNumber.isValid(evt.target.value)});
-            setUpdatingAccount({...updatingAccount, phoneNumber: evt.target.value.trim()});
+            setUpdatingAccount({...updatingAccount, phone_number: evt.target.value.trim()});
           }}/>
 
         <DateField
@@ -137,9 +137,9 @@ const EditFrom: React.FC<{}> = () => {
 
         <TextareaField
           fieldHeader='О себе'
-          defaultValue={updatingAccount.bio}
+          defaultValue={updatingAccount.about_self}
           placeholder='Введите информацию о себе'
-          onChange={(evt: React.ChangeEvent<HTMLTextAreaElement>) => setUpdatingAccount({...updatingAccount, bio: evt.target.value})}/>
+          onChange={(evt: React.ChangeEvent<HTMLTextAreaElement>) => setUpdatingAccount({...updatingAccount, about_self: evt.target.value})}/>
 
         <div className='buttons-group'>
           <Link 

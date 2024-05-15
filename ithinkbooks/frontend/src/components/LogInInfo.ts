@@ -1,4 +1,4 @@
 export default interface LogInInfo {
-  login: string;
+  username: string;
   password: string;
 };
