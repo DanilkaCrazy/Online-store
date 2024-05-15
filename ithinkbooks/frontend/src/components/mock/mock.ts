@@ -62,7 +62,7 @@ const users = Array.from({length: COUNT}, (_v, i) => {
         email: faker.internet.email(),
         phone_number: faker.phone.number(),
         birthdate: faker.date.birthdate({ min: 18, max: 80, mode: 'age' }),
-        second_name: '',
+        last_name: '',
         is_staff: false,
         is_active: false,
         is_superuser: false
@@ -135,7 +135,7 @@ const personalAccount: User = {
     email: faker.internet.email(),
     phone_number: faker.phone.number(),
     birthdate: faker.date.birthdate({ min: 18, max: 80, mode: 'age' }),
-    second_name: '',
+    last_name: '',
     is_staff: false,
     is_active: false,
     is_superuser: false

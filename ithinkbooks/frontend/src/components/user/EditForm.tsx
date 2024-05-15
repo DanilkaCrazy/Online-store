@@ -85,7 +85,7 @@ const EditFrom: React.FC<{}> = () => {
           warning={fieldsValidation.name.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation,  name: fieldsValidation.name.isValid(evt.target.value)});
-            setUpdatingAccount({...updatingAccount, first_name: evt.target.value.trim()});
+            setUpdatingAccount({...updatingAccount, first_name: evt.target.value.trim(), last_name: evt.target.value});
           }}/>
 
         <TextField

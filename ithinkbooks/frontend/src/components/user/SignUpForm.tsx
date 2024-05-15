@@ -11,7 +11,7 @@ import AvatarField from './AvatarField';
 import { randomInteger } from '../mock/mock';
 
 const SignUpForm: React.FC<{}> = () => {
-  const {signUp} = useAccount();
+  const {signUp, addImage} = useAccount();
 
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
 
@@ -72,7 +72,10 @@ const SignUpForm: React.FC<{}> = () => {
 
         <AvatarField
           accountAvatar={newAccount.image}
-          changeAccount={(resultImage: string) => setNewAccount({...newAccount, image: resultImage})}/>
+          changeAccount={(resultImageUrl: string, data: FormData) => {
+            setNewAccount({...newAccount, image: resultImageUrl});
+            addImage(data);
+          }}/>
 
         <TextField 
           fieldHeader='Логин*'
@@ -116,7 +119,7 @@ const SignUpForm: React.FC<{}> = () => {
           warning={fieldsValidation.name.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation,  name: fieldsValidation.name.isValid(evt.target.value)});
-            setNewAccount({...newAccount, first_name: evt.target.value.trim()});
+            setNewAccount({...newAccount, first_name: evt.target.value.trim(), last_name: evt.target.value});
           }}/>
 
         <TextField

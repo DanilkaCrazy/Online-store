@@ -30,21 +30,21 @@ const RotationButton: React.FC<{
 
 const AvatarField: React.FC<{
   accountAvatar: string,
-  changeAccount: (resultImage: string) => void
+  changeAccount: (resultImage: string, data: FormData) => void
 }> = ({accountAvatar, changeAccount}) => {
-  const [imageUrl, setImageUrl] = useState<string>('');
+  const [image, setImage] = useState<File | undefined>(undefined);
   const [scale, setScale] = useState<number>(AvatarProps.SCALE);
   const [angle, setAngle] = useState<number>(AvatarProps.ROTATION_ANGLE);
   const avatar = useRef<AvatarEditor>(null);
 
-  if(!imageUrl) {
+  if(!image) {
     return (
       <ImageField
         fieldHeader='Добавить фото'
         image={accountAvatar}
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           if(evt.target.files !== null && evt.target.files.length > 0) {
-            setImageUrl(URL.createObjectURL(evt.target.files[0]))
+            setImage(evt.target.files[0])
           }
         }}/>
     );
@@ -54,7 +54,7 @@ const AvatarField: React.FC<{
     <div className='avatar-editor'>
       <AvatarEditor
         ref={avatar}
-        image={imageUrl}
+        image={image}
         width={AvatarWidth.DESKTOP}
         height={AvatarWidth.DESKTOP}
         scale={scale}
@@ -84,14 +84,23 @@ const AvatarField: React.FC<{
         <button 
           className='main-button'
           onClick={() => {
-            setImageUrl('');
-            changeAccount(!avatar.current ? imageUrl : avatar.current.getImage().toDataURL());
+            avatar.current?.getImage().toBlob((blob) => {
+              if(!blob) {
+                return;
+              }
+
+              const file = new FormData();
+              file.append('image', blob);
+
+              changeAccount(!avatar.current ? URL.createObjectURL(image) : avatar.current.getImage().toDataURL(), file)
+            }, 'images/*', 1);
+            setImage(undefined);
         }}>
           Сохранить фото
         </button>
         <button 
           className='secondary-button'
-          onClick={() => setImageUrl('')}>
+          onClick={() => setImage(undefined)}>
             Удалить фото
         </button>
       </div>

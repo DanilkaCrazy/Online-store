@@ -9,7 +9,7 @@ export default interface User {
   username: string;
   password: string;
   first_name: string;
-  second_name: string;
+  last_name: string;
   is_staff: boolean;
   is_active: boolean;
   is_superuser: boolean;

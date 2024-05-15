@@ -59,7 +59,7 @@ const ImageField: React.FC<{
       </div>
       
       <label className='image-field-input' htmlFor='avatar'>
-        <input type='file' id='avatar' onChange={onChange}/>
+        <input type='file' id='avatar' onChange={onChange} accept='image/*'/>
       </label>
     </div>
   );

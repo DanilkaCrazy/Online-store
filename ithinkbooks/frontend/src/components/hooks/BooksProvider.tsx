@@ -2,9 +2,9 @@ import React, { ReactNode, createContext, useCallback, useContext, useEffect, us
 import { randomInteger } from '../mock/mock';
 import Book from '../Book';
 import Review, { emptyReview } from '../Review';
-import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { SortBooks, SortTypes } from '../sort';
+import axiosInstance from '../Axios';
 
 const emptyBooksList: Book[] = [];
 
@@ -43,7 +43,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   };
 
   const getThemeBooks = useCallback(() => {
-    axios
+    axiosInstance
       .get(`http://127.0.0.1:8000/theme/${keys[keys.length - 1]}`)
       .then((resp) => resp.data)
       .then((data) => data.map((book: object) => ({...book, month: randomInteger(1, 12), review: !data.review ? [] : data.review.map((r: object) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))})))
@@ -55,7 +55,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, [keys]);
 
   const getBookById = useCallback(() => {
-    axios
+    axiosInstance
       .get(`http://127.0.0.1:8000/products/${keys[keys.length - 1]}`)
       .then((resp) => resp.data)
       .then((data) => ({...data, month: randomInteger(1, 12), review: !data.review ? [] : data.review.map((r: object) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))}))
@@ -64,7 +64,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, [keys]);
 
   const getBooks = useCallback(() => {
-    axios
+    axiosInstance
       .get('http://127.0.0.1:8000/products')
       .then((resp) => resp.data)
       .then((data) => data.map((book: object) => ({...book, month: randomInteger(1, 12), review: !data.review ? [] : data.review.map((r: object) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))})))
@@ -73,7 +73,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, [])
 
   const postReview = useCallback(() => {
-    axios
+    axiosInstance
       .post('http://127.0.0.1:8000/review/', newReview)
       .then((resp) => console.log(resp.data))
       .then(() => setReview(emptyReview))

@@ -13,8 +13,8 @@ import Theme from '../Theme';
 import themes from '../mock/themes.json';
 import Book from '../Book';
 import SmallBookComponent from '../books/SmallBookComponent';
-import axios from 'axios';
 import { useAccount } from '../hooks/AccountProvider';
+import axiosInstance from '../Axios';
 
 const SEARCH_INTERVAL = 750;
 
@@ -49,7 +49,7 @@ const Search: React.FC<{}> = () => {
   };
 
   const getFoundBooks = useCallback(() => {
-    axios
+    axiosInstance
       .get('http://127.0.0.1:8000/products')
       .then((resp) => resp.data)
       .then((data) => setFoundBooks(data.filter((book: Book) => book.name.toLowerCase().includes(seacrhWord))))

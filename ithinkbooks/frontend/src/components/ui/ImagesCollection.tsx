@@ -70,7 +70,7 @@ const DesktopImages = [
     image: Student
   },
   {
-    theme: 'intern',
+    theme: 'trainee',
     image: Intern
   },
   {

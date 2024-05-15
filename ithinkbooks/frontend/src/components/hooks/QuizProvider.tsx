@@ -4,7 +4,7 @@ import mockQuiz from '../roadmap/quiz.json';
 import { Answer, AnswerToQuestion, Quiz } from '../Quiz';
 import themes from '../mock/themes.json';
 import Theme from '../Theme';
-import axios from 'axios';
+import axiosInstance from '../Axios';
 
 const defaultResponce: AnswerToQuestion = {
   question: mockQuiz.question[0],
@@ -86,7 +86,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   };
 
   const getQuiz = useCallback(() => {
-    axios
+    axiosInstance
       .get('http://127.0.0.1:8000/quiz')
       .then((resp) => resp.data[0])
       .then(updateQuiz)
@@ -98,7 +98,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
       {question_id: r.question.id, answer_id: r.answer.id}
     ));
 
-    axios
+    axiosInstance
       .post(`http://127.0.0.1:8000/quiz/quizes/${quiz.id}/vote`, data)
       .then((resp) => console.log(resp.data))
       .then(() => setLoading(false))
