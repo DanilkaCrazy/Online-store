@@ -5,13 +5,13 @@ import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField}
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
-import User from '../User';
-import Validation, {fieldsValidation} from '../Validation';
+import User from '../types/User';
+import Validation, {fieldsValidation} from '../types/Validation';
 import AvatarField from './AvatarField';
 import { randomInteger } from '../mock/mock';
 
 const SignUpForm: React.FC<{}> = () => {
-  const {signUp, addImage} = useAccount();
+  const {signUp} = useAccount();
 
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
 
@@ -72,9 +72,8 @@ const SignUpForm: React.FC<{}> = () => {
 
         <AvatarField
           accountAvatar={newAccount.image}
-          changeAccount={(resultImageUrl: string, data: FormData) => {
-            setNewAccount({...newAccount, image: resultImageUrl});
-            addImage(data);
+          changeAccount={(dataUrl: string) => {
+            setNewAccount({...newAccount, image: dataUrl});
           }}/>
 
         <TextField 

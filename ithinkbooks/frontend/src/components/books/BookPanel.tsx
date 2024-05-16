@@ -1,10 +1,12 @@
 import React from 'react';
-import Book from '../Book';
+import Book from '../types/Book';
 import { useAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
+import { useBasket } from '../hooks/BasketProvider';
 
 const BookPanel: React.FC<{book: Book, roadmapId: string}> = ({book, roadmapId}) => {
-  const {putInBasket, addRoadmap, removeRoadmap, hasRoadmap} = useAccount();
+  const {addRoadmap, removeRoadmap, hasRoadmap} = useAccount();
+  const {putInBasket} = useBasket();
 
   return (
     <div className='book-panel'>

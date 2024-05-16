@@ -1,6 +1,6 @@
 import React from 'react';
 import HorizontalScroller from '../ui/HorizontalScroller';
-import Book from '../Book';
+import Book from '../types/Book';
 import { ScreensWidth } from '../utils';
 import BookComponent from './Book';
 import { useLightMode } from '../hooks/LightModeProvider';

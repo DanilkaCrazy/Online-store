@@ -2,7 +2,7 @@
 import React from 'react';
 import {Link, Outlet} from 'react-router-dom';
 import themes from '../mock/themes.json';
-import Theme from '../Theme';
+import Theme from '../types/Theme';
 import '../../css/Footer.css';
 import Logo from '../../images/footer/Logo Footer.svg';
 import TelegramIcon from '../../images/footer/telegram.svg';

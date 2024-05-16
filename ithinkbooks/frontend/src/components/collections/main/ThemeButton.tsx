@@ -1,5 +1,5 @@
 import React from 'react';
-import Theme from '../../Theme';
+import Theme from '../../types/Theme';
 import HorizontalScroller from '../../ui/HorizontalScroller';
 import { DesktopImages } from '../../ui/ImagesCollection';
 import { Link } from 'react-router-dom';

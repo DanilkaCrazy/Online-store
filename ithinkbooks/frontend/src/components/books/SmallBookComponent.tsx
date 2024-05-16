@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Book from '../Book';
+import Book from '../types/Book';
 
 const MAX_TITLE_LENGTH = 40;
 

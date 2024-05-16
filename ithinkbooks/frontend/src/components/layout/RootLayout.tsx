@@ -21,7 +21,7 @@ import Quiz from '../roadmap/Quiz';
 import QuizTheme from '../roadmap/QuizTheme';
 import QuizWarning from '../roadmap/QuizWarning';
 import { useAccount } from '../hooks/AccountProvider';
-import { MAX_ROADMAPS_COUNT } from '../User';
+import { MAX_ROADMAPS_COUNT } from '../types/User';
 import SearchedBooks from '../collections/SearchingBooks';
 
 const RootLayout: React.FC<{}> = () => {

@@ -6,20 +6,23 @@ import { LightModeProvider } from './components/hooks/LightModeProvider';
 import './App.css';
 import { AccountProvider } from './components/hooks/AccountProvider';
 import { BooksProvider } from './components/hooks/BooksProvider';
+import { BasketProvider } from './components/hooks/BasketProvider';
 
 function App() {
   return (
     <>
       <LightModeProvider>
-        <Header/>
-        <BooksProvider>
-          <AccountProvider>
-            <div className='main'>
-              <RootLayout/>
-            </div>
-          </AccountProvider>
-        </BooksProvider>
-        <Footer/>
+        <AccountProvider>
+          <Header/>
+          <BooksProvider>
+            <BasketProvider>
+              <div className='main'>
+                <RootLayout/>
+              </div>
+            </BasketProvider>
+          </BooksProvider>
+          <Footer/>
+        </AccountProvider>
       </LightModeProvider>
     </>
   );

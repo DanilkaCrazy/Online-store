@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { TextField } from '../ui/FormFields';
-import LogInInfo from '../LogInInfo';
+import LogInInfo from '../types/LogInInfo';
 import { Link } from 'react-router-dom';
-import Validation, {fieldsValidation} from '../Validation';
+import Validation, {fieldsValidation} from '../types/Validation';
 import { useAccount } from '../hooks/AccountProvider';
 
 const LogInForm: React.FC<{}> = () => {

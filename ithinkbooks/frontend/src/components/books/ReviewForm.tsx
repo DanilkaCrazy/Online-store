@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TextField, TextareaField } from '../ui/FormFields';
-import Review, { emptyReview } from '../Review';
+import Review, { emptyReview } from '../types/Review';
 import { ChangingStar } from './Star';
 import { useAccount } from '../hooks/AccountProvider';
 import { useBooks } from '../hooks/BooksProvider';

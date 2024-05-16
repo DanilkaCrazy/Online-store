@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { SortTranslations, SortTypes } from '../sort';
-import Filter, { defaultFilter } from '../Filter';
+import Filter, { defaultFilter } from '../types/Filter';
 import { MAX_PRICE, MIN_PRICE } from '../utils';
 import ReactSlider from 'react-slider';
 import { MAX_YEAR, MIN_YEAR } from '../date-utils';

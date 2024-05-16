@@ -1,6 +1,6 @@
 import React from 'react';
 import BookComponent from '../books/Book';
-import Book from '../Book';
+import Book from '../types/Book';
 import { useAccount } from '../hooks/AccountProvider';
 import { getFormatedWithWordsDate } from '../date-utils';
 import { useBooks } from '../hooks/BooksProvider';

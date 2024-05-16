@@ -4,8 +4,8 @@ import { useParams } from 'react-router-dom';
 import FiltersMenu from './FiltersMenu';
 import { SortBooks, SortTypes } from '../sort';
 import BookComponent from '../books/Book';
-import Filter, { filterBooks } from '../Filter';
-import Book from '../Book';
+import Filter, { filterBooks } from '../types/Filter';
+import Book from '../types/Book';
 
 const SearchedBooks: React.FC<{}> = () => {
   const {books, loading} = useBooks();

@@ -1,16 +1,11 @@
 import React from 'react';
 import BookComponent from '../books/Book';
-import Order from '../Order';
-import { nanoid } from 'nanoid';
 import { Link } from 'react-router-dom';
 import { getArraySum } from '../utils';
-import { useAccount } from '../hooks/AccountProvider';
-import { useBooks } from '../hooks/BooksProvider';
-import Book from '../Book';
+import { useBasket } from '../hooks/BasketProvider';
 
 const Basket: React.FC<{}> = () => {
-  const {account, cleanBasket, addOrder} = useAccount();
-  const {books, loading} = useBooks();
+  const {carts, loading} = useBasket();
 
   if(loading) {
     <div className='basket-page'>
@@ -18,9 +13,7 @@ const Basket: React.FC<{}> = () => {
     </div>
   }
 
-  /*const foundBooks: Book[] = /*books.filter((book) => account.booksInBasket.some((id) => id === book.id)) [];
-
-  if(!foundBooks.length) {
+  if(!carts.length) {
     return (
       <div className='basket-page'>
         <h2>Ваша корзина пуста</h2>
@@ -28,9 +21,9 @@ const Basket: React.FC<{}> = () => {
     );
   }
 
-  const totalPrice = getArraySum(foundBooks.map((book) => book.price));
+  const totalPrice = getArraySum(carts.map((cart) => cart.product.price * cart.quantity));
 
-  const order: Order = {
+  /*const order: Order = {
     id: nanoid(),
     city: account.location,
     address: account.location.addresses[0],
@@ -47,26 +40,24 @@ const Basket: React.FC<{}> = () => {
     if(!account.orders.find((o) => o.id === order.id)) {
       addOrder(order);
     }
-  };
+  };*/
 
   return (
     <div className='basket-page'>
       <div className='buttons-group'>
         <Link 
-          to={`/order/${order.id}`} 
+          to={`/order/`} 
           className='main-button' 
-          onClick={() => generateOrder(account.booksInBasket, totalPrice)}>
+          onClick={() => {}}>
             Купить все
         </Link>
-        <button className='secondary-button' onClick={cleanBasket}>Убрать все</button>
+        {/*<button className='secondary-button' onClick={cleanBasket}>Убрать все</button>*/}
       </div>
       <div className='books-collection'>
-        {foundBooks.map((book, i) => <BookComponent key={i} book={book} isInBasket/>)}
+        {carts.map((cart, i) => <BookComponent key={i} book={cart.product} isInBasket/>)}
       </div>
     </div>
-  );*/
-
-  return <></>
+  );
 };
 
 export default Basket;

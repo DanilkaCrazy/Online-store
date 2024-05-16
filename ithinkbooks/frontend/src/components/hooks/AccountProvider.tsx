@@ -1,15 +1,15 @@
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { personalAccount } from '../mock/mock';
-import User from '../User';
-import Order from '../Order';
+import User from '../types/User';
+import Order from '../types/Order';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
-import Review, { emptyReview } from '../Review';
-import Book from '../Book';
+import Review, { emptyReview } from '../types/Review';
+import Book from '../types/Book';
 import { useLocation, useNavigate } from 'react-router-dom';
-import LogInInfo from '../LogInInfo';
-import axiosInstance from '../Axios';
+import LogInInfo from '../types/LogInInfo';
+import axiosInstance, { getCookie } from '../Axios';
 
 const emptyAccount: User = {
   id: -1,
@@ -35,10 +35,6 @@ const defaultAccountValue = {
   loading: false,
   reviews: [emptyReview],
   updateAccount: (update: object) => {},
-  addImage: (data: FormData) => {},
-  putInBasket: (book: Book) => {},
-  removeFromBasket: (bookId: number) => {},
-  cleanBasket: () => {},
   markAsFavotite: (bookId: number) => {},
   addOrder: (order: Order) => {},
   removeOrder: (order: Order) => {},
@@ -51,6 +47,7 @@ const defaultAccountValue = {
   logIn: (info: LogInInfo) => {},
   logOut: (user: User) => {},
   signUp: (user: User) => {},
+  editAccount: (changeUser: User) => {}
 };
 
 const AccountContext = createContext(defaultAccountValue);
@@ -58,19 +55,21 @@ const AccountContext = createContext(defaultAccountValue);
 const useAccount = () => useContext(AccountContext);
 
 const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
-  const [account, setAccount] = useState<User>(personalAccount);
+  const [account, setAccount] = useState<User>(emptyAccount);
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
   const [logInInfo, setLogInInfo] = useState<LogInInfo>({username: '', password: ''});
 
   const location = useLocation();
-  const endpoint = location.pathname.split('/').pop();
+  const endpoint = useMemo(() => location.pathname.split('/').pop(), [location.pathname]);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [imageData, setImageData] = useState<FormData | undefined>(undefined);
+  const [imageData, setImageData] = useState<FormData>();
   const [booksInBasket, setBooksInBasket] = useState<Book[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]); //mock reviews 
+
+  const token = getCookie('csrftoken');
 
   const updateAccount = (update: object) => {
     const updatedAccount: User = {
@@ -78,22 +77,6 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       ...update
     }
     setAccount(updatedAccount);
-  };
-
-  const addImage = (data: FormData) => {
-    setImageData(data);
-  };
-
-  const putInBasket = (book: Book) => {
-    setBooksInBasket([...booksInBasket, book]);
-  };
-
-  const removeFromBasket = (bookId: number) => {
-    setBooksInBasket(booksInBasket.filter((book) => book.id !== bookId));
-  };
-
-  const cleanBasket = () => {
-    setBooksInBasket([]);
   };
 
   const markAsFavotite = (bookId: number) => {
@@ -151,10 +134,18 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setNewAccount(newUser);
   };
 
+  const editAccount = (changeUser: User) => {
+    setNewAccount(changeUser);
+  };
+
   // account fetch
   const getAccount = useCallback(() =>  {
     axiosInstance
-      .get(`http://127.0.0.1:8000/users/user/${logInInfo.username}`)
+      .get(`http://127.0.0.1:8000/users/user/${logInInfo.username}`, {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
       .then((resp) => resp.data)
       .then((data) => setAccount(
         {
@@ -172,7 +163,11 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const postLogIn = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/users/login', logInInfo)
+      .post('http://127.0.0.1:8000/users/login', logInInfo, {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
       .then(resp => console.log(resp.data))
       .then(() => getAccount())
       .catch((err) => console.error(err));
@@ -185,14 +180,20 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
         user_status: newAccount.user_status.title,
         user_directions: newAccount.user_directions.map((theme) => theme.title),
         location: newAccount.location.city,
-        birthdate: `${newAccount.birthdate.getFullYear()}-${newAccount.birthdate.getMonth()}-${newAccount.birthdate.getDay()}`,
-        image: imageData?.get('image')
+        birthdate: `${newAccount.birthdate.getFullYear()}-${newAccount.birthdate.getMonth()}-${newAccount.birthdate.getDay()}`
+      }, {
+        headers: {
+          'X-CSRFToken': token
+        },
+        formSerializer: {
+          indexes: null
+        }
       })
-      .then((resp) => console.log(resp.data))
       .then(() => updateAccount(newAccount))
       .then(() => setImageData(undefined))
       .then(() => setLoading(false))
       .then(() => navigate('/account/basket'))
+      .catch((reason) => console.log(reason));
   }, [newAccount]);
   
   useEffect(() => {
@@ -232,10 +233,6 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       loading,
       reviews,
       updateAccount, 
-      addImage,
-      putInBasket, 
-      removeFromBasket, 
-      cleanBasket, 
       markAsFavotite, 
       addOrder, 
       removeOrder,
@@ -247,7 +244,8 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       removeRoadmap,
       logIn,
       logOut,
-      signUp}}>
+      signUp,
+      editAccount}}>
         {children}
     </AccountContext.Provider>
   );

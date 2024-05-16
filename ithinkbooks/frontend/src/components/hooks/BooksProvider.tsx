@@ -1,7 +1,7 @@
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { randomInteger } from '../mock/mock';
-import Book from '../Book';
-import Review, { emptyReview } from '../Review';
+import Book from '../types/Book';
+import Review, { emptyReview } from '../types/Review';
 import { useLocation } from 'react-router-dom';
 import { SortBooks, SortTypes } from '../sort';
 import axiosInstance from '../Axios';
@@ -91,16 +91,16 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   useEffect(() => {
     setLoading(true);
 
-    if(location.pathname.includes('themes')) {
+    if(keys.includes('themes')) {
       getThemeBooks();
-    } else if(location.pathname.includes('book')) {
+    } else if(keys.includes('book')) {
       if(newReview.id < 0) {
         getBookById();
       }
     } else {
       getBooks();
     }
-  }, [getThemeBooks, getBookById, getBooks, location.pathname, newReview]);
+  }, [getThemeBooks, getBookById, getBooks, keys, newReview]);
 
   return (
     <BooksContext.Provider value={{books, filteredBooks, loading, updateBooks, updateBook, addBookReview}}>

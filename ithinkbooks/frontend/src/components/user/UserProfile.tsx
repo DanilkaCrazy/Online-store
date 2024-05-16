@@ -1,5 +1,5 @@
 import React from 'react';
-import User from '../User';
+import User from '../types/User';
 import { DesktopImages } from '../ui/ImagesCollection';
 import { declineNounAfterNumber } from '../utils';
 import EditorImage from '../../images/pages/Pen.svg';

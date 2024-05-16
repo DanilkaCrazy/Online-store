@@ -1,7 +1,7 @@
 import Book from "./Book";
-import { MAX_YEAR, MIN_YEAR } from "./date-utils";
-import { SortBooks, SortTypes } from "./sort";
-import { MAX_PRICE, MIN_PRICE } from "./utils";
+import { MAX_YEAR, MIN_YEAR } from "../date-utils";
+import { SortBooks, SortTypes } from "../sort";
+import { MAX_PRICE, MIN_PRICE } from "../utils";
 
 export default interface Filter {
   sortType: string;

@@ -5,12 +5,12 @@ import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField}
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
-import User from '../User';
-import Validation, { fieldsValidation } from '../Validation';
+import User from '../types/User';
+import Validation, { fieldsValidation } from '../types/Validation';
 import AvatarField from './AvatarField';
 
 const EditFrom: React.FC<{}> = () => {
-  const {account, updateAccount} = useAccount();
+  const {account, editAccount} = useAccount();
 
   const [updatingAccount, setUpdatingAccount] = useState<User>({...account});
   const [city, setCity] = useState<string | undefined>(account.location.city);
@@ -64,7 +64,7 @@ const EditFrom: React.FC<{}> = () => {
   }
 
   const onFormSubmit = () => {
-    updateAccount(updatingAccount);
+    editAccount(updatingAccount);
   };
 
   return (
@@ -74,7 +74,9 @@ const EditFrom: React.FC<{}> = () => {
         
         <AvatarField
           accountAvatar={updatingAccount.image}
-          changeAccount={(resultImage: string) => setUpdatingAccount({...updatingAccount, image: resultImage})}/>
+          changeAccount={(dataUrl: string) => {
+            setUpdatingAccount({...updatingAccount, image: dataUrl});
+          }}/>
 
         <TextField 
           fieldHeader='Имя*'

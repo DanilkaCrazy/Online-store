@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAccount } from '../hooks/AccountProvider';
 import roadmap from '../roadmap/roadmap.json';
-import { Roadmap } from '../Roadmap';
+import { Roadmap } from '../types/Roadmap';
 import RoadmapIcon from '../roadmap/RoadmapIcon';
 
 const RoadmapsList: React.FC<{}> = () => {

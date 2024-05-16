@@ -3,17 +3,18 @@ import Stub from '../layout/Stub';
 import { getAverageNumber, declineNounAfterNumber } from '../utils';
 import ReviewComponent from './Review';
 import { isReleased } from '../date-utils';
-import Book from '../Book';
+import Book from '../types/Book';
 import {Star} from './Star';
 import { Dropdown } from 'react-bootstrap';
 import { SortTypes, SortTranslations, SortReviews } from '../sort';
 import { useAccount } from '../hooks/AccountProvider';
 import months from '../mock/months.json';
 import ReviewForm from './ReviewForm';
-import User from '../User';
+import User from '../types/User';
 import { useBooks } from '../hooks/BooksProvider';
 import { BookFormat, BookFormats, FileType } from '../mock/mock';
 import themes from '../mock/themes.json';
+import { useBasket } from '../hooks/BasketProvider';
 
 const BookPromo: React.FC<{
   book: Book, 
@@ -141,10 +142,12 @@ const BookReviewsBlock: React.FC<{
 
 const BookPage: React.FC<{}> = () => {
   const {books, loading} = useBooks();
+  const {account, markAsFavotite} = useAccount();
+  const {putInBasket} = useBasket();
+  
   const book = books[0];
 
   const [isReviewFormOpened, setReviewFormOpen] = useState<boolean>(false);
-  const {account, putInBasket, markAsFavotite} = useAccount();
   const [chosenFormat, setFormat] = useState<string>(!book ? 'online' : book.book_format);
 
   if(loading) {

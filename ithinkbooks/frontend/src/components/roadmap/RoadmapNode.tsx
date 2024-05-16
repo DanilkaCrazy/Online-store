@@ -1,6 +1,6 @@
 import React from 'react';
-import Book from '../Book';
-import { RoadmapNode } from '../Roadmap';
+import Book from '../types/Book';
+import { RoadmapNode } from '../types/Roadmap';
 import NodeStar from '../../images/pages/NodeStar.svg';
 import NodeStarDark from '../../images/pages/NodeStarDark.svg';
 

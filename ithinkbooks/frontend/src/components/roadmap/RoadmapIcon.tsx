@@ -1,5 +1,5 @@
 import React from 'react';
-import { Roadmap } from '../Roadmap';
+import { Roadmap } from '../types/Roadmap';
 import themes from '../mock/themes.json';
 import { getFormatedWithWordsDate } from '../date-utils';
 import { Link } from 'react-router-dom';

@@ -1,10 +1,10 @@
 import { faker } from '@faker-js/faker';
 import themes from './themes.json';
 import statuses from './statuses.json';
-import Theme from '../Theme';
-import User from '../User';
+import Theme from '../types/Theme';
+import User from '../types/User';
 import cities from './cities.json';
-import Review from '../Review';
+import Review from '../types/Review';
 
 const COUNT = 20;
 

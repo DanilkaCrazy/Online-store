@@ -114,3 +114,9 @@
 .empty-reviews-block {
   width: 100%;
 }
+
+.copy-amount {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}

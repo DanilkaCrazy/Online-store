@@ -14,15 +14,13 @@ const getCookie = (name: string) => {
     }
     return cookieValue;
 }
-const csrftoken = getCookie('csrftoken');
 
 const baseUrl = 'http://127.0.0.1:8000/';
 const axiosInstance = axios.create({
     baseURL: baseUrl, 
-    timeout: 5000, 
-    headers: {
-        'X-CSRFToken': csrftoken
-    }
+    timeout: 5000
 });
 
 export default axiosInstance;
+
+export {getCookie};

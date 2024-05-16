@@ -1,5 +1,5 @@
-import Book from "./Book";
-import Review, { getVoteValue } from "./Review";
+import Book from "./types/Book";
+import Review, { getVoteValue } from "./types/Review";
 import { getAverageNumber } from "./utils";
 
 const SortTypes = {

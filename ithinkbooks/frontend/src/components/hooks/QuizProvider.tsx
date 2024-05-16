@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import mockQuiz from '../roadmap/quiz.json';
-import { Answer, AnswerToQuestion, Quiz } from '../Quiz';
+import { Answer, AnswerToQuestion, Quiz } from '../types/Quiz';
 import themes from '../mock/themes.json';
-import Theme from '../Theme';
+import Theme from '../types/Theme';
 import axiosInstance from '../Axios';
 
 const defaultResponce: AnswerToQuestion = {

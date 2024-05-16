@@ -30,7 +30,7 @@ const RotationButton: React.FC<{
 
 const AvatarField: React.FC<{
   accountAvatar: string,
-  changeAccount: (resultImage: string, data: FormData) => void
+  changeAccount: (dataUrl: string) => void
 }> = ({accountAvatar, changeAccount}) => {
   const [image, setImage] = useState<File | undefined>(undefined);
   const [scale, setScale] = useState<number>(AvatarProps.SCALE);
@@ -84,16 +84,9 @@ const AvatarField: React.FC<{
         <button 
           className='main-button'
           onClick={() => {
-            avatar.current?.getImage().toBlob((blob) => {
-              if(!blob) {
-                return;
-              }
-
-              const file = new FormData();
-              file.append('image', blob);
-
-              changeAccount(!avatar.current ? URL.createObjectURL(image) : avatar.current.getImage().toDataURL(), file)
-            }, 'images/*', 1);
+            if(avatar.current) {
+              changeAccount(avatar.current.getImage().toDataURL('image/*', 1));
+            }
             setImage(undefined);
         }}>
           Сохранить фото

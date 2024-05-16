@@ -1,10 +1,10 @@
 import React from 'react';
-import Review from '../Review';
+import Review from '../types/Review';
 import {Star} from './Star';
 import VoteArrow from '../../images/pages/desktop/VoteArrow.svg';
 import '../../css/Review.css';
-import Book from '../Book';
-import User from '../User';
+import Book from '../types/Book';
+import User from '../types/User';
 import { DesktopImages } from '../ui/ImagesCollection';
 import { useBooks } from '../hooks/BooksProvider';
 

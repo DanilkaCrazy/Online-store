@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Book from '../Book';
+import Book from '../types/Book';
 import OrderedBook from '../books/OrderedBook';
 import { Link, useParams } from 'react-router-dom';
 import { useAccount } from '../hooks/AccountProvider';
 import { DropdownField } from '../ui/FormFields';
 import { useBooks } from '../hooks/BooksProvider';
-import Order from '../Order';
+import Order from '../types/Order';
 
 const OrderedBooks: React.FC<{books: Book[]}> = ({books}) => (
   <div className='form-field'>
@@ -20,7 +20,7 @@ const OrderedBooks: React.FC<{books: Book[]}> = ({books}) => (
 
 const OrderForm: React.FC<{}> = () => {
   const {id} = useParams();
-  const {account, cleanBasket, removeOrder, updateOrder} = useAccount();
+  const {account, removeOrder, updateOrder} = useAccount();
 
   const [order, setOrder] = useState<Order | undefined>(undefined);
   const {books, loading} = useBooks();
@@ -48,7 +48,7 @@ const OrderForm: React.FC<{}> = () => {
   const onFormSubmit = () => {
     if(order.booksId.length) {
       updateOrder(order);
-      cleanBasket();
+      //cleanBasket();
     }
   };
 

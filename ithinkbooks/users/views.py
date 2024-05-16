@@ -7,19 +7,30 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
+from django.core.files.base import ContentFile
+import base64
+from uuid import uuid4
+
+def base64_to_image(base64_string):
+    format, imgstr = base64_string.split(';base64,')
+    ext = format.split('/')[-1]
+    return ContentFile(base64.b64decode(imgstr), name=uuid4().hex + "." + ext)
+
 # Create your views here.
 #Регистрация
-class RegisterUser(CreateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserRegistrationSerializer
-    permission_classes = (permissions.AllowAny, )
-#class RegisterUser(APIView):
-    #def post(self, request):
-        #user = UserSerializer(data=request.data)
-        #if user.is_valid():
-         #   user.save()
-            #login(request, user)
-        #return Response(status=201)
+class RegisterUser(APIView):
+    #queryset = User.objects.all()
+    #serializer_class = UserRegistrationSerializer
+    #permission_classes = (permissions.AllowAny, )
+	permission_classes = (permissions.AllowAny,)
+	def post(self, request):
+		data = request.data
+		data['image'] = base64_to_image(request.data['image'])
+		serializer = UserRegistrationSerializer(data=data)
+		if (serializer.is_valid(raise_exception=True)):
+			user = serializer.create(data)
+			login(request, user)
+			return Response(serializer.data, status=status.HTTP_200_OK) 
 #Выход
 class UserLogout(APIView):
 	def post(self, request):

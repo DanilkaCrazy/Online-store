@@ -5,7 +5,7 @@ import { useBooks } from '../hooks/BooksProvider';
 import FiltersMenu from './FiltersMenu';
 import { useParams } from 'react-router-dom';
 import themes from '../mock/themes.json';
-import Filter, { filterBooks } from '../Filter';
+import Filter, { filterBooks } from '../types/Filter';
 
 const ThemeCollection: React.FC<{}> = () => {
   const {books, filteredBooks, loading, updateBooks} = useBooks();

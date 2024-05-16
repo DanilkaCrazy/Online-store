@@ -1,5 +1,5 @@
 import React from 'react';
-import { Answer, AnswerToQuestion, Question } from '../Quiz';
+import { Answer, AnswerToQuestion, Question } from '../types/Quiz';
 import { useQuiz } from '../hooks/QuizProvider';
 import { Link } from 'react-router-dom';
 

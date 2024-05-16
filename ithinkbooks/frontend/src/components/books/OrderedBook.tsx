@@ -1,5 +1,5 @@
 import React from 'react';
-import Book from '../Book';
+import Book from '../types/Book';
 
 const OrderedBook: React.FC<{book: Book}> = ({book}) => (
   <div className='ordered-book'>

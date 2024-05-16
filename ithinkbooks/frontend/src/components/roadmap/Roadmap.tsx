@@ -5,9 +5,9 @@ import themes from '../mock/themes.json';
 import {NodeBook, Branch} from './RoadmapNode';
 import { useBooks } from '../hooks/BooksProvider';
 import '../../css/Roadmap.css';
-import Book, { emptyBook } from '../Book';
+import Book, { emptyBook } from '../types/Book';
 import BookPanel from '../books/BookPanel';
-import { Roadmap } from '../Roadmap';
+import { Roadmap } from '../types/Roadmap';
 import { useParams } from 'react-router-dom';
 
 const RoadmapPage: React.FC<{}> = () => {
