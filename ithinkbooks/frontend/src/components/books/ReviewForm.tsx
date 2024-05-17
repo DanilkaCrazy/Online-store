@@ -5,6 +5,7 @@ import { ChangingStar } from './Star';
 import { useAccount } from '../hooks/AccountProvider';
 import { useBooks } from '../hooks/BooksProvider';
 import { randomInteger } from '../mock/mock';
+import { getRandomId } from '../utils';
 
 const ReviewForm: React.FC<{ 
   bookId: number,
@@ -12,7 +13,7 @@ const ReviewForm: React.FC<{
 }> = ({bookId, setFormOpened}) => {
   const {account, addReview} = useAccount();
   const {addBookReview} = useBooks();
-  const [newReview, setNewReview] = useState<Review>({...emptyReview, user: account, id: randomInteger(100, 99999), product: bookId});
+  const [newReview, setNewReview] = useState<Review>({...emptyReview, user: account, id: getRandomId(), product: bookId});
 
   const onRatingChange = ((star: number) => {
     setNewReview({...newReview, star});

@@ -10,7 +10,7 @@ import { SortTypes, SortTranslations, SortReviews } from '../sort';
 import { useAccount } from '../hooks/AccountProvider';
 import months from '../mock/months.json';
 import ReviewForm from './ReviewForm';
-import User from '../types/User';
+import { User } from '../types/User';
 import { useBooks } from '../hooks/BooksProvider';
 import { BookFormat, BookFormats, FileType } from '../mock/mock';
 import themes from '../mock/themes.json';

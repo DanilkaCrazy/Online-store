@@ -54,4 +54,6 @@ const declineNounAfterNumber = (number: number, nominative: string, genitiveSing
   return genitivePlural;
 }
 
-export {getArraySum, getAverageNumber, declineNounAfterNumber, ScreensWidth, AvatarWidth, MIN_PRICE, MAX_PRICE};
+const getRandomId = () => Date.now() % 1000;
+
+export {getArraySum, getAverageNumber, declineNounAfterNumber, getRandomId, ScreensWidth, AvatarWidth, MIN_PRICE, MAX_PRICE};

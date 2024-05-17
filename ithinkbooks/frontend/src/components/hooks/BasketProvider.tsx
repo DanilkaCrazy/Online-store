@@ -1,9 +1,11 @@
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
-import Cart, { emptyCart } from '../types/Cart';
-import { useLocation } from 'react-router-dom';
+import { Cart, CartResponce, emptyCart } from '../types/Cart';
 import { useAccount } from './AccountProvider';
 import Book from '../types/Book';
 import axiosInstance, { getCookie } from '../Axios';
+import { randomInteger } from '../mock/mock';
+import { getRandomId } from '../utils';
+import { useBooks } from './BooksProvider';
 
 const emptyCartsList: Cart[] = [];
 
@@ -21,7 +23,8 @@ const BasketContext = createContext(defaultBasketContext);
 const useBasket = () => useContext(BasketContext);
 
 const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
-  const {account} = useAccount();
+  const {account, getResponceFromUser} = useAccount();
+  const {books} = useBooks();
 
   const [carts, setCarts] = useState<Cart[]>([]);
   const [cart, setCart] = useState<Cart>(emptyCart);
@@ -34,6 +37,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
     if(!foundCart) {
       const newCart: Cart = {
+        id: getRandomId(),
         user: account.id,
         product: book,
         quantity: 1,
@@ -68,6 +72,32 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
     return foundCart ? foundCart.quantity : 0;
   };
 
+  // data fecth
+
+  const getCartResponce = () => (
+    {
+      ...cart, 
+      user: getResponceFromUser(account),
+      product_id: cart.product.id,
+      cart_id: cart.id
+    }
+  );
+
+  const fixBookData = (data: Book | undefined) => {
+      if(!data) {
+        return undefined;
+      }
+      return (
+        {
+          ...data, 
+          month: randomInteger(1, 12), 
+          review: !data.review 
+            ? [] 
+            : data.review.map((r: object) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))
+        }
+      );
+    };
+
   const getCarts = useCallback(() => {
     axiosInstance
       .get('http://127.0.0.1:8000/cart/items', {
@@ -76,48 +106,52 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         }
       })
       .then((resp) => resp.data)
-      .then(setCarts)
+      .then((data) => setCarts(data.map((c: CartResponce) => ({
+        ...c,
+        user: c.user.id,
+        product: fixBookData(books.find((book) => book.id === c.product))
+      }))))
       .then(() => setLoading(false));
-  }, []);
+  }, [token]);
 
   const postCart = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/cart/items', {...cart, product: cart.product.id}, {
+      .post('http://127.0.0.1:8000/cart/items', getCartResponce(), {
         headers: {
           'X-CSRFToken': token
         }
       })
       .then(() => setCarts(carts.concat(cart)))
       .then(() => setLoading(false));
-  }, [cart]);
+  }, [cart, token]);
 
   const changeCart = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/cart/change', {...cart, porduct: cart.product.id}, {
+      .post('http://127.0.0.1:8000/cart/change', getCartResponce(), {
         headers: {
           'X-CSRFToken': token
         }
       })
       .then(() => setCarts(carts.map((c) => c.product.id === cart.product.id ? cart : c)))
       .then(() => setLoading(false));
-  }, [cart]);
+  }, [cart, token]);
 
   const removeCart = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/cart/remove', {...cart, product: cart.product.id}, {
+      .post('http://127.0.0.1:8000/cart/remove', getCartResponce(), {
         headers: {
           'X-CSRFToken': token
         }
       })
-      .then(() => setCarts(carts.filter((c) => c.product.id === cart.product.id)))
+      .then(() => setCarts(carts.filter((c) => c.id !== cart.id)))
       .then(() => setLoading(false));
-  }, [cart]);
+  }, [cart, token]);
 
   useEffect(() => {
     if(account.id >= 0) {
       setLoading(true);
 
-      if(carts.includes(cart)) {
+      if(carts.filter((c) => c.id === cart.id).length) {
         cart.quantity > 0 ? changeCart() : removeCart();
       } else {
         postCart();
@@ -128,9 +162,11 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   useEffect(() => {
     if(account.id >= 0 && !carts.length) {
       setLoading(true);
-      getCarts();
+      if(books.length) {
+        getCarts();
+      }
     }
-  }, [cart, getCarts]);
+  }, [cart, books.length, getCarts]);
 
   return (
     <BasketContext.Provider value={{

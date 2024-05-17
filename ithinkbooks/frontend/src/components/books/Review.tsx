@@ -4,7 +4,7 @@ import {Star} from './Star';
 import VoteArrow from '../../images/pages/desktop/VoteArrow.svg';
 import '../../css/Review.css';
 import Book from '../types/Book';
-import User from '../types/User';
+import { User } from '../types/User';
 import { DesktopImages } from '../ui/ImagesCollection';
 import { useBooks } from '../hooks/BooksProvider';
 

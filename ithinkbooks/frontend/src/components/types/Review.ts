@@ -1,4 +1,4 @@
-import User from './User';
+import { User } from './User';
 
 const getVoteValue = (review: Review) => review.positiveVotes - review.negativeVotes;
 

@@ -16,12 +16,13 @@ export default interface Book {
   quantity: number;
   review: Review[];
   slug: string;
-  theme_category: string;
+  theme_category: string[];
   translator_choice: string;
   year: number;
   month: number;
   book_language: string;
   book_format: string;
+  is_favorite: boolean;
 };
 
 const emptyBook: Book = {
@@ -40,12 +41,13 @@ const emptyBook: Book = {
   quantity: 0,
   review: [],
   slug: '',
-  theme_category: '',
+  theme_category: [],
   translator_choice: '',
   year: 0,
   month: 0,
   book_language: '',
-  book_format: ''
+  book_format: '',
+  is_favorite: false
 };
 
 export {emptyBook};

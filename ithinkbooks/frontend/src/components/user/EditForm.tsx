@@ -5,7 +5,7 @@ import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField}
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
-import User from '../types/User';
+import { User } from '../types/User';
 import Validation, { fieldsValidation } from '../types/Validation';
 import AvatarField from './AvatarField';
 

@@ -5,10 +5,11 @@ import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField}
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
-import User from '../types/User';
+import { User } from '../types/User';
 import Validation, {fieldsValidation} from '../types/Validation';
 import AvatarField from './AvatarField';
 import { randomInteger } from '../mock/mock';
+import { getRandomId } from '../utils';
 
 const SignUpForm: React.FC<{}> = () => {
   const {signUp} = useAccount();
@@ -177,7 +178,7 @@ const SignUpForm: React.FC<{}> = () => {
         <button
           onClick={(evt) => {
             evt.preventDefault();
-            signUp({...newAccount, id: randomInteger(11000, 22000)});
+            signUp({...newAccount, id: getRandomId()});
           }}
           className={`main-button sign-button ${Object.values(validation).every((isValid) => isValid) ? '' : 'disabled-link'}`}>
             Зарегистрироваться

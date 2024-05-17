@@ -8,6 +8,7 @@ import '../../css/Book.css';
 import { isReleased } from '../date-utils';
 import { useAccount } from '../hooks/AccountProvider';
 import { useBasket } from '../hooks/BasketProvider';
+import { MAX_QUANTITY, MIN_QUANTITY } from '../types/Cart';
 
 const BookComponent: React.FC<{
   book: Book, 
@@ -17,6 +18,8 @@ const BookComponent: React.FC<{
   const {markAsFavotite} = useAccount();
   const {putInBasket, removeFromBasket, changeQuantity, getQuantity} = useBasket();
   const rating = getAverageNumber(book.review.map((review) => review.star));
+
+  const quantity = isInBasket ? getQuantity(book.id) : 0;
 
   return (
     <div className='book'>
@@ -49,15 +52,17 @@ const BookComponent: React.FC<{
 
       <div className='copy-amount' hidden={!isInBasket}>
         <button 
+          disabled={quantity <= MIN_QUANTITY}
           className='secondary-button' 
           onClick={() => changeQuantity(book.id, -1)}
         >
           <b>-</b>
         </button>
 
-        <p className='main-p'>{getQuantity(book.id)}</p>
+        <p className='main-p'>{quantity}</p>
 
         <button 
+          disabled={quantity >= MAX_QUANTITY}
           className='secondary-button'
           onClick={() => changeQuantity(book.id, 1)}
         >

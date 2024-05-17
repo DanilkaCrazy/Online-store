@@ -27,7 +27,8 @@ class CartItemsView(APIView):
                         cart.save()
                 else:
                     Cart.objects.create(user=request.user, product=product, quantity=serializer.validated_data['quantity'])
-        return Response(status=201)
+            return Response(status=201)
+        return Response(data=serializer.errors, status=500)
 
 class CartChangeView(APIView):
     def post(self, request):
@@ -39,6 +40,7 @@ class CartChangeView(APIView):
                 cart.quantity = serializer.validated_data['quantity']
                 cart.save()
                 return Response(status=201)
+        return Response(data=serializer.errors, status=500)
 
 class CartRemoveView(APIView):
     def post(self, request):
@@ -48,3 +50,4 @@ class CartRemoveView(APIView):
                 cart = get_object_or_404(Cart, pk = serializer.validated_data['cart_id'])
                 cart.delete()
                 return Response(status=201)
+        return Response(data=serializer.errors, status=500)

@@ -1,13 +1,11 @@
-import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { personalAccount } from '../mock/mock';
-import User from '../types/User';
+import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { User, UserResponce } from '../types/User';
 import Order from '../types/Order';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
 import Review, { emptyReview } from '../types/Review';
-import Book from '../types/Book';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LogInInfo from '../types/LogInInfo';
 import axiosInstance, { getCookie } from '../Axios';
 
@@ -47,7 +45,9 @@ const defaultAccountValue = {
   logIn: (info: LogInInfo) => {},
   logOut: (user: User) => {},
   signUp: (user: User) => {},
-  editAccount: (changeUser: User) => {}
+  editAccount: (changeUser: User) => {},
+  getUserFromResponce: (data: UserResponce) => {},
+  getResponceFromUser: (user: User) => {}
 };
 
 const AccountContext = createContext(defaultAccountValue);
@@ -59,14 +59,9 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
   const [logInInfo, setLogInInfo] = useState<LogInInfo>({username: '', password: ''});
 
-  const location = useLocation();
-  const endpoint = useMemo(() => location.pathname.split('/').pop(), [location.pathname]);
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState<boolean>(false);
-
-  const [imageData, setImageData] = useState<FormData>();
-  const [booksInBasket, setBooksInBasket] = useState<Book[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]); //mock reviews 
 
   const token = getCookie('csrftoken');
@@ -139,6 +134,33 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   };
 
   // account fetch
+  const getUserFromResponce = (data: UserResponce) => {
+    const changes = {
+      user_status: statuses.find((s) => s.title === data.user_status), 
+      user_directions: themes.filter((t) => data.user_directions.includes(t.title)),
+      location: cities.find((c) => c.city === data.location),
+    }
+
+    return ({
+      ...data,
+      user_status: !changes.user_status ? statuses[0] : changes.user_status, 
+      user_directions: !changes.user_directions ? [] : changes.user_directions,
+      location: !changes.location ? cities[0] : changes.location,
+      birthdate: new Date(data.birthdate)
+    });
+  };
+
+  const getResponceFromUser = (user: User) => {
+    return ({
+        ...user, 
+        user_status: user.user_status.title,
+        user_directions: user.user_directions.map((theme) => theme.title),
+        location: user.location.city,
+        birthdate: `${user.birthdate.getFullYear()}-${user.birthdate.getMonth()}-${user.birthdate.getDay()}`
+      }
+    );
+  };
+
   const getAccount = useCallback(() =>  {
     axiosInstance
       .get(`http://127.0.0.1:8000/users/user/${logInInfo.username}`, {
@@ -147,15 +169,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
         }
       })
       .then((resp) => resp.data)
-      .then((data) => setAccount(
-        {
-          ...data, 
-          user_status: statuses.find((s) => s.title === data.user_status), 
-          user_directions: themes.filter((t) => data.user_directions.includes(t.title)),
-          location: cities.find((c) => c.city === data.location),
-          birthdate: new Date(data.birthdate)
-        }
-      ))
+      .then((data: UserResponce) => setAccount(getUserFromResponce(data)))
       .then(() => setLogInInfo({username: '', password: ''}))
       .then(() => navigate('/account/basket'))
       .catch(console.error);
@@ -175,13 +189,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const postNewAccount = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/users/register', {
-        ...newAccount, 
-        user_status: newAccount.user_status.title,
-        user_directions: newAccount.user_directions.map((theme) => theme.title),
-        location: newAccount.location.city,
-        birthdate: `${newAccount.birthdate.getFullYear()}-${newAccount.birthdate.getMonth()}-${newAccount.birthdate.getDay()}`
-      }, {
+      .post('http://127.0.0.1:8000/users/register', getResponceFromUser(newAccount), {
         headers: {
           'X-CSRFToken': token
         },
@@ -190,7 +198,6 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
         }
       })
       .then(() => updateAccount(newAccount))
-      .then(() => setImageData(undefined))
       .then(() => setLoading(false))
       .then(() => navigate('/account/basket'))
       .catch((reason) => console.log(reason));
@@ -212,21 +219,6 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   }, [postNewAccount, newAccount]);
 
-  // basket fetch
-
-  const getBooksInBasket = useCallback(() => {
-    axiosInstance
-      .get('http://127.0.0.1:8000/cart/items')
-      .then((resp) => console.log(resp.data))
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    if(endpoint === 'basket') {
-      getBooksInBasket();
-    }
-  }, [getBooksInBasket, endpoint]);
-
   return (
     <AccountContext.Provider value={{
       account, 
@@ -245,7 +237,9 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       logIn,
       logOut,
       signUp,
-      editAccount}}>
+      editAccount,
+      getUserFromResponce,
+      getResponceFromUser}}>
         {children}
     </AccountContext.Provider>
   );

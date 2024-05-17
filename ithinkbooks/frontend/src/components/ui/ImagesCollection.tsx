@@ -62,7 +62,7 @@ const DesktopImages = [
     image: QA
   },
   {
-    theme: 'computer',
+    theme: 'CS',
     image: ComputerScience
   },
   {

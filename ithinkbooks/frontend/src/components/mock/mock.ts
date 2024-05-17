@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import themes from './themes.json';
 import statuses from './statuses.json';
 import Theme from '../types/Theme';
-import User from '../types/User';
+import { User } from '../types/User';
 import cities from './cities.json';
 import Review from '../types/Review';
 
