@@ -7,6 +7,7 @@ import './App.css';
 import { AccountProvider } from './components/hooks/AccountProvider';
 import { BooksProvider } from './components/hooks/BooksProvider';
 import { BasketProvider } from './components/hooks/BasketProvider';
+import { OrdersProvider } from './components/hooks/OrderProvider';
 
 function App() {
   return (
@@ -16,9 +17,11 @@ function App() {
           <Header/>
           <BooksProvider>
             <BasketProvider>
+              <OrdersProvider>
               <div className='main'>
                 <RootLayout/>
               </div>
+              </OrdersProvider>
             </BasketProvider>
           </BooksProvider>
           <Footer/>

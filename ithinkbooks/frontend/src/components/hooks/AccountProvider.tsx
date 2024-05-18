@@ -1,6 +1,6 @@
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { User, UserResponce } from '../types/User';
-import Order from '../types/Order';
+import { Order } from '../types/Order';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
@@ -34,11 +34,8 @@ const defaultAccountValue = {
   reviews: [emptyReview],
   updateAccount: (update: object) => {},
   markAsFavotite: (bookId: number) => {},
-  addOrder: (order: Order) => {},
-  removeOrder: (order: Order) => {},
   addReview: (review: Review) => {},
   removeReview: (reviewId: number) => {},
-  updateOrder: (updatedOrder: Order) => {},
   hasRoadmap: (roadmapId: string) => false,
   addRoadmap: (roadmapId: string) => {},
   removeRoadmap: (roadmapId: string) => {},
@@ -82,18 +79,6 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     })*/
   };
 
-  const addOrder = (order: Order) => {
-    //updateAccount({orders: account.orders.concat(order)});
-  };
-
-  const removeOrder = (order: Order) => {
-    //updateAccount({orders: account.orders.filter((o) => o.id !== order.id)});
-  };
-
-  const updateOrder = (updatedOrder: Order) => {
-    //account.orders = account.orders.map((order) => order.id === updatedOrder.id ? updatedOrder : order);
-  };
-
   const addReview = (review: Review) => {
     /*updateAccount({reviews: account.reviews.concat(review.id)});
     setReviews(reviews.concat(review));*/
@@ -133,7 +118,8 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setNewAccount(changeUser);
   };
 
-  // account fetch
+  // data fetch
+
   const getUserFromResponce = (data: UserResponce) => {
     const changes = {
       user_status: statuses.find((s) => s.title === data.user_status), 
@@ -150,7 +136,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     });
   };
 
-  const getResponceFromUser = (user: User) => {
+  const getResponceFromUser = useCallback((user: User) => {
     return ({
         ...user, 
         user_status: user.user_status.title,
@@ -159,21 +145,19 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
         birthdate: `${user.birthdate.getFullYear()}-${user.birthdate.getMonth()}-${user.birthdate.getDay()}`
       }
     );
-  };
+  }, []);
 
-  const getAccount = useCallback(() =>  {
-    axiosInstance
-      .get(`http://127.0.0.1:8000/users/user/${logInInfo.username}`, {
-        headers: {
-          'X-CSRFToken': token
-        }
-      })
-      .then((resp) => resp.data)
-      .then((data: UserResponce) => setAccount(getUserFromResponce(data)))
-      .then(() => setLogInInfo({username: '', password: ''}))
-      .then(() => navigate('/account/basket'))
-      .catch(console.error);
-  }, [logInInfo]);
+  const getUser = async (username: string) => {
+    const user: User = await axiosInstance.get(`http://127.0.0.1:8000/users/user/${username}`, {
+      headers: {
+        'X-CSRFToken': token
+      }
+    })
+    .then((resp) => resp.data)
+    .then((data: UserResponce) => getUserFromResponce(data));
+
+    return user;
+  };
 
   const postLogIn = useCallback(() => {
     axiosInstance
@@ -182,10 +166,13 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
           'X-CSRFToken': token
         }
       })
-      .then(resp => console.log(resp.data))
-      .then(() => getAccount())
-      .catch((err) => console.error(err));
-  }, [logInInfo, getAccount]);
+      .then((resp) => resp.data)
+      .then((data) => getUser(data.username))
+      .then((user) => setAccount(user))
+      .then(() => setLogInInfo({username: '', password: ''}))
+      .then(() => navigate('/account/basket'))
+      .then(() => setLoading(false));
+  }, [logInInfo, getResponceFromUser]);
 
   const postNewAccount = useCallback(() => {
     axiosInstance
@@ -225,10 +212,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       loading,
       reviews,
       updateAccount, 
-      markAsFavotite, 
-      addOrder, 
-      removeOrder,
-      updateOrder,
+      markAsFavotite,
       addReview,
       removeReview,
       hasRoadmap,

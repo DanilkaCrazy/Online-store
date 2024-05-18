@@ -1,22 +1,10 @@
 import React from 'react';
-import BookComponent from '../books/Book';
-import Book from '../types/Book';
-import { useAccount } from '../hooks/AccountProvider';
 import { getFormatedWithWordsDate } from '../date-utils';
 import { useBooks } from '../hooks/BooksProvider';
-
-const OrderBlock: React.FC<{date: Date, orderedBooks: Book[]}> = ({date, orderedBooks}) => (
-  <div className='order-block'>
-    <h3>{getFormatedWithWordsDate(date)}</h3>
-    <div className='books-collection'>
-      {orderedBooks.map((book, i) => <BookComponent key={i} book={book}/>)}
-    </div>
-  </div>
-);
+import { useOrders } from '../hooks/OrderProvider';
 
 const History: React.FC<{}> = () => {
-  const {account} = useAccount();
-  const {books, loading} = useBooks();
+  const {orders, loading} = useOrders();
 
   if(loading) {
     <div className='histpry-page'>
@@ -24,7 +12,7 @@ const History: React.FC<{}> = () => {
     </div>
   }
 
-  /*if(!account.orders.length) {
+  if(!orders.length) {
     return (
       <div className='histpry-page'>
         <h2>Вы ещё не покупали у нас книги</h2>
@@ -34,16 +22,15 @@ const History: React.FC<{}> = () => {
 
   return (
     <div className='histpry-page'>
-      {account.orders.map((order, i) => (
-        <OrderBlock
-          key={i} 
-          date={order.date} 
-          orderedBooks={books.filter((book) => order.booksId.some((id) => book.id === id))}/>)
-      )}
+      {orders.map((order, i) => (
+        <button key={i} /*It will lead to page about order*/ className='order-info-button'>
+          <h3>{getFormatedWithWordsDate(order.created_timestamp)}</h3>
+          <p className='main-p'>Статус: {order.status}</p>
+          <p className='main-p'>Адрес доставки: г. {order.city.city}, {order.pick_up_point}</p>
+        </button>
+      ))}
     </div>
-  );*/
-
-  return <></>
+  );
 };
 
 export default History;

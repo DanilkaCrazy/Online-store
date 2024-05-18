@@ -16,6 +16,7 @@ class CreateOrderView(APIView):
                 cart_items = Cart.objects.filter(user=request.user)
                 if cart_items.exists():
                     order = Order.objects.create(user=request.user, pick_up_point=serializer.validated_data['pick_up_point'])
+                    order.save()
                     for cart_item in cart_items:
                         product = cart_item.product
                         name = cart_item.product.name
@@ -29,7 +30,9 @@ class CreateOrderView(APIView):
                         product.quantity-=quantity
                         product.save()
                         cart_items.delete()
-            return Response(status=201)
+                    data = serializer.data
+                    data['id'] = order.pk
+                    return Response(data)
 
 #Только для разработки - просмотр всех заказов
 class OrderListView(ListAPIView):

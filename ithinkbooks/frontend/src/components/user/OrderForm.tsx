@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
-import Book from '../types/Book';
+import React, { useMemo } from 'react';
 import OrderedBook from '../books/OrderedBook';
 import { Link, useParams } from 'react-router-dom';
-import { useAccount } from '../hooks/AccountProvider';
 import { DropdownField } from '../ui/FormFields';
-import { useBooks } from '../hooks/BooksProvider';
-import Order from '../types/Order';
+import { useOrders } from '../hooks/OrderProvider';
+import { getArraySum } from '../utils';
+import { OrderItem } from '../types/Order';
 
-const OrderedBooks: React.FC<{books: Book[]}> = ({books}) => (
+const OrderedBooks: React.FC<{items: OrderItem[]}> = ({items}) => (
   <div className='form-field'>
     <h3>Заказываемые книги</h3>
     <div className='ordered-books'>
-      {books.map((book, i) => (
-        <OrderedBook key={i} book={book}/>
+      {items.map((item, i) => (
+        <OrderedBook key={i} item={item}/>
       ))}
     </div>
   </div>
@@ -20,40 +19,34 @@ const OrderedBooks: React.FC<{books: Book[]}> = ({books}) => (
 
 const OrderForm: React.FC<{}> = () => {
   const {id} = useParams();
-  const {account, removeOrder, updateOrder} = useAccount();
+  const {currentOrder, updateOrder, cancelOrder, loading, items} = useOrders();
 
-  const [order, setOrder] = useState<Order | undefined>(undefined);
-  const {books, loading} = useBooks();
+  const price = useMemo(() => getArraySum(items.map((item) => item.price)), [items]);
 
   if(loading) {
-    <div className='page'>
-      <h2>Загрузка...</h2>
-    </div>
+    return (
+      <div className='page'>
+        <h2>Загрузка...</h2>
+      </div>
+    );
   }
 
-  if(!order) {
-    return <h2>Ваш заказ пуст. Возможно, произошла ошибка &#40;</h2>
-  }
+  console.log(items);
 
-  const foundBooks = books.filter((book) => order.booksId.some((id) => id === book.id));
+  /*if(!id || parseInt(id) !== currentOrder.id) {
+    return (
+      <div className='page'>
+        <h2>Произошла ошибка: заказ не найден :&#40;</h2>
+      </div>
+    );
+  }*/
 
   const onAddressSelect = (eventKey: string | null) => {
     if(!eventKey) {
       return;
     }
 
-    setOrder({...order, address: eventKey});
-  }
-
-  const onFormSubmit = () => {
-    if(order.booksId.length) {
-      updateOrder(order);
-      //cleanBasket();
-    }
-  };
-
-  const onFormCancel = () => {
-    removeOrder(order);
+    updateOrder({pick_up_point: eventKey});
   }
 
   return (
@@ -62,24 +55,24 @@ const OrderForm: React.FC<{}> = () => {
         <h2>Оформление заказа</h2>
 
         <div className='form-field'>
-          <h3>Город: {order.city.city}</h3>
+          <h3>Город: {currentOrder.city.city}</h3>
           <div className='map-stub'></div>
         </div>
       
         <DropdownField 
           fieldHeader='Пункт выдачи заказа' 
-          options={order.city.addresses} 
-          placeholder={order.address} 
+          options={currentOrder.city.addresses} 
+          placeholder={currentOrder.pick_up_point} 
           onOptionSelect={onAddressSelect}/>
-        <OrderedBooks books={foundBooks}/>
+        <OrderedBooks items={items}/>
 
-        <h3>Итого: {order.price} ₽</h3>
+        <h3>Итого: {price} ₽</h3>
         <p className='secondary-p secondary-color'>Уведомления о статусах доставки в пункт выдачи заказа и электронные книги в 
           выбранном формате будут приходить к Вам на электронную почту и номер телефона.</p>
 
         <div className='buttons-group'>
-          <Link to='/account/basket' className='main-button' onClick={onFormSubmit}>Оплатить</Link>
-          <Link to='/account/basket' className='secondary-button' onClick={onFormCancel}>Отменить</Link>
+          <Link to='/account/basket' className='main-button' /*I need put method for order change*/>Оплатить</Link>
+          <Link to='/account/basket' className='secondary-button' /*I need delete method for order cancel*/ onClick={() => cancelOrder()}>Отменить</Link>
         </div>
       </form>
     </div>

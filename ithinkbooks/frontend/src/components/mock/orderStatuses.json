@@ -1,0 +1,10 @@
+{
+  "ready": "Подготовлен",
+  "pending": "В ожидании заполнения",
+  "awatingPayment": "В ожидании оплаты",
+  "awatingFulfillment": "В обработке",
+  "awatingShipment": "В доставке",
+  "awatingPickup": "Доставлен",
+  "completed": "Завершён",
+  "cancelled": "Отменён"
+}

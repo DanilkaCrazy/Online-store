@@ -1,7 +1,7 @@
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { Cart, CartResponce, emptyCart } from '../types/Cart';
 import { useAccount } from './AccountProvider';
-import Book from '../types/Book';
+import Book, { emptyBook } from '../types/Book';
 import axiosInstance, { getCookie } from '../Axios';
 import { randomInteger } from '../mock/mock';
 import { getRandomId } from '../utils';
@@ -24,7 +24,7 @@ const useBasket = () => useContext(BasketContext);
 
 const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const {account, getResponceFromUser} = useAccount();
-  const {books} = useBooks();
+  const {books, fixBookData} = useBooks();
 
   const [carts, setCarts] = useState<Cart[]>([]);
   const [cart, setCart] = useState<Cart>(emptyCart);
@@ -83,21 +83,6 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   );
 
-  const fixBookData = (data: Book | undefined) => {
-      if(!data) {
-        return undefined;
-      }
-      return (
-        {
-          ...data, 
-          month: randomInteger(1, 12), 
-          review: !data.review 
-            ? [] 
-            : data.review.map((r: object) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))
-        }
-      );
-    };
-
   const getCarts = useCallback(() => {
     axiosInstance
       .get('http://127.0.0.1:8000/cart/items', {
@@ -106,11 +91,15 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         }
       })
       .then((resp) => resp.data)
-      .then((data) => setCarts(data.map((c: CartResponce) => ({
-        ...c,
-        user: c.user.id,
-        product: fixBookData(books.find((book) => book.id === c.product))
-      }))))
+      .then((data) => setCarts(data.map((c: CartResponce) => {
+        const found = books.find((book) => book.id === c.product);
+
+        return {
+          ...c,
+          user: c.user.id,
+          product: fixBookData(!found ? emptyBook : found)
+        }
+      })))
       .then(() => setLoading(false));
   }, [token]);
 
@@ -160,13 +149,15 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, [cart, changeCart, postCart, removeCart]);
 
   useEffect(() => {
-    if(account.id >= 0 && !carts.length) {
+    if(account.id >= 0) {
       setLoading(true);
+      console.log('a');
       if(books.length) {
+        console.log('b');
         getCarts();
       }
     }
-  }, [cart, books.length, getCarts]);
+  }, [cart, carts.length, books.length, getCarts]);
 
   return (
     <BasketContext.Provider value={{

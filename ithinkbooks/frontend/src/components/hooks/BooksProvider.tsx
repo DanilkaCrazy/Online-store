@@ -14,7 +14,8 @@ const defaultBooksContextValue = {
   loading: false,
   updateBooks: (updatedBooks: Book[]) => {},
   updateBook: (bookId: number, update: object) => {},
-  addBookReview: (review: Review) => {}
+  addBookReview: (review: Review) => {},
+  fixBookData: (data: Book) => {}
 };
 
 const BooksContext = createContext(defaultBooksContextValue);
@@ -42,11 +43,26 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setReview(review);
   };
 
+  // data fetch
+
+  const fixBookData = (data: Book): Book => {
+    return (
+      {
+        ...data, 
+        month: randomInteger(1, 12), 
+        review: !data.review 
+          ? [] 
+          : data.review.map((r: Review) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)})),
+        price: typeof data.price === 'string' ? parseFloat(data.price) : data.price
+      }
+    );
+  };
+
   const getThemeBooks = useCallback(() => {
     axiosInstance
       .get(`http://127.0.0.1:8000/theme/${keys[keys.length - 1]}`)
       .then((resp) => resp.data)
-      .then((data) => data.map((book: object) => ({...book, month: randomInteger(1, 12), review: !data.review ? [] : data.review.map((r: object) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))})))
+      .then((data) => data.map((book: Book) => fixBookData(book)))
       .then((data) => {
         setBooks(data)
         setFilteredBooks(SortBooks[SortTypes.POPULARITY](data));
@@ -58,7 +74,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     axiosInstance
       .get(`http://127.0.0.1:8000/products/${keys[keys.length - 1]}`)
       .then((resp) => resp.data)
-      .then((data) => ({...data, month: randomInteger(1, 12), review: !data.review ? [] : data.review.map((r: object) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))}))
+      .then((data) => fixBookData(data))
       .then((data) => setBooks([data]))
       .then(() => setLoading(false));
   }, [keys]);
@@ -67,7 +83,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     axiosInstance
       .get('http://127.0.0.1:8000/products')
       .then((resp) => resp.data)
-      .then((data) => data.map((book: object) => ({...book, month: randomInteger(1, 12), review: !data.review ? [] : data.review.map((r: object) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))})))
+      .then((data) => data.map((book: Book) => fixBookData(book)))
       .then((data) => setBooks(data))
       .then(() => setLoading(false));
   }, [])
@@ -103,7 +119,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, [getThemeBooks, getBookById, getBooks, keys, newReview]);
 
   return (
-    <BooksContext.Provider value={{books, filteredBooks, loading, updateBooks, updateBook, addBookReview}}>
+    <BooksContext.Provider value={{books, filteredBooks, loading, updateBooks, updateBook, addBookReview, fixBookData}}>
       {children}
     </BooksContext.Provider>
   );

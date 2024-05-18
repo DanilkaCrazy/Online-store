@@ -1,11 +1,11 @@
 import React from 'react';
 import BookComponent from '../books/Book';
-import { Link } from 'react-router-dom';
-import { getArraySum } from '../utils';
 import { useBasket } from '../hooks/BasketProvider';
+import { useOrders } from '../hooks/OrderProvider';
 
 const Basket: React.FC<{}> = () => {
   const {carts, loading} = useBasket();
+  const {createNewOrder} = useOrders();
 
   if(loading) {
     <div className='basket-page'>
@@ -21,40 +21,18 @@ const Basket: React.FC<{}> = () => {
     );
   }
 
-  const totalPrice = getArraySum(carts.map((cart) => cart.product.price * cart.quantity));
-
-  /*const order: Order = {
-    id: nanoid(),
-    city: account.location,
-    address: account.location.addresses[0],
-    booksId: [],
-    price: 0,
-    date: new Date()
-  };
-
-  const generateOrder = (booksId: number[], price: number) => {
-    order.booksId = booksId;
-    order.price = price;
-    order.date = new Date();
-
-    if(!account.orders.find((o) => o.id === order.id)) {
-      addOrder(order);
-    }
-  };*/
-
   return (
     <div className='basket-page'>
       <div className='buttons-group'>
-        <Link 
-          to={`/order/`} 
+        <button 
           className='main-button' 
-          onClick={() => {}}>
-            Купить все
-        </Link>
+          onClick={() => createNewOrder()}>
+            Оформить заказ
+        </button>
         {/*<button className='secondary-button' onClick={cleanBasket}>Убрать все</button>*/}
       </div>
       <div className='books-collection'>
-        {carts.map((cart, i) => <BookComponent key={i} book={cart.product} isInBasket/>)}
+        {carts.map((cart, i) => <BookComponent key={i} book={cart.product} page='basket' quantity={cart.quantity}/>)}
       </div>
     </div>
   );

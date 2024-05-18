@@ -1,12 +1,12 @@
 import React from 'react';
-import Book from '../types/Book';
+import { OrderItem } from '../types/Order';
 
-const OrderedBook: React.FC<{book: Book}> = ({book}) => (
+const OrderedBook: React.FC<{item: OrderItem}> = ({item}) => (
   <div className='ordered-book'>
     <div className='cover-stumb'></div>
     <div className='ordered-book-info'>
-      <p className='main-p'>{book.name}</p>
-      <p className='secondary-p'>{book.price} ₽</p>
+      <p className='main-p'>{item.name}</p>
+      <p className='secondary-p'>{item.price} ₽</p>
     </div>
   </div>
 );

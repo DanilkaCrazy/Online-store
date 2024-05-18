@@ -18,7 +18,11 @@ const BookPanel: React.FC<{book: Book, roadmapId: string}> = ({book, roadmapId})
           <p className='main-p secondary-color'>{book.year}</p>
           <h2>{book.price} ₽</h2>
         </div>
-        <button onClick={() => putInBasket(book)} className='secondary-button'>В корзину</button>
+
+        {book.quantity > 0
+        ? <button onClick={() => putInBasket(book)} className='secondary-button'>В корзину</button>
+        : <h2>Нет в наличии</h2>}
+        
         {hasRoadmap(roadmapId)
         ? <button 
             onClick={() => removeRoadmap(roadmapId)} 

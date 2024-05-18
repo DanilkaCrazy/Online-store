@@ -12,14 +12,12 @@ import { MAX_QUANTITY, MIN_QUANTITY } from '../types/Cart';
 
 const BookComponent: React.FC<{
   book: Book, 
-  isInBasket?: boolean, 
-  isFavorite?: boolean
-}> = ({book, isInBasket = false, isFavorite = false}) => {
+  page?: string,
+  quantity?: number
+}> = ({book, page = '', quantity = 0}) => {
   const {markAsFavotite} = useAccount();
-  const {putInBasket, removeFromBasket, changeQuantity, getQuantity} = useBasket();
+  const {putInBasket, removeFromBasket, changeQuantity} = useBasket();
   const rating = getAverageNumber(book.review.map((review) => review.star));
-
-  const quantity = isInBasket ? getQuantity(book.id) : 0;
 
   return (
     <div className='book'>
@@ -42,15 +40,19 @@ const BookComponent: React.FC<{
       : <p className='main-p'>Нет отзывов</p>}
 
       <Price price={book.price}/>
-      
-      <button 
-        className='main-button'
-        hidden={isInBasket} 
-        onClick={() => putInBasket(book)}>
-          {isReleased(book.year, book.month) ? 'В корзину' : 'Предзаказ'}
-      </button>
 
-      <div className='copy-amount' hidden={!isInBasket}>
+      <p className='main-p' hidden={page !== 'history'}><b>Количество: </b>{quantity}</p>
+      
+      {book.quantity > 0 
+      ? <button 
+          className='main-button'
+          hidden={page === 'basket'} 
+          onClick={() => putInBasket(book)}>
+            {isReleased(book.year, book.month) ? 'В корзину' : 'Предзаказ'}
+        </button>
+      : <h3>Нет в наличии</h3>}
+
+      <div className='copy-amount' hidden={page !== 'basket'}>
         <button 
           disabled={quantity <= MIN_QUANTITY}
           className='secondary-button' 
@@ -62,7 +64,7 @@ const BookComponent: React.FC<{
         <p className='main-p'>{quantity}</p>
 
         <button 
-          disabled={quantity >= MAX_QUANTITY}
+          disabled={quantity >= MAX_QUANTITY && quantity >= book.quantity}
           className='secondary-button'
           onClick={() => changeQuantity(book.id, 1)}
         >
@@ -72,8 +74,8 @@ const BookComponent: React.FC<{
 
       <button 
         className='secondary-button' 
-        hidden={!isInBasket && !isFavorite} 
-        onClick={() => isInBasket 
+        hidden={page !== 'basket' && page !== 'favorite'} 
+        onClick={() => page === 'basket' 
           ? removeFromBasket(book.id) 
           : markAsFavotite(book.id)}>
           Убрать

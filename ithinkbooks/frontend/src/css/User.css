@@ -158,3 +158,14 @@
 .roadmap-icon .secondary-button {
   width: 100px;
 }
+
+.order-info-button {
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 50px;
+  padding: 20px;
+}

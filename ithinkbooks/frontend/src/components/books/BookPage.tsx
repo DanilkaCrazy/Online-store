@@ -42,7 +42,9 @@ const BookPromo: React.FC<{
         <button className='main-button'>{BookFormats.find((format) => format.key === book.book_format)?.name}</button>}
     </div>
 
-    <button className='main-button' onClick={() => putInBasket(book)}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
+    {book.quantity > 0
+    ? <button className='main-button' onClick={() => putInBasket(book)}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
+    : <h2>Нет в наличии</h2>}
     <button
       className={isFavorite ? 'main-button' : 'secondary-button'}
       onClick={() => markAsFavotite(book.id)}>
