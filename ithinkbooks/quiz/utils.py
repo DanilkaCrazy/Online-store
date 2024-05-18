@@ -12,8 +12,12 @@ def formRoadmap(result, user):
     if (result.theme == "OT"):
         products_main.filter(book_theme=result.theme_other)
     else:
+        #if (result.programmed_before==1): #Если не программировал, то сразу с нуля
+         #   products_main = products_main.filter(level__gt=0) #Фильтрация по опыту пользователя
+        #else:
         products_main = products_main.filter(level__gt=int(result.level)) #Фильтрация по опыту пользователя
-        #products_main = products_main.filter(programming_language=result.prog_lang) Фильтрация по языку программирования - выключена, т.к. книг мало в роадмапе и без неё
+        #products_main = products_main.filter(programming_language=result.prog_lang) #Фильтрация по языку программирования
+        products_main = products_main.filter(theme_category__contains = [result.theme_specific])
     for i in products_main:
         roadmap_node = RoadmapNode.objects.create(node_level=i.level, roadmap=roadmap) 
         roadmap_node.product.set([i])

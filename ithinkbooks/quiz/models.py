@@ -1,6 +1,7 @@
 from django.db import models
 from users.models import User
 from catalogue.models import Products
+from django_better_admin_arrayfield.models.fields import ArrayField
 
 # Create your models here.
 #Тест для роадмапа
@@ -62,6 +63,7 @@ class Result(models.Model):
     programmed_before = models.TextField(verbose_name='Программировал ранее') #Если нет, то понижаем уровень
     prog_lang = models.TextField(verbose_name='Язык программирования') #Фильтруем книги по языку программирования
     theme_specific = models.TextField(verbose_name='Подтема') #Что конкретно в теме интересует
+    #theme_specific = ArrayField(models.TextField(verbose_name='Подтема'), verbose_name = 'Подтемы') #Что конкретно в теме интересует
     level_specific = models.TextField(verbose_name='Уровень(для категории)') #Фильтруем книги по уровную знания темы
     theme_other = models.TextField(verbose_name='Тема(другое)', null=True, blank=True) #Тема для другого
     user = models.ForeignKey(User, related_name='user_result', on_delete=models.CASCADE)
