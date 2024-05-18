@@ -48,18 +48,18 @@ const ReviewComponent: React.FC<{review: Review, isInBookPage?: boolean}> = ({re
 
   return (
     <div className='review-block'>
-      {isInBookPage && review.user
-      ? <Reviewer user={review.user}/>
+      {isInBookPage
+      ? <></>
       : <ReviewedBook book={books.find((book) => book.id === review.product)}/>}
       <div className='review'>
         <Star rating={review.star}/>
         <p className='price-p'>{review.title}</p>
         <p className='main-p'>{review.text}</p>
-        <div className='review-voting'>
+        {/*<div className='review-voting'>
           <button className='secondary-button vote-button'><img className='arrow-up' src={VoteArrow} alt='За'/></button>
           <p className={`secondary-p ${votingResult > 0 ? 'highlighted-p' : ''}`}>{votingResult > 0 ? `+${votingResult}` : votingResult}</p>
           <button className='secondary-button vote-button'><img className='arrow-down' src={VoteArrow} alt='Против'/></button>
-        </div>
+        </div>*/}
       </div>
     </div>
   );

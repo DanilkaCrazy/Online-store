@@ -8,6 +8,7 @@ import { AccountProvider } from './components/hooks/AccountProvider';
 import { BooksProvider } from './components/hooks/BooksProvider';
 import { BasketProvider } from './components/hooks/BasketProvider';
 import { OrdersProvider } from './components/hooks/OrderProvider';
+import { QuizProvider } from './components/hooks/QuizProvider';
 
 function App() {
   return (
@@ -18,9 +19,11 @@ function App() {
           <BooksProvider>
             <BasketProvider>
               <OrdersProvider>
-              <div className='main'>
-                <RootLayout/>
-              </div>
+                <QuizProvider>
+                  <div className='main'>
+                    <RootLayout/>
+                  </div>
+                </QuizProvider>
               </OrdersProvider>
             </BasketProvider>
           </BooksProvider>

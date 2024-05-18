@@ -4,7 +4,8 @@ import Book from '../types/Book';
 import Review, { emptyReview } from '../types/Review';
 import { useLocation } from 'react-router-dom';
 import { SortBooks, SortTypes } from '../sort';
-import axiosInstance from '../Axios';
+import axiosInstance, { getCookie } from '../Axios';
+import { useAccount } from './AccountProvider';
 
 const emptyBooksList: Book[] = [];
 
@@ -23,6 +24,8 @@ const BooksContext = createContext(defaultBooksContextValue);
 const useBooks = () => useContext(BooksContext);
 
 const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
+  const {account} = useAccount();
+  
   const [books, setBooks] = useState<Book[]>([]);
   const [filteredBooks, setFilteredBooks] = useState<Book[]>(books);
   const [loading, setLoading] = useState<boolean>(true);
@@ -30,6 +33,8 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const location = useLocation();
   const keys = useMemo(() => location.pathname.split('/'), [location.pathname]);
+
+  const token = getCookie('csrftoken');
 
   const updateBooks = (updatedBooks: Book[]) => {
     setFilteredBooks(updatedBooks);
@@ -60,7 +65,11 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getThemeBooks = useCallback(() => {
     axiosInstance
-      .get(`http://127.0.0.1:8000/theme/${keys[keys.length - 1]}`)
+      .get(`http://127.0.0.1:8000/theme/${keys[keys.length - 1]}`, {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
       .then((resp) => resp.data)
       .then((data) => data.map((book: Book) => fixBookData(book)))
       .then((data) => {
@@ -72,7 +81,11 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getBookById = useCallback(() => {
     axiosInstance
-      .get(`http://127.0.0.1:8000/products/${keys[keys.length - 1]}`)
+      .get(`http://127.0.0.1:8000/products/${keys[keys.length - 1]}`, {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
       .then((resp) => resp.data)
       .then((data) => fixBookData(data))
       .then((data) => setBooks([data]))
@@ -81,7 +94,11 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getBooks = useCallback(() => {
     axiosInstance
-      .get('http://127.0.0.1:8000/products')
+      .get('http://127.0.0.1:8000/products', {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
       .then((resp) => resp.data)
       .then((data) => data.map((book: Book) => fixBookData(book)))
       .then((data) => setBooks(data))
@@ -90,7 +107,11 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const postReview = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/review/', newReview)
+      .post('http://127.0.0.1:8000/review/', {...newReview, user: account.id}, {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
       .then((resp) => console.log(resp.data))
       .then(() => setReview(emptyReview))
       .then(() => setLoading(false))

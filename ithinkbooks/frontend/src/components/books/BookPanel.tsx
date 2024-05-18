@@ -4,8 +4,8 @@ import { useAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
 import { useBasket } from '../hooks/BasketProvider';
 
-const BookPanel: React.FC<{book: Book, roadmapId: string}> = ({book, roadmapId}) => {
-  const {addRoadmap, removeRoadmap, hasRoadmap} = useAccount();
+const BookPanel: React.FC<{book: Book, roadmapId: number}> = ({book, roadmapId}) => {
+  //const {addRoadmap, removeRoadmap, hasRoadmap} = useAccount();
   const {putInBasket} = useBasket();
 
   return (
@@ -23,7 +23,7 @@ const BookPanel: React.FC<{book: Book, roadmapId: string}> = ({book, roadmapId})
         ? <button onClick={() => putInBasket(book)} className='secondary-button'>В корзину</button>
         : <h2>Нет в наличии</h2>}
         
-        {hasRoadmap(roadmapId)
+        {/*hasRoadmap(roadmapId)
         ? <button 
             onClick={() => removeRoadmap(roadmapId)} 
             className='secondary-button'>
@@ -33,7 +33,7 @@ const BookPanel: React.FC<{book: Book, roadmapId: string}> = ({book, roadmapId})
             onClick={() => addRoadmap(roadmapId)} 
             className='main-button'>
               Сохранить роадмап
-          </button>}
+        </button>*/}
       </div>
     </div>
   );

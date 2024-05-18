@@ -1,5 +1,7 @@
 import validator from 'validator';
 
+const PHONE_NUMBER_LENGTH = 11;
+
 const fieldsValidation = {
   login: {
     isValid: (value: string) => validator.isAlphanumeric(value, 'en-US'),
@@ -23,8 +25,8 @@ const fieldsValidation = {
     caution: 'Обязательно использование доменного имени через @. Можно использовать только английский алфавит, цифры и символ @'
   },
   phoneNumber: {
-    isValid: (value: string) => validator.isMobilePhone(value, ['ru-RU', 'kk-KZ', 'be-BY', 'uk-UA', 'en-US', 'en-GB', 'en-CA', 'de-DE', 'fr-FR', 'he-IL']),
-    caution: 'Можно использовать только цифры и символ +'
+    isValid: (value: string) => value.length === PHONE_NUMBER_LENGTH && validator.isNumeric(value),
+    caution: 'Можно использовать только цифры, начинать - с цифры 8'
   }
 };
 

@@ -33,6 +33,9 @@ class CreateOrderView(APIView):
                     data = serializer.data
                     data['id'] = order.pk
                     return Response(data)
+                return Response(serializer.errors)
+            return Response(serializer.errors)
+        return Response(serializer.errors)
 
 #Только для разработки - просмотр всех заказов
 class OrderListView(ListAPIView):

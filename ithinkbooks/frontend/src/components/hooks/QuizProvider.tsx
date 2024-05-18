@@ -5,7 +5,8 @@ import { Answer, AnswerToQuestion, Quiz } from '../types/Quiz';
 import themes from '../mock/themes.json';
 import Theme from '../types/Theme';
 import axiosInstance, { getCookie } from '../Axios';
-import { Roadmap } from '../types/Roadmap';
+import { Roadmap, emptyRoadmap } from '../types/Roadmap';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const defaultResponce: AnswerToQuestion = {
   question: mockQuiz.question[0],
@@ -16,6 +17,8 @@ const defaultResponce: AnswerToQuestion = {
   },
   isCompleted: false
 };
+
+const emptyRoadmaps: Roadmap[] = [];
 
 const defaultQuizContext = {
   quiz: mockQuiz,
@@ -28,7 +31,9 @@ const defaultQuizContext = {
   questionNumber: 0,
   moveToQuestion: (number: number) => {},
   finishQuiz: () => {},
-  loading: false
+  loading: false,
+  getRoadmap: (roadmapId: number) => emptyRoadmap,
+  roadmaps: emptyRoadmaps
 };
 
 const QuizContext = createContext(defaultQuizContext);
@@ -47,6 +52,9 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [isFinished, setFinish] = useState<boolean>(false);
 
   const [roadmaps, setRoadmaps] = useState<Roadmap[]>([]);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const token = getCookie('csrftoken');
 
@@ -88,13 +96,15 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setFinish(true);
   };
 
+  const getRoadmap = (roadmapId: number) => roadmaps[roadmapId];
+
   // data fetch
 
   const getQuiz = useCallback(() => {
     axiosInstance
       .get('http://127.0.0.1:8000/quiz', {
         headers: {
-          'X-CSRFToken': token
+          'X-CSRFToken': getCookie('csrftoken')
         }
       })
       .then((resp) => resp.data[0])
@@ -106,14 +116,15 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     axiosInstance
       .get('http://127.0.0.1:8000/quiz/user_roadmaps', {
         headers: {
-          'X-CSRFToken': token
+          'X-CSRFToken': getCookie('csrftoken')
         }
       })
       .then((resp) => resp.data)
       .then((data) => {
         console.log(data);
         setRoadmaps(data);
-      });
+      })
+      .then(() => setLoading(false));
   }, []);
 
   const postQuizResult = useCallback(() => {
@@ -124,11 +135,11 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     axiosInstance
       .post(`http://127.0.0.1:8000/quiz/quizes/${quiz.id}/vote`, data, {
         headers: {
-          'X-CSRFToken': token
+          'X-CSRFToken': getCookie('csrftoken')
         }
       })
       .then(() => getRoadmaps())
-      .then(() => setLoading(false))
+      .then(() => navigate(`/roadmaps/${!roadmaps.length ? 0 : roadmaps.length - 1}`))
       .catch(console.error);
   }, []);
 
@@ -144,6 +155,13 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   }, [isFinished, postQuizResult]);
 
+  useEffect(() => {
+    if(location.pathname === '/account/roadmaps') {
+      setLoading(true);
+      getRoadmaps();
+    }
+  }, [location.pathname]);
+
   return (
     <QuizContext.Provider value={{
       quiz,
@@ -156,7 +174,9 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
       questionNumber, 
       moveToQuestion, 
       finishQuiz,
-      loading}}>
+      loading,
+      getRoadmap,
+      roadmaps}}>
         {children}
     </QuizContext.Provider>
   );

@@ -52,7 +52,7 @@ class CreateReviewView(APIView):
         if review.is_valid():
             review.save()
             return Response(status=201)
-        return Response("Review not valid") 
+        return Response(review.errors) 
 
 def front(request):
     context = {}

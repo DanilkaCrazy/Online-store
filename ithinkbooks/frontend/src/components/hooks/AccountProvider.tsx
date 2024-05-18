@@ -1,13 +1,13 @@
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { User, UserResponce } from '../types/User';
-import { Order } from '../types/Order';
 import cities from '../mock/cities.json';
 import statuses from '../mock/statuses.json';
 import themes from '../mock/themes.json';
 import Review, { emptyReview } from '../types/Review';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LogInInfo from '../types/LogInInfo';
 import axiosInstance, { getCookie } from '../Axios';
+import { randomInteger } from '../mock/mock';
 
 const emptyAccount: User = {
   id: -1,
@@ -36,9 +36,6 @@ const defaultAccountValue = {
   markAsFavotite: (bookId: number) => {},
   addReview: (review: Review) => {},
   removeReview: (reviewId: number) => {},
-  hasRoadmap: (roadmapId: string) => false,
-  addRoadmap: (roadmapId: string) => {},
-  removeRoadmap: (roadmapId: string) => {},
   logIn: (info: LogInInfo) => {},
   logOut: (user: User) => {},
   signUp: (user: User) => {},
@@ -57,9 +54,10 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [logInInfo, setLogInInfo] = useState<LogInInfo>({username: '', password: ''});
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [loading, setLoading] = useState<boolean>(false);
-  const [reviews, setReviews] = useState<Review[]>([]); //mock reviews 
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   const token = getCookie('csrftoken');
 
@@ -86,20 +84,6 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const removeReview = (reviewId: number) => {
     //updateAccount({reviews: account.reviews.filter((r) => r !== reviewId)});
-  };
-
-  const hasRoadmap = (roadmapId: string) => /*account.roadmaps.includes(roadmapId)*/ false;
-
-  const addRoadmap = (roadmapId: string) => {
-    if(!hasRoadmap(roadmapId)) {
-      //updateAccount({roadmaps: account.roadmaps.concat(roadmapId)});
-    }
-  };
-
-  const removeRoadmap = (roadmapId: string) => {
-    if(hasRoadmap(roadmapId)) {
-      //updateAccount({roadmaps: account.roadmaps.filter((id) => id !== roadmapId)});
-    }
   };
 
   const logIn = (info: LogInInfo) => {
@@ -142,7 +126,8 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
         user_status: user.user_status.title,
         user_directions: user.user_directions.map((theme) => theme.title),
         location: user.location.city,
-        birthdate: `${user.birthdate.getFullYear()}-${user.birthdate.getMonth()}-${user.birthdate.getDay()}`
+        birthdate: `${user.birthdate.getFullYear()}-${user.birthdate.getMonth()}-${user.birthdate.getDay()}`,
+        is_active: true
       }
     );
   }, []);
@@ -190,6 +175,14 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .catch((reason) => console.log(reason));
   }, [newAccount]);
   
+  const getReviews = useCallback(() => {
+    axiosInstance
+      .get(`http://127.0.0.1:8000/${account.id}/reviews`)
+      .then((resp) => resp.data)
+      .then((data) => setReviews(data.map((r: Review) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))))
+      .then(() => setLoading(false));
+  }, [account]);
+
   useEffect(() => {
     if(logInInfo.username) {
       console.log(logInInfo);
@@ -206,6 +199,12 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   }, [postNewAccount, newAccount]);
 
+  useEffect(() => {
+    if(location.pathname.includes('reviews')) {
+      getReviews();
+    }
+  }, [location.pathname, getReviews])
+
   return (
     <AccountContext.Provider value={{
       account, 
@@ -215,9 +214,6 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       markAsFavotite,
       addReview,
       removeReview,
-      hasRoadmap,
-      addRoadmap,
-      removeRoadmap,
       logIn,
       logOut,
       signUp,

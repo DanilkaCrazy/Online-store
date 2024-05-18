@@ -19,6 +19,7 @@ const SignUpForm: React.FC<{}> = () => {
   const [city, setCity] = useState<string | undefined>(newAccount.location.city);
   const [status, setStatus] = useState<string | undefined>(newAccount.user_status.name);
   const [chosenThemes, setChosenThemes] = useState<string[]>(newAccount.user_directions.map((theme) => theme.shortName));
+  const [repeatedPassword, setRepeatedPassword] = useState<string>('');
 
   const [validation, setValidation] = useState<Validation>({
     login: false,
@@ -96,7 +97,11 @@ const SignUpForm: React.FC<{}> = () => {
           warning={fieldsValidation.password.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             const password = evt.target.value.trim();
-            setValidation({...validation, password: fieldsValidation.password.isValid(evt.target.value)});
+            setValidation({
+              ...validation, 
+              password: fieldsValidation.password.isValid(evt.target.value),
+              repeatedPassword: fieldsValidation.repeatPassword.isValid(repeatedPassword, evt.target.value)
+            });
             setNewAccount({...newAccount, password});
           }}/>
 
@@ -108,6 +113,7 @@ const SignUpForm: React.FC<{}> = () => {
           warning={fieldsValidation.repeatPassword.caution}
           onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
             setValidation({...validation, repeatedPassword: fieldsValidation.repeatPassword.isValid(evt.target.value, newAccount.password)});
+            setRepeatedPassword(evt.target.value);
           }}/>
 
         <TextField 
