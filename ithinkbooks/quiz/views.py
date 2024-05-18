@@ -35,6 +35,7 @@ class SendResultsFull(APIView):
         level_val = ''
         lang_val = ''
         price_val = ''
+        prog_lang = ''
         prog_bef_val = ''
         theme_other = ''
         theme_specific = ''
