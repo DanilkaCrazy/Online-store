@@ -1,7 +1,6 @@
 import React from 'react';
 import { Answer, AnswerToQuestion, Question } from '../types/Quiz';
 import { useQuiz } from '../hooks/QuizProvider';
-import { Link } from 'react-router-dom';
 
 const AnswerBlock: React.FC<{
   answer: Answer, 
@@ -50,13 +49,12 @@ const QuestionBlock: React.FC<{ question: Question }> = ({question}) => {
           disabled={!responce.isCompleted}>
             Ответить
         </button>
-        <Link 
-          to='/roadmaps/1'
+        <button 
           onClick={finishQuiz}
           className='secondary-button'
           hidden={!isEveryQuestionCompleted()}>
             Завершить
-        </Link>
+        </button>
       </div>
     </div>
   );

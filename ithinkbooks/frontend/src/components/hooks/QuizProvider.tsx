@@ -4,7 +4,8 @@ import mockQuiz from '../roadmap/quiz.json';
 import { Answer, AnswerToQuestion, Quiz } from '../types/Quiz';
 import themes from '../mock/themes.json';
 import Theme from '../types/Theme';
-import axiosInstance from '../Axios';
+import axiosInstance, { getCookie } from '../Axios';
+import { Roadmap } from '../types/Roadmap';
 
 const defaultResponce: AnswerToQuestion = {
   question: mockQuiz.question[0],
@@ -40,12 +41,14 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [responces, setResponces] = useState<AnswerToQuestion[]>([]);
-
   const [responce, setResponce] = useState<AnswerToQuestion>(defaultResponce);
-
   const [questionNumber, setQuestionNumber] = useState<number>(0);
 
   const [isFinished, setFinish] = useState<boolean>(false);
+
+  const [roadmaps, setRoadmaps] = useState<Roadmap[]>([]);
+
+  const token = getCookie('csrftoken');
 
   const updateQuiz = (data: Quiz) => {
     setQuiz(data);
@@ -85,12 +88,32 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setFinish(true);
   };
 
+  // data fetch
+
   const getQuiz = useCallback(() => {
     axiosInstance
-      .get('http://127.0.0.1:8000/quiz')
+      .get('http://127.0.0.1:8000/quiz', {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
       .then((resp) => resp.data[0])
       .then(updateQuiz)
       .then(() => setLoading(false));
+  }, []);
+
+  const getRoadmaps = useCallback(() => {
+    axiosInstance
+      .get('http://127.0.0.1:8000/quiz/user_roadmaps', {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
+      .then((resp) => resp.data)
+      .then((data) => {
+        console.log(data);
+        setRoadmaps(data);
+      });
   }, []);
 
   const postQuizResult = useCallback(() => {
@@ -99,8 +122,12 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     ));
 
     axiosInstance
-      .post(`http://127.0.0.1:8000/quiz/quizes/${quiz.id}/vote`, data)
-      .then((resp) => console.log(resp.data))
+      .post(`http://127.0.0.1:8000/quiz/quizes/${quiz.id}/vote`, data, {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
+      .then(() => getRoadmaps())
       .then(() => setLoading(false))
       .catch(console.error);
   }, []);
