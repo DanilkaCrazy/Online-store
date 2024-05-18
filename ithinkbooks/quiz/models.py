@@ -84,3 +84,6 @@ class RoadmapNode(models.Model):
     node_level = models.IntegerField(verbose_name='Уровень узла') #Определяет позицию в роадмапе
     class Meta:
         ordering = ['node_level', 'pk']
+
+class ObjectCount(models.Model):
+    object_count = models.IntegerField(verbose_name='Кол-во объектов') #Тест - сколько объектов после фильтровки
