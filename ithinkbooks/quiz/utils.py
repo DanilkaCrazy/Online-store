@@ -1,4 +1,4 @@
-from quiz.models import Quiz, Question, Answer, Result, Roadmap, RoadmapNode
+from quiz.models import Quiz, Question, Answer, Result, Roadmap, RoadmapNode, ObjectCount
 from catalogue.models import Products
 
 #def calculateTestResults(Quiz, Result):
@@ -17,7 +17,11 @@ def formRoadmap(result, user):
         #else:
         products_main = products_main.filter(level__gt=int(result.level)) #Фильтрация по опыту пользователя
         #products_main = products_main.filter(programming_language=result.prog_lang) #Фильтрация по языку программирования
-        products_main = products_main.filter(theme_category__contains = [result.theme_specific])
+        products_main_theme = products_main.filter(theme_category__contains = [result.theme_specific])
+        count = products_main_theme.count()
+        if count>5:
+            products_main = products_main_theme
+        ObjectCount.objects.create(object_count=count)
     for i in products_main:
         roadmap_node = RoadmapNode.objects.create(node_level=i.level, roadmap=roadmap) 
         roadmap_node.product.set([i])
