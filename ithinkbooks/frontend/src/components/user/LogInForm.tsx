@@ -16,7 +16,7 @@ const LogInForm: React.FC<{}> = () => {
   const [validation, setValidation] = useState<Validation>({
     login: false,
     password: false,
-    repeatedPassword: false,
+    repeatedPassword: true,
     name: true,
     email: true,
     phoneNumber: true
@@ -49,15 +49,6 @@ const LogInForm: React.FC<{}> = () => {
             setValidation({...validation, password: fieldsValidation.password.isValid(evt.target.value)});
             setLogInInfo({...logInInfo, password});
           }}/>
-
-        <TextField
-          fieldHeader='Повторите пароль*'
-          type='text'
-          placeholder='Введите пароль'
-          isValid={validation.repeatedPassword}
-          warning={fieldsValidation.repeatPassword.caution}
-          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-            setValidation({...validation, repeatedPassword: fieldsValidation.repeatPassword.isValid(evt.target.value, logInInfo.password)});}}/>
         
         <button 
           onClick={(evt) => {

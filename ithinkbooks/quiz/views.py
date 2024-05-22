@@ -32,9 +32,9 @@ class SendResultsFull(APIView):
         quiz = get_object_or_404(Quiz, pk=quiz_id)
         serializer = FullVoteSerializer(data=request.data, many=True)
         theme_val = ''
-        level_val = ''
+        level_val = 0
         lang_val = ''
-        price_val = ''
+        price_val = 10000
         prog_lang = ''
         prog_bef_val = ''
         theme_other = ''

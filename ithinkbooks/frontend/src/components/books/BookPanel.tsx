@@ -4,8 +4,8 @@ import { useAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
 import { useBasket } from '../hooks/BasketProvider';
 
-const BookPanel: React.FC<{book: Book, roadmapId: string}> = ({book, roadmapId}) => {
-  const {addRoadmap, removeRoadmap, hasRoadmap} = useAccount();
+const BookPanel: React.FC<{book: Book, roadmapId: number}> = ({book, roadmapId}) => {
+  //const {addRoadmap, removeRoadmap, hasRoadmap} = useAccount();
   const {putInBasket} = useBasket();
 
   return (
@@ -13,17 +13,17 @@ const BookPanel: React.FC<{book: Book, roadmapId: string}> = ({book, roadmapId})
       <div className='book-panel-content'>
         <div className='cover-stumb'></div>
         <div className='chosen-book-description'>
-          <Link to={`/book/${book.id}`}><h2>{book.name}</h2></Link>
-          <h3 className='secondary-color'>{book.author}</h3>
+          <Link to={`/book/${book.id}`}><h3>{book.name}</h3></Link>
+          <p className='main-p secondary-color'><b>{book.author}</b></p>
           <p className='main-p secondary-color'>{book.year}</p>
-          <h2>{book.price} ₽</h2>
+          <h3>{book.price} ₽</h3>
         </div>
 
         {book.quantity > 0
         ? <button onClick={() => putInBasket(book)} className='secondary-button'>В корзину</button>
         : <h2>Нет в наличии</h2>}
         
-        {hasRoadmap(roadmapId)
+        {/*hasRoadmap(roadmapId)
         ? <button 
             onClick={() => removeRoadmap(roadmapId)} 
             className='secondary-button'>
@@ -33,7 +33,7 @@ const BookPanel: React.FC<{book: Book, roadmapId: string}> = ({book, roadmapId})
             onClick={() => addRoadmap(roadmapId)} 
             className='main-button'>
               Сохранить роадмап
-          </button>}
+        </button>*/}
       </div>
     </div>
   );

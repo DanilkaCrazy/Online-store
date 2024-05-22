@@ -1,15 +1,23 @@
+import themes from '../mock/themes.json';
+import Theme from './Theme';
+
 interface RoadmapNode {
-  id: number;
-  bookId: number[];
-  next?: number;
-  recommended?: number;
+  node_level: number;
+  roadmap: number;
+  product: number[];
 }
 
 interface Roadmap {
-  id: string;
-  theme: string;
-  date: string;
-  nodes: RoadmapNode[];
+  user: number;
+  title: string;
+  node: RoadmapNode[];
 }
 
+const emptyRoadmap: Roadmap = {
+  user: -1,
+  title: '',
+  node: []
+};
+
 export type {Roadmap, RoadmapNode};
+export {emptyRoadmap};

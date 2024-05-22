@@ -1,16 +1,11 @@
 import React from 'react';
-import { useAccount } from '../hooks/AccountProvider';
-import roadmap from '../roadmap/roadmap.json';
-import { Roadmap } from '../types/Roadmap';
 import RoadmapIcon from '../roadmap/RoadmapIcon';
+import { useQuiz } from '../hooks/QuizProvider';
 
 const RoadmapsList: React.FC<{}> = () => {
-  const {account, removeRoadmap} = useAccount();
+  const {roadmaps} = useQuiz();
 
-  //search roadmaps here
-  const roadmaps: Roadmap[] = [roadmap];
-
-  /*if(!account.roadmaps.length) {
+  if(!roadmaps.length) {
     return (
       <div className='roadmaps-page'>
         <h2>Вы ещё не строили роадмапы</h2>
@@ -20,10 +15,9 @@ const RoadmapsList: React.FC<{}> = () => {
 
   return (
     <div className='roadmaps-page'>
-      {roadmaps.map((rm, i) => <RoadmapIcon key={i} roadmap={rm} removeRoadmap={removeRoadmap}/>)}
+      {roadmaps.map((rm, i) => <RoadmapIcon id={i} key={i} roadmap={rm}/>)}
     </div>
-  );*/
-  return <></>
+  );
 };
 
 export default RoadmapsList;

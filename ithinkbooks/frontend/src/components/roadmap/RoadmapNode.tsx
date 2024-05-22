@@ -14,14 +14,14 @@ const MAX_TITLE_LENGTH = 50;
 const BRANCHES_GAP = NODES_H_GAP + NODE_WIDTH;
 
 const Branch: React.FC<{upperNode: RoadmapNode, downNode: RoadmapNode}> = ({upperNode, downNode}) => {
-  const upperCount = upperNode.bookId.length;
-  const downCount = downNode.bookId.length;
+  const upperCount = upperNode.product.length;
+  const downCount = downNode.product.length;
   const shift = Math.abs(upperCount - downCount) * BRANCHES_GAP / 2; 
 
-  const upperCoordinates = upperNode.bookId.map((_v, i) => (
+  const upperCoordinates = upperNode.product.map((_v, i) => (
     [i * BRANCHES_GAP + (upperCount >= downCount ? 0 : shift) + BRANCH_STROKE_WIDTH / 2, 0]
   ));
-  const downCoordinates = downNode.bookId.map((_v, i) => (
+  const downCoordinates = downNode.product.map((_v, i) => (
     [i * BRANCHES_GAP + (downCount >= upperCount ? 0 : shift)  + BRANCH_STROKE_WIDTH / 2, NODES_V_GAP]
   ));
 
