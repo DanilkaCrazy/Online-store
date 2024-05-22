@@ -30,3 +30,33 @@ class UserLoginSerializer(serializers.Serializer):
 		if not user:
 			raise ValidationError('user not found')
 		return user
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = UserModel
+		fields = ('username', 'first_name', 'about_self', 'email', 'phone_number', 'birthdate', 'location', 'user_status', 'user_directions')
+	
+	def validate_email(self, value):
+		user = self.context['request'].user
+		if User.objects.exclude(pk=user.pk).filter(email=value).exists():
+			raise serializers.ValidationError({"email": "This email is already in use."})
+		return value
+
+	def validate_username(self, value):
+		user = self.context['request'].user
+		if User.objects.exclude(pk=user.pk).filter(username=value).exists():
+			raise serializers.ValidationError({"username": "This username is already in use."})
+		return value
+	
+	def update(self, instance, validated_data):
+		instance.username = validated_data['username']
+		instance.first_name = validated_data['first_name']
+		instance.about_self = validated_data['about_self']
+		instance.email = validated_data['email']
+		instance.phone_number = validated_data['phone_number']
+		instance.birthdate = validated_data['birthdate']
+		instance.location = validated_data['location']
+		instance.user_status = validated_data['user_status']
+		instance.user_directions = validated_data['user_directions']
+		instance.save()
+		return instance

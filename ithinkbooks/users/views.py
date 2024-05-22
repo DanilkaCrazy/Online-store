@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth import login, logout
 from users.models import User
 from django.contrib import auth, messages
-from users.serializers import UserSerializer, UserLoginSerializer, UserRegistrationSerializer
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView
+from users.serializers import UserSerializer, UserLoginSerializer, UserRegistrationSerializer, UpdateUserSerializer
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
@@ -55,3 +55,9 @@ class GetUser(APIView):
 		user = get_object_or_404(User, username=username)
 		serializer = UserSerializer(user)
 		return Response(serializer.data)
+
+
+class UpdateProfileView(UpdateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UpdateUserSerializer
