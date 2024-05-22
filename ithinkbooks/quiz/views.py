@@ -97,14 +97,10 @@ class GetRoadMap(APIView):
         roadmap = get_object_or_404(Roadmap, pk=roadmap_id)
         serializer = RoadmapSerializer(roadmap)
         return Response(serializer.data)
-    #def post(self, request, result_id):
-        #results = get_object_or_404(Result, pk=result_id)
-        #products = Products.objects.filter(book_theme=results.theme)
-        #serializer = ProductsSerializer(products, many=True)
-        #roadmap = Roadmap.objects.create(result=results, user = request.user, title=f"{user} roadmap")
-       # for i in products:
-            #roadmap_node = RoadmapNode.objects.create(product=i, node_level=i.level, roadmap=Roadmap) 
-      #  return Response("Success")
+    def delete(self, request, roadmap_id):
+        roadmap = get_object_or_404(Roadmap, pk = roadmap_id)
+        roadmap.delete()
+        return Response (status=204)
 #Просмотр всех роадмапов - для разработки
 class RoadmapListView(ListAPIView):
     permission_classes = (permissions.AllowAny, )
