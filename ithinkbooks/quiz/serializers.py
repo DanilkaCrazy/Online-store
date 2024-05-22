@@ -47,4 +47,4 @@ class RoadmapSerializer(serializers.ModelSerializer):
     node = RoadmapNodeSerializer(many=True)
     class Meta:
         model = Roadmap
-        fields = ['title', 'user', 'node']
+        fields = '__all__'

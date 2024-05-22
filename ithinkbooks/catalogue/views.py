@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from catalogue.models import Categories, Products, Review
 from rest_framework import permissions
 from rest_framework.response import Response
-from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer
+from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer, FindBookSerializer
 # Create your views here.
 #Просмотр всех книг
 class ProductsListView(ListAPIView):
@@ -63,6 +63,15 @@ class TestView(ListAPIView):
     def get_queryset(self):
         queryset = Products.objects.all()
         return queryset.filter(theme_category__contains=['office'])
+
+class FindBooksView(APIView):
+    def post(self, request):
+        serializer = FindBookSerializer(data=request.data)
+        if serializer.is_valid():
+            book_name = serializer.validated_data['book_name']
+            products = Products.objects.all().filter(name__search=book_name)
+            products_serializer = ProductsSerializer(products, many=True)
+            return Response(products_serializer.data)
 
 class ReviewUserView(APIView):
     def get(self, request,user_id):
