@@ -9,6 +9,7 @@ def formRoadmap(result, user):
     roadmap = Roadmap.objects.create(result=result, user = user, title=f"{user} roadmap")
     #Цену фильтруем для всех
     products_main = products_main.filter(price__lt=int(result.price))
+    products_main = products_main.filter(book_language=result.language)
     if (result.theme == "OT"):
         products_main.filter(book_theme=result.theme_other)
     else:
