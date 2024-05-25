@@ -15,17 +15,17 @@ function App() {
     <>
       <LightModeProvider>
         <AccountProvider>
-          <Header/>
           <BooksProvider>
-            <BasketProvider>
-              <OrdersProvider>
-                <QuizProvider>
-                  <div className='main'>
-                    <RootLayout/>
-                  </div>
-                </QuizProvider>
-              </OrdersProvider>
-            </BasketProvider>
+            <Header/>
+              <BasketProvider>
+                <OrdersProvider>
+                  <QuizProvider>
+                    <div className='main'>
+                      <RootLayout/>
+                    </div>
+                  </QuizProvider>
+                </OrdersProvider>
+              </BasketProvider>
           </BooksProvider>
           <Footer/>
         </AccountProvider>

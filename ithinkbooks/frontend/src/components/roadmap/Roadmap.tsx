@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import '../../css/Quiz.css';
-import themes from '../mock/themes.json';
 import {NodeBook, Branch} from './RoadmapNode';
 import { useBooks } from '../hooks/BooksProvider';
 import '../../css/Roadmap.css';
 import Book, { emptyBook } from '../types/Book';
 import BookPanel from '../books/BookPanel';
-import { Roadmap, emptyRoadmap } from '../types/Roadmap';
 import { useParams } from 'react-router-dom';
 import { useQuiz } from '../hooks/QuizProvider';
 import { randomInteger } from '../mock/mock';
@@ -16,13 +14,13 @@ const RoadmapPage: React.FC<{}> = () => {
   const parsedId = !id ? 0 : parseInt(id);
 
   const {books, loading} = useBooks();
-  const {getRoadmap, roadmaps} = useQuiz();
+  const {roadmaps} = useQuiz();
 
-  const roadmap = getRoadmap(parsedId);
+  const roadmap = useMemo(() => roadmaps.find((r) => r.id === parsedId), [roadmaps, parsedId]);
 
   const [chosenBook, setChosenBook] = useState<Book>(emptyBook);
 
-  if(loading || !roadmaps.length) {
+  if(loading || !roadmap) {
     return (
       <div className='page'>
         <h2>Загрузка...</h2>
@@ -49,7 +47,7 @@ const RoadmapPage: React.FC<{}> = () => {
 
   return (
     <div className='divided-page roadmap-page'>
-      <BookPanel book={chosenBook} roadmapId={parsedId}/>
+      <BookPanel book={chosenBook} roadmapId={roadmap.id}/>
       <div className='roadmap-block'>
         <h1>{roadmap.title}</h1>
         <div className='roadmap'>
@@ -65,7 +63,7 @@ const RoadmapPage: React.FC<{}> = () => {
                 ))}
               </div>
 
-              {i === roadmap.node.length - 1 ? <></> : <Branch upperNode={node} downNode={roadmap.node[i + 1]}/>}
+              {i === roadmap.node.length - 1 || <Branch upperNode={node} downNode={roadmap.node[i + 1]}/>}
             </div>)}
         </div>
       </div>

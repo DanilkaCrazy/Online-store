@@ -24,7 +24,7 @@ const LogInForm: React.FC<{}> = () => {
 
   return (
     <div className='page'>
-      <form className='separated-form' action='' method='post'>
+      <form className='separated-form'>
         <h2>Вход</h2>
         
         <TextField 

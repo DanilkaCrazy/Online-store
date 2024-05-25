@@ -3,7 +3,7 @@ import RoadmapIcon from '../roadmap/RoadmapIcon';
 import { useQuiz } from '../hooks/QuizProvider';
 
 const RoadmapsList: React.FC<{}> = () => {
-  const {roadmaps} = useQuiz();
+  const {roadmaps, deleteRoadmap} = useQuiz();
 
   if(!roadmaps.length) {
     return (
@@ -15,7 +15,7 @@ const RoadmapsList: React.FC<{}> = () => {
 
   return (
     <div className='roadmaps-page'>
-      {roadmaps.map((rm, i) => <RoadmapIcon id={i} key={i} roadmap={rm}/>)}
+      {roadmaps.map((rm, i) => <RoadmapIcon key={i} roadmap={rm} removeRoadmap={deleteRoadmap}/>)}
     </div>
   );
 };

@@ -72,6 +72,7 @@ class FindBooksView(APIView):
             products = Products.objects.all().filter(name__search=book_name)
             products_serializer = ProductsSerializer(products, many=True)
             return Response(products_serializer.data)
+        return Response(serializer.errors)
 
 class ReviewUserView(APIView):
     def get(self, request,user_id):

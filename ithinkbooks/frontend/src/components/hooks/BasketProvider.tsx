@@ -15,7 +15,8 @@ const defaultBasketContext = {
   putInBasket: (book: Book) => {},
   changeQuantity: (bookId: number, difference: number) => {},
   removeFromBasket: (bookId: number) => {},
-  getQuantity: (bookId: number) => 0
+  getQuantity: (bookId: number) => 0,
+  cleanBasket: () => {}
 };
 
 const BasketContext = createContext(defaultBasketContext);
@@ -28,6 +29,8 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const [carts, setCarts] = useState<Cart[]>([]);
   const [cart, setCart] = useState<Cart>(emptyCart);
+
+  const [clean, setClean] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
 
   const token = getCookie('csrftoken');
@@ -70,6 +73,10 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const foundCart = carts.find((cart) => cart.product.id === bookId);
 
     return foundCart ? foundCart.quantity : 0;
+  };
+
+  const cleanBasket = () => {
+    setClean(true);
   };
 
   // data fecth
@@ -136,13 +143,25 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then(() => setLoading(false));
   }, [cart, token]);
 
+  const deleteBasket = useCallback(() => {
+    axiosInstance
+      .delete('http://127.0.0.1:8000/cart/items', {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
+      .then(() => setCarts([]))
+      .then(() => setClean(false))
+      .then(() => setLoading(false));
+  }, [token]);
+
   useEffect(() => {
     if(account.id >= 0) {
       setLoading(true);
 
-      if(carts.filter((c) => c.id === cart.id).length) {
+      if(carts.find((c) => c.id === cart.id)) {
         cart.quantity > 0 ? changeCart() : removeCart();
-      } else {
+      } else if(cart.id >= 0) {
         postCart();
       }
     }
@@ -151,13 +170,18 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   useEffect(() => {
     if(account.id >= 0) {
       setLoading(true);
-      console.log('a');
       if(books.length) {
-        console.log('b');
         getCarts();
       }
     }
   }, [cart, carts.length, books.length, getCarts]);
+
+  useEffect(() => {
+    if(clean) {
+      setLoading(false);
+      deleteBasket();
+    }
+  }, [clean, deleteBasket]);
 
   return (
     <BasketContext.Provider value={{
@@ -166,7 +190,8 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
       putInBasket,
       changeQuantity,
       removeFromBasket,
-      getQuantity
+      getQuantity,
+      cleanBasket
     }}>
       {children}
     </BasketContext.Provider>

@@ -8,11 +8,10 @@ import themes from '../mock/themes.json';
 import { User } from '../types/User';
 import Validation, {fieldsValidation} from '../types/Validation';
 import AvatarField from './AvatarField';
-import { randomInteger } from '../mock/mock';
 import { getRandomId } from '../utils';
 
 const SignUpForm: React.FC<{}> = () => {
-  const {signUp} = useAccount();
+  const {updateUser} = useAccount();
 
   const [newAccount, setNewAccount] = useState<User>(emptyAccount);
 
@@ -69,7 +68,7 @@ const SignUpForm: React.FC<{}> = () => {
 
   return (
     <div className='page'>
-      <form className='separated-form' action='' method='post'>
+      <form className='separated-form'>
         <h2>Регистрация</h2>
 
         <AvatarField
@@ -184,7 +183,7 @@ const SignUpForm: React.FC<{}> = () => {
         <button
           onClick={(evt) => {
             evt.preventDefault();
-            signUp({...newAccount, id: getRandomId()});
+            updateUser({...newAccount, id: getRandomId()});
           }}
           className={`main-button sign-button ${Object.values(validation).every((isValid) => isValid) ? '' : 'disabled-link'}`}>
             Зарегистрироваться

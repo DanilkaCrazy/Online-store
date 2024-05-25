@@ -14,9 +14,11 @@ const defaultBooksContextValue = {
   filteredBooks: emptyBooksList,
   loading: false,
   updateBooks: (updatedBooks: Book[]) => {},
+  filterOriginalBooks: (updatedBooks: Book[]) => {},
   updateBook: (bookId: number, update: object) => {},
   addBookReview: (review: Review) => {},
-  fixBookData: (data: Book) => {}
+  fixBookData: (data: Book) => {},
+  toggleLoading: (load: boolean) => {}
 };
 
 const BooksContext = createContext(defaultBooksContextValue);
@@ -37,6 +39,10 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const token = getCookie('csrftoken');
 
   const updateBooks = (updatedBooks: Book[]) => {
+    setBooks(updatedBooks);
+  };
+
+  const filterOriginalBooks = (updatedBooks: Book[]) => {
     setFilteredBooks(updatedBooks);
   };
 
@@ -46,6 +52,10 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const addBookReview = (review: Review) => {
     setReview(review);
+  };
+
+  const toggleLoading = (load: boolean) => {
+    setLoading(load);
   };
 
   // data fetch
@@ -77,7 +87,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
         setFilteredBooks(SortBooks[SortTypes.POPULARITY](data));
       })
       .then(() => setLoading(false));
-  }, [keys]);
+  }, [keys, token]);
 
   const getBookById = useCallback(() => {
     axiosInstance
@@ -90,7 +100,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then((data) => fixBookData(data))
       .then((data) => setBooks([data]))
       .then(() => setLoading(false));
-  }, [keys]);
+  }, [keys, token]);
 
   const getBooks = useCallback(() => {
     axiosInstance
@@ -103,7 +113,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then((data) => data.map((book: Book) => fixBookData(book)))
       .then((data) => setBooks(data))
       .then(() => setLoading(false));
-  }, [])
+  }, [token]);
 
   const postReview = useCallback(() => {
     axiosInstance
@@ -116,7 +126,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then(() => setReview(emptyReview))
       .then(() => setLoading(false))
       .catch(console.error);
-  }, [newReview])
+  }, [newReview, token]);
 
   useEffect(() => {
     if(newReview.id >= 0) {
@@ -134,13 +144,22 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       if(newReview.id < 0) {
         getBookById();
       }
-    } else {
+    } else if(!keys.includes('search')) {
       getBooks();
     }
   }, [getThemeBooks, getBookById, getBooks, keys, newReview]);
 
   return (
-    <BooksContext.Provider value={{books, filteredBooks, loading, updateBooks, updateBook, addBookReview, fixBookData}}>
+    <BooksContext.Provider value={{
+      books, 
+      filteredBooks, 
+      loading,
+      updateBooks, 
+      filterOriginalBooks, 
+      updateBook, 
+      addBookReview, 
+      fixBookData,
+      toggleLoading}}>
       {children}
     </BooksContext.Provider>
   );

@@ -11,7 +11,7 @@ const ReviewForm: React.FC<{
   bookId: number,
   setFormOpened: React.Dispatch<React.SetStateAction<boolean>>
 }> = ({bookId, setFormOpened}) => {
-  const {account, addReview} = useAccount();
+  const {account} = useAccount();
   const {addBookReview} = useBooks();
   const [newReview, setNewReview] = useState<Review>({...emptyReview, user: account, id: getRandomId(), product: bookId});
 
@@ -20,7 +20,6 @@ const ReviewForm: React.FC<{
   });
 
   const onFormSubmit = () => {
-    addReview(newReview);
     addBookReview(newReview);
     setFormOpened(false);
   };

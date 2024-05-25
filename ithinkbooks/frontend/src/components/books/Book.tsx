@@ -8,7 +8,7 @@ import '../../css/Book.css';
 import { isReleased } from '../date-utils';
 import { useAccount } from '../hooks/AccountProvider';
 import { useBasket } from '../hooks/BasketProvider';
-import { MAX_QUANTITY, MIN_QUANTITY } from '../types/Cart';
+import { MIN_QUANTITY } from '../types/Cart';
 
 const BookComponent: React.FC<{
   book: Book, 
@@ -64,7 +64,7 @@ const BookComponent: React.FC<{
         <p className='main-p'>{quantity}</p>
 
         <button 
-          disabled={quantity >= MAX_QUANTITY && quantity >= book.quantity}
+          disabled={quantity >= book.quantity}
           className='secondary-button'
           onClick={() => changeQuantity(book.id, 1)}
         >

@@ -4,7 +4,7 @@ import { useBasket } from '../hooks/BasketProvider';
 import { useOrders } from '../hooks/OrderProvider';
 
 const Basket: React.FC<{}> = () => {
-  const {carts, loading} = useBasket();
+  const {carts, loading, cleanBasket} = useBasket();
   const {createNewOrder} = useOrders();
 
   if(loading) {
@@ -29,7 +29,7 @@ const Basket: React.FC<{}> = () => {
           onClick={() => createNewOrder()}>
             Оформить заказ
         </button>
-        {/*<button className='secondary-button' onClick={cleanBasket}>Убрать все</button>*/}
+        <button className='secondary-button' onClick={cleanBasket}>Убрать все</button>
       </div>
       <div className='books-collection'>
         {carts.map((cart, i) => <BookComponent key={i} book={cart.product} page='basket' quantity={cart.quantity}/>)}

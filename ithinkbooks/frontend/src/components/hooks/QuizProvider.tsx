@@ -33,7 +33,8 @@ const defaultQuizContext = {
   finishQuiz: () => {},
   loading: false,
   getRoadmap: (roadmapId: number) => emptyRoadmap,
-  roadmaps: emptyRoadmaps
+  roadmaps: emptyRoadmaps,
+  deleteRoadmap: (roadmapId: number) => {}
 };
 
 const QuizContext = createContext(defaultQuizContext);
@@ -52,11 +53,12 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [isFinished, setFinish] = useState<boolean>(false);
 
   const [roadmaps, setRoadmaps] = useState<Roadmap[]>([]);
+  const [deletedRoadmap, setDeletedRoadmap] = useState<number>(-1);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-  const token = getCookie('csrftoken');
+  //const token = getCookie('csrftoken'); ?
 
   const updateQuiz = (data: Quiz) => {
     setQuiz(data);
@@ -98,6 +100,10 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getRoadmap = (roadmapId: number) => roadmaps[roadmapId];
 
+  const deleteRoadmap = (roadmapId: number) => {
+    setDeletedRoadmap(roadmapId);
+  };
+
   // data fetch
 
   const getQuiz = useCallback(() => {
@@ -121,7 +127,6 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
       })
       .then((resp) => resp.data)
       .then((data) => {
-        console.log(data);
         setRoadmaps(data);
       })
       .then(() => setLoading(false));
@@ -139,8 +144,19 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
         }
       })
       .then(() => getRoadmaps())
-      .then(() => navigate(`/roadmaps/${!roadmaps.length ? 0 : roadmaps.length - 1}`))
+      .then(() => navigate(`/roadmaps/${roadmaps[roadmaps.length - 1].id}`))
       .catch(console.error);
+  }, []);
+
+  const deleteRoadmapFromServer = useCallback((roadmapId: number) => {
+    axiosInstance
+      .delete(`http://127.0.0.1:8000/quiz/roadmap/${roadmapId}`, {
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      })
+      .then(() => setDeletedRoadmap(-1))
+      .then(() => getRoadmaps());
   }, []);
 
   useEffect(() => {
@@ -162,6 +178,13 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   }, [location.pathname]);
 
+  useEffect(() => {
+    if(deletedRoadmap >= 0) {
+      setLoading(true);
+      deleteRoadmapFromServer(deletedRoadmap);
+    }
+  }, [deletedRoadmap])
+
   return (
     <QuizContext.Provider value={{
       quiz,
@@ -176,7 +199,8 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
       finishQuiz,
       loading,
       getRoadmap,
-      roadmaps}}>
+      roadmaps,
+      deleteRoadmap}}>
         {children}
     </QuizContext.Provider>
   );

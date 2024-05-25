@@ -1,22 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React from 'react';
 import Logo from '../../images/header/Logo.svg';
-import SearchIcon from '../../images/header/Search.svg';
 import DarkMode from '../../images/header/Dark.svg';
 import StarIcon from '../../images/header/Star.svg';
 import BasketIcon from '../../images/header/Basket.svg';
 import AccountIcon from '../../images/header/Account.svg';
 import '../../css/Header.css';
-import {Link, Outlet, useNavigate} from 'react-router-dom';
+import {Link, Outlet} from 'react-router-dom';
 import { useLightMode } from '../hooks/LightModeProvider';
 import { Button, Dropdown } from 'react-bootstrap';
 import Theme from '../types/Theme';
 import themes from '../mock/themes.json';
-import Book from '../types/Book';
-import SmallBookComponent from '../books/SmallBookComponent';
 import { useAccount } from '../hooks/AccountProvider';
-import axiosInstance from '../Axios';
-
-const SEARCH_INTERVAL = 750;
+import Search from './Search';
 
 const Catalog: React.FC<{themes: Theme[]}> = ({themes}) => (
   <Dropdown className='dropdown-header'>
@@ -26,66 +21,6 @@ const Catalog: React.FC<{themes: Theme[]}> = ({themes}) => (
     </Dropdown.Menu>
   </Dropdown>
 );
-
-const Search: React.FC<{}> = () => {
-  const [foundBooks, setFoundBooks] = useState<Book[]>([]);
-  const [seacrhWord, setSearchWord] = useState<string>('');
-  const navigate = useNavigate();
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const redirectToResult = () => {
-    if(seacrhWord) {
-      navigate(`/search/${seacrhWord}`);
-      setSearchWord('');
-      if(inputRef.current?.value !== undefined) {
-        inputRef.current.value = '';
-      }
-    }
-  };
-
-  const findBooks = () => {
-    setTimeout(() => setSearchWord(!inputRef.current?.value ? '' : inputRef.current.value.toLowerCase()), SEARCH_INTERVAL);
-  };
-
-  const getFoundBooks = useCallback(() => {
-    axiosInstance
-      .get('http://127.0.0.1:8000/products')
-      .then((resp) => resp.data)
-      .then((data) => setFoundBooks(data.filter((book: Book) => book.name.toLowerCase().includes(seacrhWord))))
-  }, [seacrhWord]); 
-
-  useEffect(() => {
-    if(seacrhWord !== '') {
-      getFoundBooks();
-    }
-  }, [seacrhWord, getFoundBooks]);
-
-  return (
-    <div className='search-panel'>
-      <div className='search'>
-        <input 
-          ref={inputRef}
-          type='text' 
-          placeholder='Поиск' 
-          onChange={findBooks}
-          onKeyDown={(evt) => {
-            if(evt.key === 'Enter') {
-              redirectToResult();
-            }
-          }}/>
-
-        <img src={SearchIcon} alt='Найти' onClick={redirectToResult} className='clickable'/>
-      </div>
-      
-      <div className='search-result' hidden={seacrhWord === ''}>
-        {foundBooks.length 
-          ? foundBooks.slice(0, 3).map((book, i) => <SmallBookComponent key={i} book={book} onClick={() => setSearchWord('')}/>)
-          : <p className='main-p'>Ничего не найдено</p>}
-      </div>
-    </div>
-  );
-};
 
 const Header: React.FC<{}> = () => {
   const {toggleLightMode} = useLightMode();

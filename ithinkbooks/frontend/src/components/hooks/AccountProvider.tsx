@@ -34,12 +34,9 @@ const defaultAccountValue = {
   reviews: [emptyReview],
   updateAccount: (update: object) => {},
   markAsFavotite: (bookId: number) => {},
-  addReview: (review: Review) => {},
-  removeReview: (reviewId: number) => {},
   logIn: (info: LogInInfo) => {},
   logOut: (user: User) => {},
-  signUp: (user: User) => {},
-  editAccount: (changeUser: User) => {},
+  updateUser: (newUserInfo: User) => {},
   getUserFromResponce: (data: UserResponce) => {},
   getResponceFromUser: (user: User) => {}
 };
@@ -77,15 +74,6 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     })*/
   };
 
-  const addReview = (review: Review) => {
-    /*updateAccount({reviews: account.reviews.concat(review.id)});
-    setReviews(reviews.concat(review));*/
-  };
-
-  const removeReview = (reviewId: number) => {
-    //updateAccount({reviews: account.reviews.filter((r) => r !== reviewId)});
-  };
-
   const logIn = (info: LogInInfo) => {
     setLogInInfo(info);
   };
@@ -94,12 +82,8 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     updateAccount(emptyAccount);
   }
 
-  const signUp = (newUser: User) => {
-    setNewAccount(newUser);
-  };
-
-  const editAccount = (changeUser: User) => {
-    setNewAccount(changeUser);
+  const updateUser = (newUserInfo: User) => {
+    setNewAccount(newUserInfo);
   };
 
   // data fetch
@@ -157,35 +141,47 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then(() => setLogInInfo({username: '', password: ''}))
       .then(() => navigate('/account/basket'))
       .then(() => setLoading(false));
-  }, [logInInfo, getResponceFromUser]);
+  }, [logInInfo, getResponceFromUser, token]);
 
   const postNewAccount = useCallback(() => {
     axiosInstance
       .post('http://127.0.0.1:8000/users/register', getResponceFromUser(newAccount), {
         headers: {
           'X-CSRFToken': token
-        },
-        formSerializer: {
-          indexes: null
         }
       })
       .then(() => updateAccount(newAccount))
       .then(() => setLoading(false))
       .then(() => navigate('/account/basket'))
       .catch((reason) => console.log(reason));
-  }, [newAccount]);
+  }, [newAccount, token]);
+
+  const putEditedAccount = useCallback(() => {
+    axiosInstance
+      .put(`http://127.0.0.1:8000/users/update_profile/${newAccount.id}`, getResponceFromUser(newAccount), {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
+      .then(() => updateAccount(newAccount))
+      .then(() => setLoading(false))
+      .then(() => navigate('/account/basket'));
+  }, [newAccount, token]);
   
   const getReviews = useCallback(() => {
     axiosInstance
-      .get(`http://127.0.0.1:8000/${account.id}/reviews`)
+      .get(`http://127.0.0.1:8000/${account.id}/reviews`, {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
       .then((resp) => resp.data)
       .then((data) => setReviews(data.map((r: Review) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)}))))
       .then(() => setLoading(false));
-  }, [account]);
+  }, [account, token]);
 
   useEffect(() => {
     if(logInInfo.username) {
-      console.log(logInInfo);
       setLoading(true);
       postLogIn()
     }
@@ -193,9 +189,8 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   useEffect(() => {
     if(newAccount.id >= 0) {
-      console.log(newAccount);
       setLoading(true);
-      postNewAccount();
+      account.id < 0 ? postNewAccount() : putEditedAccount();
     }
   }, [postNewAccount, newAccount]);
 
@@ -212,12 +207,9 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       reviews,
       updateAccount, 
       markAsFavotite,
-      addReview,
-      removeReview,
       logIn,
       logOut,
-      signUp,
-      editAccount,
+      updateUser,
       getUserFromResponce,
       getResponceFromUser}}>
         {children}

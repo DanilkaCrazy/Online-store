@@ -10,7 +10,7 @@ import Validation, { fieldsValidation } from '../types/Validation';
 import AvatarField from './AvatarField';
 
 const EditFrom: React.FC<{}> = () => {
-  const {account, editAccount} = useAccount();
+  const {account, updateUser} = useAccount();
 
   const [updatingAccount, setUpdatingAccount] = useState<User>({...account});
   const [city, setCity] = useState<string | undefined>(account.location.city);
@@ -63,13 +63,9 @@ const EditFrom: React.FC<{}> = () => {
     setUpdatingAccount((value) => ({...value, branches: resultThemes}))
   }
 
-  const onFormSubmit = () => {
-    editAccount(updatingAccount);
-  };
-
   return (
     <div className='page'>
-      <form className='separated-form' action='' method='post'>
+      <form className='separated-form'>
         <h2>Редактирование профиля</h2>
         
         <AvatarField
@@ -144,12 +140,14 @@ const EditFrom: React.FC<{}> = () => {
           onChange={(evt: React.ChangeEvent<HTMLTextAreaElement>) => setUpdatingAccount({...updatingAccount, about_self: evt.target.value})}/>
 
         <div className='buttons-group'>
-          <Link 
-            to='/account/basket' 
+          <button 
             className={`main-button ${Object.values(validation).every((isValid) => isValid) ? '' : 'disabled-link'}`} 
-            onClick={onFormSubmit}>
+            onClick={(evt) => {
+              evt.preventDefault();
+              updateUser(updatingAccount);
+            }}>
               Сохранить
-          </Link>
+          </button>
           <Link to='/account/basket' className='secondary-button'>Отменить</Link>
         </div>
       </form>
