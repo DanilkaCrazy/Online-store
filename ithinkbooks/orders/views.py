@@ -5,7 +5,7 @@ from cart.models import Cart, CartQueryset
 from rest_framework import permissions
 from rest_framework.response import Response
 from catalogue.models import Products
-from orders.serializers import OrderSerializer, OrderItemSerializer, OrderByUserSerializer
+from orders.serializers import OrderSerializer, OrderItemSerializer, OrderByUserSerializer, UpdateOrderSerializer
 from orders.models import Order, OrderItem
 
 class CreateOrderView(APIView):
@@ -67,3 +67,22 @@ class OrderItemsByOrder(APIView):
         order_items = queryset.filter(order=order_id)
         serializer = OrderItemSerializer(order_items, many=True)
         return Response(serializer.data)
+
+class OneOrderView(APIView):
+    def get(self, request, order_id):
+        queryset = Order.objects.all()
+        order = queryset.filter(pk=order_id)
+        serializer = OrderSerializer(order, many=True)
+        return Response(serializer.data)
+    def put(self, request, order_id):
+        order = get_object_or_404(Order, pk=order_id)
+        serializer = UpdateOrderSerializer(order, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def delete(self, request, order_id):
+        queryset = Order.objects.all()
+        order = queryset.filter(pk=order_id)
+        order.delete()
+        return Response(status=204)

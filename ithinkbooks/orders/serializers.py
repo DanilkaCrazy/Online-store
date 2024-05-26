@@ -17,3 +17,8 @@ class OrderByUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ('is_paid', 'status')
+
+class UpdateOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ('is_paid', 'status')
