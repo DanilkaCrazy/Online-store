@@ -1,21 +1,19 @@
 import React from 'react';
 import BookComponent from '../books/Book';
-import { useAccount } from '../hooks/AccountProvider';
-import { useBooks } from '../hooks/BooksProvider';
+import { useFavorite } from '../hooks/FavoriteProvider';
 
 const FavoritiesList: React.FC<{}> = () => {
-  const {account} = useAccount();
-  const {books, loading} = useBooks();
+  const {favoriteBooks, loading} = useFavorite();
 
   if(loading) {
-    <div className='favorities-page'>
-      <h2>Загрузка...</h2>
-    </div>
+    return (
+      <div className='favorities-page'>
+        <h2>Загрузка...</h2>
+      </div>
+    );
   }
 
-  /*const foundBooks = books.filter((book) => account.favoriteBooks.some((id) => id === book.id));
-
-  if(!foundBooks.length) {
+  if(!favoriteBooks.length) {
     return (
       <div className='favorities-page'>
         <h2>Вы ещё ни разу не отметили свою любимые книги</h2>
@@ -26,12 +24,10 @@ const FavoritiesList: React.FC<{}> = () => {
   return (
     <div className='favorities-page'>
       <div className='books-collection'>
-        {foundBooks.map((book, i) => <BookComponent key={i} book={book} isFavorite/>)}
+        {favoriteBooks.map((fav, i) => <BookComponent key={i} book={fav.product}/>)}
       </div>
     </div>
-  );*/
-  return <></>
+  );
 };
-
 
 export default FavoritiesList;

@@ -15,44 +15,48 @@ import { useBooks } from '../hooks/BooksProvider';
 import { BookFormat, BookFormats, FileType } from '../mock/mock';
 import themes from '../mock/themes.json';
 import { useBasket } from '../hooks/BasketProvider';
+import { useFavorite } from '../hooks/FavoriteProvider';
 
 const BookPromo: React.FC<{
   book: Book, 
   canBuy: boolean, 
   chosenFormat: string,
   setFormat: React.Dispatch<React.SetStateAction<string>>,
-  isFavorite: boolean,
   putInBasket: (book: Book) => void,
-  markAsFavotite: (bookId: number) => void
-}> = ({book, canBuy, chosenFormat, setFormat, isFavorite, putInBasket, markAsFavotite}) => (
-  <div className='book-page-promo'>
-    <div className='cover-stumb'> 
-    </div>
-    <h2>{book.price} ₽</h2>
+}> = ({book, canBuy, chosenFormat, setFormat, putInBasket}) => {
+  const {markAsFavotite, isBookFavorite} = useFavorite();
+  const isFavorite = isBookFavorite(book.id);
 
-    <div className='bool-page-formats'>
-      {/*book.formats.map((format, i) => (
-        <button
-          key={i}
-          className={format === chosenFormat ? 'main-button' : 'secondary-button'}
-          onClick={() => setFormat(format)}>
-            {format}
-        </button>
-      ))*/
-        <button className='main-button'>{BookFormats.find((format) => format.key === book.book_format)?.name}</button>}
-    </div>
+  return (
+    <div className='book-page-promo'>
+      <div className='cover-stumb'> 
+      </div>
+      <h2>{book.price} ₽</h2>
 
-    {book.quantity > 0
-    ? <button className='main-button' onClick={() => putInBasket(book)}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
-    : <h2>Нет в наличии</h2>}
-    <button
-      className={isFavorite ? 'main-button' : 'secondary-button'}
-      onClick={() => markAsFavotite(book.id)}>
-        {isFavorite ? 'В избранном' : 'Добавить в избранное'}
-    </button>
-    <p className='main-p' hidden={canBuy}>{months[book.month - 1].nominative} {book.year}</p>
-  </div>
-);
+      <div className='bool-page-formats'>
+        {/*book.formats.map((format, i) => (
+          <button
+            key={i}
+            className={format === chosenFormat ? 'main-button' : 'secondary-button'}
+            onClick={() => setFormat(format)}>
+              {format}
+          </button>
+        ))*/
+          <button className='main-button'>{BookFormats.find((format) => format.key === book.book_format)?.name}</button>}
+      </div>
+
+      {book.quantity > 0
+      ? <button className='main-button' onClick={() => putInBasket(book)}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
+      : <h2>Нет в наличии</h2>}
+      <button
+        className={isFavorite ? 'main-button' : 'secondary-button'}
+        onClick={() => markAsFavotite(book)}>
+          {isFavorite ? 'В избранном' : 'Добавить в избранное'}
+      </button>
+      <p className='main-p' hidden={canBuy}>{months[book.month - 1].nominative} {book.year}</p>
+    </div>
+  );
+};
 
 const BookCharacteristics: React.FC<{book: Book, chosenFormat: string}> = ({book, chosenFormat}) => {
   const theme = themes.find((t) => t.title === book.book_theme)?.name;
@@ -144,7 +148,7 @@ const BookReviewsBlock: React.FC<{
 
 const BookPage: React.FC<{}> = () => {
   const {books, loading} = useBooks();
-  const {account, markAsFavotite} = useAccount();
+  const {account} = useAccount();
   const {putInBasket} = useBasket();
   
   const book = books[0];
@@ -162,8 +166,6 @@ const BookPage: React.FC<{}> = () => {
   if(!book) {
     return <Stub pageName='Error'/>
   }
-  
-  const isFavorite = /*account.favoriteBooks.some((bookId) => bookId === book.id);*/ false;
 
   const canBuy = isReleased(book.year, book.month);
   const rating = getAverageNumber(book.review.map((review) => review.star));
@@ -175,9 +177,7 @@ const BookPage: React.FC<{}> = () => {
         canBuy={canBuy} 
         chosenFormat={chosenFormat}
         setFormat={setFormat}
-        isFavorite={isFavorite} 
-        putInBasket={putInBasket}
-        markAsFavotite={markAsFavotite}/>
+        putInBasket={putInBasket}/>
 
       <div className='page-right page'>
         <div className='book-page-title'>

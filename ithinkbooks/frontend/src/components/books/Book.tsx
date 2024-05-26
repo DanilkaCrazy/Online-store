@@ -6,16 +6,16 @@ import {Star} from './Star';
 import Price from './Price';
 import '../../css/Book.css';
 import { isReleased } from '../date-utils';
-import { useAccount } from '../hooks/AccountProvider';
 import { useBasket } from '../hooks/BasketProvider';
 import { MIN_QUANTITY } from '../types/Cart';
+import { useFavorite } from '../hooks/FavoriteProvider';
 
 const BookComponent: React.FC<{
   book: Book, 
   page?: string,
   quantity?: number
 }> = ({book, page = '', quantity = 0}) => {
-  const {markAsFavotite} = useAccount();
+  const {markAsFavotite} = useFavorite();
   const {putInBasket, removeFromBasket, changeQuantity} = useBasket();
   const rating = getAverageNumber(book.review.map((review) => review.star));
 
@@ -77,7 +77,7 @@ const BookComponent: React.FC<{
         hidden={page !== 'basket' && page !== 'favorite'} 
         onClick={() => page === 'basket' 
           ? removeFromBasket(book.id) 
-          : markAsFavotite(book.id)}>
+          : markAsFavotite(book)}>
           Убрать
         </button>
     </div>

@@ -33,7 +33,6 @@ const defaultAccountValue = {
   loading: false,
   reviews: [emptyReview],
   updateAccount: (update: object) => {},
-  markAsFavotite: (bookId: number) => {},
   logIn: (info: LogInInfo) => {},
   logOut: (user: User) => {},
   updateUser: (newUserInfo: User) => {},
@@ -64,14 +63,6 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       ...update
     }
     setAccount(updatedAccount);
-  };
-
-  const markAsFavotite = (bookId: number) => {
-    /*const bookIndex = account.favoriteBooks.indexOf(bookId);
-
-    updateAccount({
-      favoriteBooks: bookIndex < 0 ? account.favoriteBooks.concat(bookId) : account.favoriteBooks.filter((id) => id !== bookId)
-    })*/
   };
 
   const logIn = (info: LogInInfo) => {
@@ -205,8 +196,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       account, 
       loading,
       reviews,
-      updateAccount, 
-      markAsFavotite,
+      updateAccount,
       logIn,
       logOut,
       updateUser,

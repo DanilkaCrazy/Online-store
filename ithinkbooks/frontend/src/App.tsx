@@ -9,6 +9,7 @@ import { BooksProvider } from './components/hooks/BooksProvider';
 import { BasketProvider } from './components/hooks/BasketProvider';
 import { OrdersProvider } from './components/hooks/OrderProvider';
 import { QuizProvider } from './components/hooks/QuizProvider';
+import { FavoriteProvider } from './components/hooks/FavoriteProvider';
 
 function App() {
   return (
@@ -20,9 +21,11 @@ function App() {
               <BasketProvider>
                 <OrdersProvider>
                   <QuizProvider>
-                    <div className='main'>
-                      <RootLayout/>
-                    </div>
+                    <FavoriteProvider>
+                      <div className='main'>
+                        <RootLayout/>
+                      </div>
+                    </FavoriteProvider>
                   </QuizProvider>
                 </OrdersProvider>
               </BasketProvider>
