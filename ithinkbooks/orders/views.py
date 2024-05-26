@@ -8,6 +8,7 @@ from catalogue.models import Products
 from orders.serializers import OrderSerializer, OrderItemSerializer, OrderByUserSerializer, UpdateOrderSerializer
 from orders.models import Order, OrderItem
 
+#Создаем заказ, пока не платим
 class CreateOrderView(APIView):
     def post(self, request):
         serializer = OrderSerializer(data=request.data)
@@ -15,8 +16,25 @@ class CreateOrderView(APIView):
             if request.user.is_authenticated:
                 cart_items = Cart.objects.filter(user=request.user)
                 if cart_items.exists():
-                    order = Order.objects.create(user=request.user, pick_up_point=serializer.validated_data['pick_up_point'])
+                    order = Order.objects.create(user=request.user)
                     order.save()
+                    data = serializer.data
+                    data['id'] = order.pk
+                    return Response(data)
+                return Response(serializer.errors)
+            return Response(serializer.errors)
+        return Response(serializer.errors)
+
+
+class PayOrder(APIView):
+    def put(self, request, order_id):
+        cart_items = Cart.objects.filter(user=request.user)
+        order = get_object_or_404(Order, pk=order_id)
+        serializer = UpdateOrderSerializer(order, request.data)
+        if serializer.is_valid():
+            serializer.save()
+            if serializer.validated_data['status']=="Оплачено":
+                if cart_items.exists():
                     for cart_item in cart_items:
                         product = cart_item.product
                         name = cart_item.product.name
@@ -25,16 +43,12 @@ class CreateOrderView(APIView):
 
                         if product.quantity < quantity:
                             raise Exception(f'Недостаточное количество товара {name} на складе. В наличии - {product.quantity}')
-                        
+                                
                         OrderItem.objects.create(order=order, product=product, name=name, price=price, quantity=quantity)
                         product.quantity-=quantity
                         product.save()
                         cart_items.delete()
-                    data = serializer.data
-                    data['id'] = order.pk
-                    return Response(data)
-                return Response(serializer.errors)
-            return Response(serializer.errors)
+                        return Response(serializer.data)
         return Response(serializer.errors)
 
 #Только для разработки - просмотр всех заказов
