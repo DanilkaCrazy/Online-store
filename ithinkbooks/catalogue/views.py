@@ -5,7 +5,7 @@ from catalogue.models import Categories, Products, Review, Favorite
 from users.models import User
 from rest_framework import permissions
 from rest_framework.response import Response
-from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer, FindBookSerializer, FavoriteSerializer, RemoveFavoriteSerializer, FavoriteReturnSerializer
+from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer, FindBookSerializer, FavoriteSerializer, RemoveFavoriteSerializer, FavoriteReturnSerializer, GetReviewSerializer
 # Create your views here.
 #Просмотр всех книг
 class ProductsListView(ListAPIView):
@@ -79,7 +79,7 @@ class ReviewUserView(APIView):
     def get(self, request,user_id):
         queryset = Review.objects.all()
         review = queryset.filter(user=user_id)
-        serializer = CreateReviewSerializer(review, many=True)
+        serializer = GetReviewSerializer(review, many=True)
         return Response(serializer.data)
 
 class GetFavoriteBooks(APIView):

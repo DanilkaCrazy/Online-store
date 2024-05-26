@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from catalogue.models import Products, Categories, Review, RatingStar, Favorite
+from users.serializers import UserSerializer
 
 class RatingStarSerializer (serializers.ModelSerializer):
     class Meta:
@@ -7,6 +8,12 @@ class RatingStarSerializer (serializers.ModelSerializer):
         fields = '__all__'
 
 class CreateReviewSerializer (serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
+
+class GetReviewSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = Review
         fields = '__all__'
