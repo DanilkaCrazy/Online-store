@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from cart.models import Cart, CartQueryset
 from rest_framework import permissions
 from rest_framework.response import Response
-from cart.serializers import CartSerializer, AddToCartSerializer, ChangeCartSerializer, RemoveCartSerializer
+from cart.serializers import CartSerializer, AddToCartSerializer, ChangeCartSerializer, RemoveCartSerializer, CartGetSerializer
 from catalogue.models import Products
 # Create your views here.
 
@@ -12,7 +12,7 @@ class CartItemsView(APIView):
     #Просмотр корзины пользователя
     def get(self, request):
         carts = Cart.objects.filter(user=request.user)
-        serializer = CartSerializer(carts, many=True)
+        serializer = CartGetSerializer(carts, many=True)
         return Response(serializer.data) 
     def post(self, request):
         serializer = AddToCartSerializer(data=request.data)

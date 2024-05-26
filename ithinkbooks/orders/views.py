@@ -74,12 +74,13 @@ class OneOrderView(APIView):
                         product = cart_item.product
                         name = cart_item.product.name
                         price = cart_item.product.price
+                        author = cart_item.product.author
                         quantity = cart_item.quantity #Кол-во продуктов в КОРЗИНЕ
 
                         if product.quantity < quantity:
                             raise Exception(f'Недостаточное количество товара {name} на складе. В наличии - {product.quantity}')
                                 
-                        OrderItem.objects.create(order=order, product=product, name=name, price=price, quantity=quantity)
+                        OrderItem.objects.create(order=order, product=product, name=name, price=price, author=author, quantity=quantity)
                         product.quantity-=quantity
                         product.save()
                         cart_items.delete()
