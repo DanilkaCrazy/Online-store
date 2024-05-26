@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from cart.models import Cart, CartQueryset
+from catalogue.serializers import ProductWithoutReviewSerializer
 
 class CartSerializer (serializers.ModelSerializer):
     class Meta:
@@ -7,6 +8,12 @@ class CartSerializer (serializers.ModelSerializer):
         #fields = ('user', 'product', 'quantity')
         fields = '__all__'
 
+class CartGetSerializer (serializers.ModelSerializer):
+    product = ProductWithoutReviewSerializer()
+    class Meta:
+        model = Cart
+        #fields = ('user', 'product', 'quantity')
+        fields = '__all__'
 
 #class AddToCartSerializer(serializers.ModelSerializer):
  #  class Meta:

@@ -1,5 +1,5 @@
 from django.urls import path
-from catalogue.views import ProductsListView, ProductView, CreateReviewView, CategoryView, front, TestView, CategoriesView, ReviewUserView, FindBooksView, AddToFavorite, GetFavoriteBooks, DeleteFavoriteBook
+from catalogue.views import ProductsListView, ProductView, CreateReviewView, CategoryView, front, TestView, CategoriesView, ReviewUserView, FindBooksView, GetFavoriteBooks, DeleteFavoriteBook
 
 app_name = 'catalogue'
 urlpatterns = [
@@ -14,7 +14,6 @@ urlpatterns = [
     path("categories/<book_theme>", CategoriesView.as_view()),
     path("<user_id>/reviews", ReviewUserView.as_view(), name='User reviews'),
     path("books_search", FindBooksView.as_view(), name = 'Books by name'),
-    path("favorite", AddToFavorite.as_view(), name='Favorite Books'),
-    path("favorite/<user_id>", GetFavoriteBooks.as_view(), name = "Favorite books for user"),
-    path("favorite_book/<favorite_id>", DeleteFavoriteBook.as_view(), name = "Favorite book")
+    path("favorite/<user_id>", GetFavoriteBooks.as_view(), name = 'Favorite books for user'),
+    path("favorite_book/<favorite_id>", DeleteFavoriteBook.as_view(), name = 'Favorite book')
 ]

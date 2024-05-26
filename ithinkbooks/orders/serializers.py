@@ -21,4 +21,4 @@ class OrderByUserSerializer(serializers.ModelSerializer):
 class UpdateOrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
-        fields = ('is_paid', 'status')
+        fields = ('pick_up_point','is_paid', 'status')

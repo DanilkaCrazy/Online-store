@@ -8,6 +8,7 @@ from catalogue.models import Products
 from orders.serializers import OrderSerializer, OrderItemSerializer, OrderByUserSerializer, UpdateOrderSerializer
 from orders.models import Order, OrderItem
 
+#Создаем заказ, пока не платим
 class CreateOrderView(APIView):
     def post(self, request):
         serializer = OrderSerializer(data=request.data)
@@ -15,21 +16,8 @@ class CreateOrderView(APIView):
             if request.user.is_authenticated:
                 cart_items = Cart.objects.filter(user=request.user)
                 if cart_items.exists():
-                    order = Order.objects.create(user=request.user, pick_up_point=serializer.validated_data['pick_up_point'])
+                    order = Order.objects.create(user=request.user)
                     order.save()
-                    for cart_item in cart_items:
-                        product = cart_item.product
-                        name = cart_item.product.name
-                        price = cart_item.product.price
-                        quantity = cart_item.quantity #Кол-во продуктов в КОРЗИНЕ
-
-                        if product.quantity < quantity:
-                            raise Exception(f'Недостаточное количество товара {name} на складе. В наличии - {product.quantity}')
-                        
-                        OrderItem.objects.create(order=order, product=product, name=name, price=price, quantity=quantity)
-                        product.quantity-=quantity
-                        product.save()
-                        cart_items.delete()
                     data = serializer.data
                     data['id'] = order.pk
                     return Response(data)
@@ -75,12 +63,29 @@ class OneOrderView(APIView):
         serializer = OrderSerializer(order, many=True)
         return Response(serializer.data)
     def put(self, request, order_id):
+        cart_items = Cart.objects.filter(user=request.user)
         order = get_object_or_404(Order, pk=order_id)
         serializer = UpdateOrderSerializer(order, request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if serializer.validated_data['status']=="Оплачено":
+                if cart_items.exists():
+                    for cart_item in cart_items:
+                        product = cart_item.product
+                        name = cart_item.product.name
+                        price = cart_item.product.price
+                        author = cart_item.product.author
+                        quantity = cart_item.quantity #Кол-во продуктов в КОРЗИНЕ
+
+                        if product.quantity < quantity:
+                            raise Exception(f'Недостаточное количество товара {name} на складе. В наличии - {product.quantity}')
+                                
+                        OrderItem.objects.create(order=order, product=product, name=name, price=price, author=author, quantity=quantity)
+                        product.quantity-=quantity
+                        product.save()
+                        cart_items.delete()
+                        return Response(serializer.data)
+        return Response(serializer.errors)
     def delete(self, request, order_id):
         queryset = Order.objects.all()
         order = queryset.filter(pk=order_id)

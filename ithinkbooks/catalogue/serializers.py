@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from catalogue.models import Products, Categories, Review, RatingStar, Favorite
+from users.serializers import UserSerializer
 
 class RatingStarSerializer (serializers.ModelSerializer):
     class Meta:
@@ -7,6 +8,12 @@ class RatingStarSerializer (serializers.ModelSerializer):
         fields = '__all__'
 
 class CreateReviewSerializer (serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
+
+class GetReviewSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = Review
         fields = '__all__'
@@ -19,6 +26,11 @@ class ProductsSerializer(serializers.ModelSerializer):
         #fields = ('name','slug','author','publisher', 'year','number_of_pages','description','price',
         #'quantity','book_type', 'book_bindings', 'translator_choice' )
 
+class ProductWithoutReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Products
+        fields = '__all__'
+
 class CategoriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Categories
@@ -28,6 +40,12 @@ class FindBookSerializer (serializers.Serializer):
     book_name = serializers.CharField()
 
 class FavoriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = '__all__'
+    
+class FavoriteReturnSerializer(serializers.ModelSerializer):
+    product = ProductWithoutReviewSerializer()
     class Meta:
         model = Favorite
         fields = '__all__'

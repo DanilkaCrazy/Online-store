@@ -5,7 +5,7 @@ from catalogue.models import Categories, Products, Review, Favorite
 from users.models import User
 from rest_framework import permissions
 from rest_framework.response import Response
-from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer, FindBookSerializer, FavoriteSerializer, RemoveFavoriteSerializer
+from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer, FindBookSerializer, FavoriteSerializer, RemoveFavoriteSerializer, FavoriteReturnSerializer, GetReviewSerializer
 # Create your views here.
 #Просмотр всех книг
 class ProductsListView(ListAPIView):
@@ -79,24 +79,17 @@ class ReviewUserView(APIView):
     def get(self, request,user_id):
         queryset = Review.objects.all()
         review = queryset.filter(user=user_id)
-        serializer = CreateReviewSerializer(review, many=True)
+        serializer = GetReviewSerializer(review, many=True)
         return Response(serializer.data)
 
-class AddToFavorite(APIView):
-    def post(self, request):
-        favorite = FavoriteSerializer(data=request.data)
-        if favorite.is_valid():
-            favorite.save()
-            return Response(status=201)
-        return Response(favorite.errors)
-
 class GetFavoriteBooks(APIView):
+    #Все книги для юзера
     def get(self, request, user_id):
         queryset = Favorite.objects.all()
         favorite = queryset.filter(user=user_id)
-        serializer = FavoriteSerializer(favorite, many=True)
+        serializer = FavoriteReturnSerializer(favorite, many=True)
         return Response(serializer.data)
-
+    #Добавляем книгу
     def post(self, request, user_id):
         #user = get_object_or_404(User, pk=user_id)
         favorite = FavoriteSerializer(data=request.data)
@@ -110,8 +103,9 @@ class DeleteFavoriteBook(APIView):
     def get(self, request, favorite_id):
         queryset = Favorite.objects.all()
         favorite = queryset.filter(pk=favorite_id)
-        serializer = FavoriteSerializer(favorite, many=True)
+        serializer = FavoriteReturnSerializer(favorite, many=True)
         return Response(serializer.data)
+    #Удаляем эту одну книгу
     def delete(self, request, favorite_id):
         queryset = Favorite.objects.all()
         favorite = queryset.filter(pk=favorite_id)
