@@ -1,75 +1,60 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useBooks } from '../hooks/BooksProvider';
 import Book from '../types/Book';
-import { useLocation, useNavigate } from 'react-router-dom';
 import axiosInstance, { getCookie } from '../Axios';
 import SearchIcon from '../../images/header/Search.svg';
 import SmallBookComponent from '../books/SmallBookComponent';
-import { SortBooks, SortTypes } from '../sort';
 
 const SEARCH_INTERVAL = 750;
 
 const Search: React.FC<{}> = () => {
-  const {updateBooks, fixBookData, toggleLoading, filterOriginalBooks} = useBooks();
+  const {fixBookData, findBooksByWord} = useBooks();
 
   const [foundBooks, setFoundBooks] = useState<Book[]>([]);
-  const [seacrhWord, setSearchWord] = useState<string>('');
+  const [searchWord, setSearchWord] = useState<string>('');
 
   const [loading, setLoading] = useState<boolean>(false);
-
-  const location = useLocation();
-  const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const signalController = new AbortController();
 
   const redirectToResult = () => {
-    if(seacrhWord) {
-      toggleLoading(loading);
-      navigate(`/search/${seacrhWord}`);
-      updateBooks(foundBooks);
-      filterOriginalBooks(SortBooks[SortTypes.POPULARITY](foundBooks));
-      setSearchWord('');
-      if(inputRef.current?.value !== undefined) {
-        inputRef.current.value = '';
-      }
+    signalController.abort();
+    findBooksByWord(searchWord);
+    setSearchWord('');
+    if(inputRef.current?.value) {
+      inputRef.current.value = '';
     }
   };
 
   const findBooks = () => {
     signalController.abort();
-    setTimeout(() => setSearchWord(!inputRef.current?.value ? '' : inputRef.current.value), SEARCH_INTERVAL);
+    setSearchWord(!inputRef.current?.value ? '' : inputRef.current.value);
   };
 
   const getFoundBooks = useCallback(() => {
     axiosInstance
       .post('http://127.0.0.1:8000/books_search', {
-        book_name: seacrhWord.toLowerCase()
+        book_name: searchWord.toLowerCase()
       }, {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         },
         signal: signalController.signal
       })
-      .then((resp) => resp.data)
+      .then((resp) => resp.data.slice(0, 3))
       .then((data) => data.map((book: Book) => fixBookData(book)))
       .then(setFoundBooks)
       .catch(() => {})
-      .finally(() => {
-        setLoading(false);
-
-        if(location.pathname.includes('search')) {
-          toggleLoading(false);
-        }
-      });
-  }, [seacrhWord, location.pathname]);
+      .finally(() => setLoading(false));
+  }, [searchWord]);
 
   useEffect(() => {
-    if(seacrhWord) {
+    if(searchWord) {
       setLoading(true);
-      getFoundBooks();
+      setTimeout(getFoundBooks, SEARCH_INTERVAL);
     }
-  }, [seacrhWord, getFoundBooks]);
+  }, [searchWord, getFoundBooks]);
 
   return (
     <div className='search-panel'>
@@ -88,9 +73,9 @@ const Search: React.FC<{}> = () => {
         <img src={SearchIcon} alt='Найти' onClick={redirectToResult} className='clickable'/>
       </div>
       
-      <div className='search-result' hidden={seacrhWord === ''}>
+      <div className='search-result' hidden={searchWord === ''}>
         {foundBooks.length 
-          ? foundBooks.slice(0, 3).map((book, i) => <SmallBookComponent key={i} book={book} onClick={() => setSearchWord('')}/>)
+          ? foundBooks.map((book, i) => <SmallBookComponent key={i} book={book} onClick={() => setSearchWord('')}/>)
           : <p className='main-p darker-p'>{loading ? 'Загрузка...' : 'Ничего не найдено'}</p>}
       </div>
     </div>

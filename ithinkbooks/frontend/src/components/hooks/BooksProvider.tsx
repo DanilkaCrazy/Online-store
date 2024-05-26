@@ -2,7 +2,7 @@ import React, { ReactNode, createContext, useCallback, useContext, useEffect, us
 import { randomInteger } from '../mock/mock';
 import Book from '../types/Book';
 import Review, { emptyReview } from '../types/Review';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { SortBooks, SortTypes } from '../sort';
 import axiosInstance, { getCookie } from '../Axios';
 import { useAccount } from './AccountProvider';
@@ -13,7 +13,7 @@ const defaultBooksContextValue = {
   books: emptyBooksList,
   filteredBooks: emptyBooksList,
   loading: false,
-  updateBooks: (updatedBooks: Book[]) => {},
+  findBooksByWord: (newSearchWord: string) => {},
   filterOriginalBooks: (updatedBooks: Book[]) => {},
   updateBook: (bookId: number, update: object) => {},
   addBookReview: (review: Review) => {},
@@ -30,16 +30,22 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   
   const [books, setBooks] = useState<Book[]>([]);
   const [filteredBooks, setFilteredBooks] = useState<Book[]>(books);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [newReview, setReview] = useState<Review>(emptyReview);
 
+  const [searchWord, setSearchWord] = useState<string>('');
+
   const location = useLocation();
   const keys = useMemo(() => location.pathname.split('/'), [location.pathname]);
+  const navigate = useNavigate();
 
   const token = getCookie('csrftoken');
 
-  const updateBooks = (updatedBooks: Book[]) => {
-    setBooks(updatedBooks);
+  const findBooksByWord = (newSearchWord: string) => {
+    if(newSearchWord) {
+      setSearchWord(newSearchWord);
+    }
   };
 
   const filterOriginalBooks = (updatedBooks: Book[]) => {
@@ -83,7 +89,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then((resp) => resp.data)
       .then((data) => data.map((book: Book) => fixBookData(book)))
       .then((data) => {
-        setBooks(data)
+        setBooks(data);
         setFilteredBooks(SortBooks[SortTypes.POPULARITY](data));
       })
       .then(() => setLoading(false));
@@ -111,7 +117,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       })
       .then((resp) => resp.data)
       .then((data) => data.map((book: Book) => fixBookData(book)))
-      .then((data) => setBooks(data))
+      .then(setBooks)
       .then(() => setLoading(false));
   }, [token]);
 
@@ -127,6 +133,25 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then(() => setLoading(false))
       .catch(console.error);
   }, [newReview, token]);
+
+  const getBooksBySearchWord = useCallback(() => {
+    axiosInstance
+      .post('http://127.0.0.1:8000/books_search', {
+        book_name: searchWord.toLowerCase()
+      }, {
+        headers: {
+          'X-CSRFToken': token
+        }
+      })
+      .then((resp) => resp.data)
+      .then((data) => data.map((book: Book) => fixBookData(book)))
+      .then((data) => {
+        setBooks(data);
+        setFilteredBooks(SortBooks[SortTypes.POPULARITY](data));
+      })
+      .then(() => setSearchWord(''))
+      .then(() => setLoading(false));
+  }, [token, searchWord]);
 
   useEffect(() => {
     if(newReview.id >= 0) {
@@ -149,12 +174,20 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
     }
   }, [getThemeBooks, getBookById, getBooks, keys, newReview]);
 
+  useEffect(() => {
+    if(searchWord) {
+      setLoading(true);
+      navigate(`/search/${searchWord}`);
+      getBooksBySearchWord();
+    }
+  }, [searchWord, getBooksBySearchWord]);
+
   return (
     <BooksContext.Provider value={{
       books, 
       filteredBooks, 
       loading,
-      updateBooks, 
+      findBooksByWord, 
       filterOriginalBooks, 
       updateBook, 
       addBookReview, 

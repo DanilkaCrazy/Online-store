@@ -10,9 +10,11 @@ const SearchedBooks: React.FC<{}> = () => {
   const {bookTitle} = useParams();
 
   if(loading) {
-    <div className='page'>
-      <h2>Загрузка...</h2>
-    </div>
+    return (
+      <div className='page'>
+        <h2>Загрузка...</h2>
+      </div>
+    );
   }
 
   if(!books) {
