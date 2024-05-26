@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from catalogue.models import Products, Categories, Review, RatingStar
+from catalogue.models import Products, Categories, Review, RatingStar, Favorite
 
 class RatingStarSerializer (serializers.ModelSerializer):
     class Meta:
@@ -26,3 +26,11 @@ class CategoriesSerializer(serializers.ModelSerializer):
 
 class FindBookSerializer (serializers.Serializer):
     book_name = serializers.CharField()
+
+class FavoriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Favorite
+        fields = '__all__'
+
+class RemoveFavoriteSerializer(serializers.Serializer):
+    product_id = serializers.IntegerField()

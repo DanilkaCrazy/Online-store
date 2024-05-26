@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.views import APIView
-from catalogue.models import Categories, Products, Review
+from catalogue.models import Categories, Products, Review, Favorite
+from users.models import User
 from rest_framework import permissions
 from rest_framework.response import Response
-from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer, FindBookSerializer
+from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer, FindBookSerializer, FavoriteSerializer, RemoveFavoriteSerializer
 # Create your views here.
 #Просмотр всех книг
 class ProductsListView(ListAPIView):
@@ -80,3 +81,39 @@ class ReviewUserView(APIView):
         review = queryset.filter(user=user_id)
         serializer = CreateReviewSerializer(review, many=True)
         return Response(serializer.data)
+
+class AddToFavorite(APIView):
+    def post(self, request):
+        favorite = FavoriteSerializer(data=request.data)
+        if favorite.is_valid():
+            favorite.save()
+            return Response(status=201)
+        return Response(favorite.errors)
+
+class GetFavoriteBooks(APIView):
+    def get(self, request, user_id):
+        queryset = Favorite.objects.all()
+        favorite = queryset.filter(user=user_id)
+        serializer = FavoriteSerializer(favorite, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, user_id):
+        #user = get_object_or_404(User, pk=user_id)
+        favorite = FavoriteSerializer(data=request.data)
+        if favorite.is_valid():
+            favorite.save()
+            return Response(status=201)
+        return Response(favorite.errors)
+
+class DeleteFavoriteBook(APIView):
+    #Получаем только одну книгу по id
+    def get(self, request, favorite_id):
+        queryset = Favorite.objects.all()
+        favorite = queryset.filter(pk=favorite_id)
+        serializer = FavoriteSerializer(favorite, many=True)
+        return Response(serializer.data)
+    def delete(self, request, favorite_id):
+        queryset = Favorite.objects.all()
+        favorite = queryset.filter(pk=favorite_id)
+        favorite.delete()
+        return Response(status=204)

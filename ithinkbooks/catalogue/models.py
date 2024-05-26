@@ -228,4 +228,12 @@ class Review(models.Model):
     
     def __str__(self):
         return f"{self.title} - {self.product}"
-    
+
+#Избранное
+class Favorite(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE, related_name='favorite')
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='favorite_user')
+    class Meta:
+        db_table = 'favorite'
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранные'

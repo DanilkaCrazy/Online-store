@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.apps import AppConfig
-from catalogue.models import Products, Categories, Review, RatingStar
+from catalogue.models import Products, Categories, Review, RatingStar, Favorite
 from django_better_admin_arrayfield.admin.mixins import DynamicArrayMixin
 
 # Register your models here.
@@ -18,4 +18,8 @@ class ReviewAdmin(admin.ModelAdmin):
 
 @admin.register(RatingStar)
 class RatingStarAdmin(admin.ModelAdmin):
+    prepopulated_fields = {}
+
+@admin.register(Favorite)
+class FavoriteAdmin(admin.ModelAdmin):
     prepopulated_fields = {}
