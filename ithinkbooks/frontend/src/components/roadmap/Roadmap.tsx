@@ -1,22 +1,32 @@
 import React, { useMemo, useState } from 'react';
 import '../../css/Quiz.css';
 import {NodeBook, Branch} from './RoadmapNode';
-import { useBooks } from '../hooks/BooksProvider';
 import '../../css/Roadmap.css';
-import Book, { emptyBook } from '../types/Book';
 import BookPanel from '../books/BookPanel';
 import { useParams } from 'react-router-dom';
 import { useQuiz } from '../hooks/QuizProvider';
 import { randomInteger } from '../mock/mock';
+import { Roadmap } from '../types/Roadmap';
+import { fixBookData } from '../utils';
+import Book, { emptyBook } from '../types/Book';
 
 const RoadmapPage: React.FC<{}> = () => {
   const {id} = useParams();
   const parsedId = !id ? 0 : parseInt(id);
 
-  const {books, loading} = useBooks();
-  const {roadmaps} = useQuiz();
+  const {roadmaps, loading} = useQuiz();
 
-  const roadmap = useMemo(() => roadmaps.find((r) => r.id === parsedId), [roadmaps, parsedId]);
+  const fixRoadmapBooks = (roadmap: Roadmap | undefined): Roadmap | undefined => !roadmap ? undefined : (
+    {
+      ...roadmap,
+      node: roadmap.node.map((rmNode) => ({
+        ...rmNode,
+        product: rmNode.product.map((rmBook) => fixBookData(rmBook))
+      }))
+    }
+  );
+
+  const roadmap = useMemo(() => fixRoadmapBooks(roadmaps.find((r) => r.id === parsedId)), [roadmaps, parsedId]);
 
   const [chosenBook, setChosenBook] = useState<Book>(emptyBook);
 
@@ -37,23 +47,19 @@ const RoadmapPage: React.FC<{}> = () => {
     );
   }
 
-  const booksId = roadmap.node.map((node) => node.product).reduce((prevArray, nextArray) => prevArray.concat(nextArray), []);
-  const roadmapBooks = books.filter((book) => booksId.includes(book.id));
-  const booksByNodes = roadmap.node.map((node) => roadmapBooks.filter((book) => node.product.includes(book.id)));
-
   if(chosenBook.id < 0) {
-    setChosenBook(booksByNodes[0][0]);
+    setChosenBook(roadmap.node[0].product[0]);
   }
 
   return (
     <div className='divided-page roadmap-page'>
-      <BookPanel book={chosenBook} roadmapId={roadmap.id}/>
+      <BookPanel book={chosenBook}/>
       <div className='roadmap-block'>
         <h1>{roadmap.title}</h1>
         <div className='roadmap'>
           {roadmap.node.map((node, i) => <div key={i} className='roadmap-node'>
               <div className='roadmap-node-books'>
-                {booksByNodes[i].map((book, j) => (
+                {node.product.map((book, j) => (
                   <NodeBook 
                     key={j} 
                     book={book} 

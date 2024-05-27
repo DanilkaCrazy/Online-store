@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { User, UserResponce } from '../types/User';
 import cities from '../mock/cities.json';
@@ -143,8 +144,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       })
       .then(() => updateAccount(newAccount))
       .then(() => setLoading(false))
-      .then(() => navigate('/account/basket'))
-      .catch((reason) => console.log(reason));
+      .then(() => navigate('/account/basket'));
   }, [newAccount, token]);
 
   const putEditedAccount = useCallback(() => {

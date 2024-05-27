@@ -21,8 +21,8 @@ import Quiz from '../roadmap/Quiz';
 import QuizTheme from '../roadmap/QuizTheme';
 import QuizWarning from '../roadmap/QuizWarning';
 import { useAccount } from '../hooks/AccountProvider';
-import { MAX_ROADMAPS_COUNT } from '../types/User';
 import SearchedBooks from '../collections/SearchingBooks';
+import OrderInfo from '../user/OrderInfo';
 
 const RootLayout: React.FC<{}> = () => {
   const {account} = useAccount();
@@ -32,7 +32,7 @@ const RootLayout: React.FC<{}> = () => {
       <Route path='/' element={<Main/>}/>
       <Route path='roadmaps/:id' element={<RoadmapPage/>}/>
       <Route path='quiz' element={<QuizPage/>}>
-        <Route path='theme' element={/*account.roadmaps.length >= MAX_ROADMAPS_COUNT ? <Navigate to='/quiz/warning'/> :*/ <QuizTheme/>}/>
+        <Route path='theme' element={account.id < 0 ? <Navigate to='/log-in'/> : <QuizTheme/>}/>
         <Route path='questions' element={<Quiz/>}/>
         <Route path='warning' element={<QuizWarning/>}/>
       </Route>
@@ -42,14 +42,15 @@ const RootLayout: React.FC<{}> = () => {
         <Route path='history' element={<History/>}/>
         <Route path='roadmaps' element={<RoadmapsList/>}/>
         <Route path='reviews' element={<ReviewsList/>}/>
+        <Route path='history/:id' element={<OrderInfo/>}/>
       </Route>
       <Route path='faq' element={<Stub pageName='FAQ'/>}/>
       <Route path='roadmap-help' element={<Stub pageName='Roadmap help'/>}/>
       <Route path='payment' element={<Stub pageName='Payment'/>}/>
       <Route path='feedback' element={<Stub pageName='Feedback'/>}/>
-      <Route path='user'>
+      {/*<Route path='user'>
         <Route path=':id' element={<AnotherUser/>}/>
-      </Route>
+      </Route>*/}
       <Route path='book'>
         <Route path=':id' element={<BookPage/>}/>
       </Route>

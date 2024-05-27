@@ -1,10 +1,9 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
-import { users } from '../mock/mock';
 import Stub from '../layout/Stub';
 
 const AnotherUser: React.FC<{}> = () => {
-  const {id} = useParams();
+  /*const {id} = useParams();
   const intId = !id ? -1 : parseInt(id);
   const user = users.find((u) => u.id === intId);
 
@@ -20,7 +19,8 @@ const AnotherUser: React.FC<{}> = () => {
       <h3>{user.user_status.name}</h3>
       {user.user_directions.map((branch, i) => <h2 key={i}>{branch.name}</h2>)}
     </>
-  );
+  );*/
+  return <></>;
 }; 
 
 export default AnotherUser;

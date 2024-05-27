@@ -1,11 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { Cart, CartResponce, emptyCart } from '../types/Cart';
+import Cart, { emptyCart } from '../types/Cart';
 import { useAccount } from './AccountProvider';
-import Book, { emptyBook } from '../types/Book';
+import Book from '../types/Book';
 import axiosInstance, { getCookie } from '../Axios';
-import { randomInteger } from '../mock/mock';
-import { getRandomId } from '../utils';
-import { useBooks } from './BooksProvider';
+import { fixBookData, getRandomId } from '../utils';
+import { useLocation } from 'react-router-dom';
 
 const emptyCartsList: Cart[] = [];
 
@@ -24,8 +24,7 @@ const BasketContext = createContext(defaultBasketContext);
 const useBasket = () => useContext(BasketContext);
 
 const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
-  const {account, getResponceFromUser} = useAccount();
-  const {books, fixBookData} = useBooks();
+  const {account} = useAccount();
 
   const [carts, setCarts] = useState<Cart[]>([]);
   const [cart, setCart] = useState<Cart>(emptyCart);
@@ -34,6 +33,8 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const token = getCookie('csrftoken');
+
+  const location = useLocation();
 
   const putInBasket = (book: Book) => {
     const foundCart = carts.find((cart) => cart.product.id === book.id);
@@ -84,7 +85,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const getCartResponce = () => (
     {
       ...cart, 
-      user: getResponceFromUser(account),
+      user_id: account.id,
       product_id: cart.product.id,
       cart_id: cart.id
     }
@@ -98,15 +99,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         }
       })
       .then((resp) => resp.data)
-      .then((data) => setCarts(data.map((c: CartResponce) => {
-        const found = books.find((book) => book.id === c.product);
-
-        return {
-          ...c,
-          user: c.user.id,
-          product: fixBookData(!found ? emptyBook : found)
-        }
-      })))
+      .then((data) => setCarts(data.map((c: Cart) => ({...c, product: fixBookData(c.product)}))))
       .then(() => setLoading(false));
   }, [token]);
 
@@ -129,7 +122,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         }
       })
       .then(() => setCarts(carts.map((c) => c.product.id === cart.product.id ? cart : c)))
-      .then(() => setLoading(false));
+      .then(() => getCarts());
   }, [cart, token]);
 
   const removeCart = useCallback(() => {
@@ -168,13 +161,11 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, [cart, changeCart, postCart, removeCart]);
 
   useEffect(() => {
-    if(account.id >= 0) {
+    if(account.id >= 0 && location.pathname.includes('basket')) {
       setLoading(true);
-      if(books.length) {
-        getCarts();
-      }
+      getCarts();
     }
-  }, [cart, carts.length, books.length, getCarts]);
+  }, [location.pathname, carts.length, getCarts]);
 
   useEffect(() => {
     if(clean) {

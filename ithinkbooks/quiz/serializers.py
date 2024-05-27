@@ -35,7 +35,7 @@ class ResultSerializer(serializers.ModelSerializer):
 class RoadmapProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
-        fields = ['id','name', 'description', 'level', 'price']
+        fields = '__all__'
 
 class RoadmapNodeSerializer(serializers.ModelSerializer):
     product = RoadmapProductSerializer(many=True)

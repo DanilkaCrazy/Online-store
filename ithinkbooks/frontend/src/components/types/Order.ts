@@ -10,6 +10,7 @@ interface OrderItem {
   quantity: number;
   created_timestamp: Date;
   order: number;
+  author: string;
 };
 
 interface Order {

@@ -76,7 +76,7 @@ class SendResultsFull(APIView):
              #   roadmap_node.product.set([i])
             #    roadmap_node.save()
             return Response("Success")
-        return Response(serializer.errors)
+        #return Response(serializer.errors)
 
 
 class ViewResults(APIView):

@@ -4,22 +4,29 @@ import {Star} from './Star';
 import VoteArrow from '../../images/pages/desktop/VoteArrow.svg';
 import '../../css/Review.css';
 import Book from '../types/Book';
-import { User } from '../types/User';
+import { User, UserResponce } from '../types/User';
 import { DesktopImages } from '../ui/ImagesCollection';
 import { useBooks } from '../hooks/BooksProvider';
+import statuses from '../mock/statuses.json';
 
-const Reviewer: React.FC<{user: User}> = ({user}) => (
-  <div className='review-user'>
-    <div className='review-user-name'>
-      <img src={user.image} alt={user.first_name}></img>
-      <p className='secondary-p'>{user.first_name}</p>
+const Reviewer: React.FC<{user: User | UserResponce}> = ({user}) => {
+  const status = typeof user.user_status === 'string' 
+    ? statuses.find((s) => s.title === user.user_status)
+    : user.user_status;
+
+  return (
+    <div className='review-user'>
+      <div className='review-user-name'>
+        <img src={user.image} alt={user.first_name}></img>
+        <p className='secondary-p'>{user.first_name}</p>
+      </div>
+      {!status || <div className='review-user-status'>
+        <img src={DesktopImages.find((image) => image.theme === status.title)?.image} alt={status.name}></img>
+        <p className='secondary-p'>{status.name}</p>
+      </div>}
     </div>
-    <div className='review-user-status'>
-      <img src={DesktopImages.find((image) => image.theme === user.user_status.title)?.image} alt={user.user_status.name}></img>
-      <p className='secondary-p'>{user.user_status.name}</p>
-    </div>
-  </div>
-);
+  )
+};
 
 const ReviewedBook: React.FC<{book: Book | undefined}> = ({book}) => { 
   if(!book) {
@@ -48,7 +55,7 @@ const ReviewComponent: React.FC<{review: Review, isInBookPage?: boolean}> = ({re
 
   return (
     <div className='review-block'>
-      {isInBookPage
+      {isInBookPage && review.user
       ? <></>
       : <ReviewedBook book={books.find((book) => book.id === review.product)}/>}
       <div className='review'>

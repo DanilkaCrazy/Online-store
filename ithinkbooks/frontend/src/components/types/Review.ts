@@ -1,4 +1,4 @@
-import { User } from './User';
+import { User, UserResponce } from './User';
 
 const getVoteValue = (review: Review) => review.positiveVotes - review.negativeVotes;
 
@@ -7,7 +7,7 @@ export default interface Review {
   star: number;
   title: string;
   text: string;
-  user: User | undefined;
+  user: User | UserResponce | undefined;
   positiveVotes: number;
   negativeVotes: number;
   product: number;

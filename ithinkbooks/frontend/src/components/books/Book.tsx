@@ -16,7 +16,7 @@ const BookComponent: React.FC<{
   quantity?: number
 }> = ({book, page = '', quantity = 0}) => {
   const {markAsFavotite} = useFavorite();
-  const {putInBasket, removeFromBasket, changeQuantity} = useBasket();
+  const {putInBasket, removeFromBasket, changeQuantity, loading} = useBasket();
   const rating = getAverageNumber(book.review.map((review) => review.star));
 
   return (
@@ -41,30 +41,31 @@ const BookComponent: React.FC<{
 
       <Price price={book.price}/>
 
-      <p className='main-p' hidden={page !== 'history'}><b>Количество: </b>{quantity}</p>
-      
       {book.quantity > 0 
-      ? <button 
+        ? <p className='main-p'><b>В наличии: {book.quantity}</b></p>
+        : <p className='main-p'><b>Нет в наличии</b></p>}
+      
+      {book.quantity <= 0 
+      || <button 
           className='main-button'
           hidden={page === 'basket'} 
           onClick={() => putInBasket(book)}>
             {isReleased(book.year, book.month) ? 'В корзину' : 'Предзаказ'}
-        </button>
-      : <h3>Нет в наличии</h3>}
+        </button>}
 
       <div className='copy-amount' hidden={page !== 'basket'}>
         <button 
-          disabled={quantity <= MIN_QUANTITY}
+          disabled={quantity <= MIN_QUANTITY || loading}
           className='secondary-button' 
           onClick={() => changeQuantity(book.id, -1)}
         >
           <b>-</b>
         </button>
 
-        <p className='main-p'>{quantity}</p>
+        <p className='main-p'>{loading ? '...' : quantity}</p>
 
         <button 
-          disabled={quantity >= book.quantity}
+          disabled={quantity >= book.quantity || loading}
           className='secondary-button'
           onClick={() => changeQuantity(book.id, 1)}
         >

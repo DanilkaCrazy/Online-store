@@ -1,11 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { randomInteger } from '../mock/mock';
 import Book from '../types/Book';
 import Review, { emptyReview } from '../types/Review';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { SortBooks, SortTypes } from '../sort';
 import axiosInstance, { getCookie } from '../Axios';
 import { useAccount } from './AccountProvider';
+import { fixBookData } from '../utils';
 
 const emptyBooksList: Book[] = [];
 
@@ -17,7 +18,6 @@ const defaultBooksContextValue = {
   filterOriginalBooks: (updatedBooks: Book[]) => {},
   updateBook: (bookId: number, update: object) => {},
   addBookReview: (review: Review) => {},
-  fixBookData: (data: Book) => {},
   toggleLoading: (load: boolean) => {}
 };
 
@@ -65,19 +65,6 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   };
 
   // data fetch
-
-  const fixBookData = (data: Book): Book => {
-    return (
-      {
-        ...data, 
-        month: randomInteger(1, 12), 
-        review: !data.review 
-          ? [] 
-          : data.review.map((r: Review) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)})),
-        price: typeof data.price === 'string' ? parseFloat(data.price) : data.price
-      }
-    );
-  };
 
   const getThemeBooks = useCallback(() => {
     axiosInstance
@@ -128,7 +115,6 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
           'X-CSRFToken': token
         }
       })
-      .then((resp) => console.log(resp.data))
       .then(() => setReview(emptyReview))
       .then(() => setLoading(false))
       .catch(console.error);
@@ -161,15 +147,16 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, [postReview, newReview])
 
   useEffect(() => {
-    setLoading(true);
-
     if(keys.includes('themes')) {
+      setLoading(true);
       getThemeBooks();
     } else if(keys.includes('book')) {
       if(newReview.id < 0) {
+        setLoading(true);
         getBookById();
       }
-    } else if(!keys.includes('search')) {
+    } else if(!keys[1] || keys.includes('reviews')) {
+      setLoading(true);
       getBooks();
     }
   }, [getThemeBooks, getBookById, getBooks, keys, newReview]);
@@ -190,8 +177,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       findBooksByWord, 
       filterOriginalBooks, 
       updateBook, 
-      addBookReview, 
-      fixBookData,
+      addBookReview,
       toggleLoading}}>
       {children}
     </BooksContext.Provider>

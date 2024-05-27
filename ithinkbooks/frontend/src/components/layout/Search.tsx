@@ -1,14 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useBooks } from '../hooks/BooksProvider';
 import Book from '../types/Book';
 import axiosInstance, { getCookie } from '../Axios';
 import SearchIcon from '../../images/header/Search.svg';
 import SmallBookComponent from '../books/SmallBookComponent';
+import { fixBookData } from '../utils';
 
 const SEARCH_INTERVAL = 750;
 
 const Search: React.FC<{}> = () => {
-  const {fixBookData, findBooksByWord} = useBooks();
+  const {findBooksByWord} = useBooks();
 
   const [foundBooks, setFoundBooks] = useState<Book[]>([]);
   const [searchWord, setSearchWord] = useState<string>('');

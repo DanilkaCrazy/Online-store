@@ -4,7 +4,6 @@ import Review, { emptyReview } from '../types/Review';
 import { ChangingStar } from './Star';
 import { useAccount } from '../hooks/AccountProvider';
 import { useBooks } from '../hooks/BooksProvider';
-import { randomInteger } from '../mock/mock';
 import { getRandomId } from '../utils';
 
 const ReviewForm: React.FC<{ 

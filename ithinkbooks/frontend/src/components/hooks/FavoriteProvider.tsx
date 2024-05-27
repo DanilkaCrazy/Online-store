@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
 import Favorite, { emptyFavorite } from '../types/Favorite';
 import Book from '../types/Book';
-import { getRandomId } from '../utils';
+import { fixBookData, getRandomId } from '../utils';
 import { useAccount } from './AccountProvider';
 import axiosInstance, { getCookie } from '../Axios';
-import { useBooks } from './BooksProvider';
 
 const emptyFavorities: Favorite[] = [];
 
@@ -21,7 +21,6 @@ const useFavorite = () => useContext(FavoriteContext);
 
 const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const {account} = useAccount();
-  const {fixBookData} = useBooks();
   const [favoriteBooks, setFavoriteBooks] = useState<Favorite[]>([]);
   const [currentFav, setCurrentFav] = useState<Favorite>(emptyFavorite);
 
@@ -30,13 +29,18 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const token = getCookie('csrftoken');
 
   const markAsFavotite = (book: Book) => {
-    const newFav: Favorite = {
-      id: getRandomId(),
-      product: book,
-      user: account.id
-    };
+    const foundFav =  favoriteBooks.find((fav) => fav.product.id === book.id);
+    if(!foundFav) {
+      const newFav: Favorite = {
+        id: getRandomId(),
+        product: book,
+        user: account.id
+      };
 
-    setCurrentFav(newFav);
+      setCurrentFav(newFav);
+    } else {
+      setCurrentFav(foundFav);
+    }
   };
 
   const isBookFavorite = (bookId: number) => favoriteBooks.find((fav) => fav.product.id === bookId) !== undefined;
@@ -45,7 +49,10 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const addToFavorite = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/favorite', currentFav, {
+      .post(`http://127.0.0.1:8000/favorite/${account.id}`, {
+        ...currentFav,
+        product: currentFav.product.id
+      }, {
         headers: {
           'X-CSRFToken': token
         }
@@ -62,7 +69,7 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
           'X-CSRFToken': token
         }
       })
-      .then(() => setFavoriteBooks(favoriteBooks.filter((fav) => fav.product.id === currentFav.product.id)))
+      .then(() => setFavoriteBooks(favoriteBooks.filter((fav) => fav.product.id !== currentFav.product.id)))
       .then(() => setCurrentFav(emptyFavorite))
       .then(() => setLoading(false));
   }, [token, currentFav]);
@@ -83,10 +90,10 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
   useEffect(() => {
     setLoading(true);
     getFavoriteBooks();
-  }, [currentFav, getFavoriteBooks]);
+  }, [favoriteBooks.length, getFavoriteBooks]);
 
   useEffect(() => {
-    if(currentFav.id >= 0) {
+    if(currentFav.id >= 0 && account.id >= 0) {
       setLoading(true);
       !isBookFavorite(currentFav.product.id) ? addToFavorite() : removeFromFavorite();
     }

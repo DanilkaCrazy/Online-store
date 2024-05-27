@@ -5,6 +5,7 @@ import { DropdownField } from '../ui/FormFields';
 import { useOrders } from '../hooks/OrderProvider';
 import { getArraySum } from '../utils';
 import { OrderItem } from '../types/Order';
+import orderStatuses from '../mock/orderStatuses.json';
 
 const OrderedBooks: React.FC<{items: OrderItem[]}> = ({items}) => (
   <div className='form-field'>
@@ -30,8 +31,6 @@ const OrderForm: React.FC<{}> = () => {
       </div>
     );
   }
-
-  console.log(items);
 
   /*if(!id || parseInt(id) !== currentOrder.id) {
     return (
@@ -71,8 +70,23 @@ const OrderForm: React.FC<{}> = () => {
           выбранном формате будут приходить к Вам на электронную почту и номер телефона.</p>
 
         <div className='buttons-group'>
-          <Link to='/account/basket' className='main-button' /*I need put method for order change*/>Оплатить</Link>
-          <Link to='/account/basket' className='secondary-button' /*I need delete method for order cancel*/ onClick={() => cancelOrder()}>Отменить</Link>
+          <button
+            className='main-button' 
+            onClick={(evt) => {
+              evt.preventDefault();
+              updateOrder({status: orderStatuses.awatingPayment});
+            }}>
+              Оплатить
+          </button>
+
+          <button 
+            className='secondary-button' 
+            onClick={(evt) => {
+              evt.preventDefault();
+              cancelOrder();
+            }}>
+              Отменить
+          </button>
         </div>
       </form>
     </div>

@@ -1,7 +1,9 @@
+import Book from "./Book";
+
 interface RoadmapNode {
   node_level: number;
   roadmap: number;
-  product: number[];
+  product: Book[];
 }
 
 interface Roadmap {

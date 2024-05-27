@@ -24,7 +24,7 @@ const FavoritiesList: React.FC<{}> = () => {
   return (
     <div className='favorities-page'>
       <div className='books-collection'>
-        {favoriteBooks.map((fav, i) => <BookComponent key={i} book={fav.product}/>)}
+        {favoriteBooks.map((fav, i) => <BookComponent key={i} book={fav.product} page='favorite'/>)}
       </div>
     </div>
   );

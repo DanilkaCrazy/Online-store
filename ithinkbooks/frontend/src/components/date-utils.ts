@@ -37,6 +37,14 @@ const getFormatedWithDotsDate = (date: Date) => `${date.getDay()}.${date.getMont
 
 const getFormatedWithWordsDate = (date: Date) => { 
   const month = months[date.getMonth() - 1];
+
+  if(!month) {
+    return (`${date.getDay()} 
+      ${date.getDay()} 
+      ${date.getFullYear()} г.`
+    )
+  }
+
   return (
     `${date.getDay()} 
     ${declineNounAfterNumber(date.getMonth(), month.nominative, month.genitiveSingular, month.genitiveSingular)} 

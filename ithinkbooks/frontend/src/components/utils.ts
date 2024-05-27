@@ -1,3 +1,7 @@
+import { randomInteger } from "./mock/mock";
+import Book from "./types/Book";
+import Review from "./types/Review";
+
 const ScreensWidth = {
   RELATIVE_WIDTH: {
     DESKTOP: 0.9,
@@ -56,4 +60,17 @@ const declineNounAfterNumber = (number: number, nominative: string, genitiveSing
 
 const getRandomId = () => Date.now() % 1000;
 
-export {getArraySum, getAverageNumber, declineNounAfterNumber, getRandomId, ScreensWidth, AvatarWidth, MIN_PRICE, MAX_PRICE};
+const fixBookData = (data: Book): Book => {
+  return (
+    {
+      ...data, 
+      month: randomInteger(1, 12), 
+      review: !data.review 
+        ? [] 
+        : data.review.map((r: Review) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)})),
+      price: typeof data.price === 'string' ? parseFloat(data.price) : data.price
+    }
+  );
+};
+
+export {getArraySum, getAverageNumber, declineNounAfterNumber, getRandomId, fixBookData, ScreensWidth, AvatarWidth, MIN_PRICE, MAX_PRICE};
