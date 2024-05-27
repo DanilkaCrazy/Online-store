@@ -5,7 +5,7 @@ import { ScreensWidth } from '../utils';
 const STAR_STYLE = {
   itemShapes: ThinRoundedStar,
   activeFillColor: '#3F97E7',
-  inactiveFillColor: '#262626'
+  inactiveFillColor: 'var(--text-color)'
 };
 
 const Star: React.FC<{rating: number}> = ({rating}) => (

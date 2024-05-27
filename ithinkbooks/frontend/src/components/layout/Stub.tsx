@@ -1,7 +1,9 @@
 import React from 'react';
 
 const Stub: React.FC<{pageName: string}> = ({pageName}) => (
-    <h1>Stub of {pageName}</h1>
+    <div className='page'>
+        <h3>Stub of {pageName}</h3>
+    </div>
 );
 
 export default Stub;

@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from '../../images/header/Logo.svg';
 import DarkMode from '../../images/header/Dark.svg';
+import LightMode from '../../images/header/Light.svg';
 import StarIcon from '../../images/header/Star.svg';
 import BasketIcon from '../../images/header/Basket.svg';
 import AccountIcon from '../../images/header/Account.svg';
@@ -23,7 +24,7 @@ const Catalog: React.FC<{themes: Theme[]}> = ({themes}) => (
 );
 
 const Header: React.FC<{}> = () => {
-  const {toggleLightMode} = useLightMode();
+  const {toggleLightMode, isDark} = useLightMode();
   const {account} = useAccount();
 
   return (
@@ -32,7 +33,7 @@ const Header: React.FC<{}> = () => {
       <Catalog themes={themes}/>
       <Search/>
       <Link to='/quiz/theme' className='main-button'>Построить роадмап</Link>
-      <button onClick={toggleLightMode}><img src={DarkMode} alt='Тёмный режим'/></button>
+      <button onClick={toggleLightMode}><img src={!isDark ? DarkMode : LightMode} alt='Тёмный режим'/></button>
       <Link to={account.id < 0 ? '/log-in' : '/account/favorities'}><img src={StarIcon} alt='Избранное'/></Link>
       <Link to={account.id < 0 ? '/log-in' : '/account/basket'}><img src={BasketIcon} alt='Корзина'/></Link>
       <Link to={account.id < 0 ? '/log-in' : '/account/basket'}><img src={AccountIcon} alt='Личный кабиент'/></Link>

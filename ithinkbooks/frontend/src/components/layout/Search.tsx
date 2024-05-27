@@ -4,13 +4,16 @@ import { useBooks } from '../hooks/BooksProvider';
 import Book from '../types/Book';
 import axiosInstance, { getCookie } from '../Axios';
 import SearchIcon from '../../images/header/Search.svg';
+import SearchIconLight from '../../images/header/SearchLigth.svg';
 import SmallBookComponent from '../books/SmallBookComponent';
 import { fixBookData } from '../utils';
+import { useLightMode } from '../hooks/LightModeProvider';
 
 const SEARCH_INTERVAL = 750;
 
 const Search: React.FC<{}> = () => {
   const {findBooksByWord} = useBooks();
+  const {isDark} = useLightMode();
 
   const [foundBooks, setFoundBooks] = useState<Book[]>([]);
   const [searchWord, setSearchWord] = useState<string>('');
@@ -72,7 +75,7 @@ const Search: React.FC<{}> = () => {
             }
           }}/>
 
-        <img src={SearchIcon} alt='Найти' onClick={redirectToResult} className='clickable'/>
+        <img src={isDark ? SearchIconLight : SearchIcon} alt='Найти' onClick={redirectToResult} className='clickable'/>
       </div>
       
       <div className='search-result' hidden={searchWord === ''}>

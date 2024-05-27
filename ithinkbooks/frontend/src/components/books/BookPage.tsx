@@ -16,18 +16,17 @@ import { BookFormat, BookFormats, FileType } from '../mock/mock';
 import themes from '../mock/themes.json';
 import { useBasket } from '../hooks/BasketProvider';
 import { useFavorite } from '../hooks/FavoriteProvider';
+import { useNavigate } from 'react-router-dom';
 
 const BookPromo: React.FC<{
   book: Book, 
   canBuy: boolean, 
   chosenFormat: string,
+  isFavorite: boolean
   setFormat: React.Dispatch<React.SetStateAction<string>>,
-  putInBasket: (book: Book) => void,
-}> = ({book, canBuy, chosenFormat, setFormat, putInBasket}) => {
-  const {markAsFavotite, isBookFavorite} = useFavorite();
-  const isFavorite = isBookFavorite(book.id);
-
-  return (
+  onPutInBasketClick: () => void,
+  onFavoriteClick: () => void
+}> = ({book, canBuy, chosenFormat, isFavorite, setFormat, onPutInBasketClick, onFavoriteClick}) => (
     <div className='book-page-promo'>
       <div className='cover-stumb'> 
       </div>
@@ -46,17 +45,16 @@ const BookPromo: React.FC<{
       </div>
 
       {book.quantity > 0
-      ? <button className='main-button' onClick={() => putInBasket(book)}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
+      ? <button className='main-button' onClick={onPutInBasketClick}>{canBuy ? 'В корзину' : 'Предзаказ'}</button>
       : <h2>Нет в наличии</h2>}
       <button
         className={isFavorite ? 'main-button' : 'secondary-button'}
-        onClick={() => markAsFavotite(book)}>
+        onClick={onFavoriteClick}>
           {isFavorite ? 'В избранном' : 'Добавить в избранное'}
       </button>
       <p className='main-p' hidden={canBuy}>{months[book.month - 1].nominative} {book.year}</p>
     </div>
   );
-};
 
 const BookCharacteristics: React.FC<{book: Book, chosenFormat: string}> = ({book, chosenFormat}) => {
   const theme = themes.find((t) => t.title === book.book_theme)?.name;
@@ -149,12 +147,15 @@ const BookReviewsBlock: React.FC<{
 const BookPage: React.FC<{}> = () => {
   const {books, loading} = useBooks();
   const {account} = useAccount();
+  const {markAsFavotite, isBookFavorite} = useFavorite();
   const {putInBasket} = useBasket();
   
   const book = books[0];
 
   const [isReviewFormOpened, setReviewFormOpen] = useState<boolean>(false);
   const [chosenFormat, setFormat] = useState<string>(!book ? 'online' : book.book_format);
+
+  const navigate = useNavigate();
 
   if(loading) {
     return (
@@ -176,8 +177,10 @@ const BookPage: React.FC<{}> = () => {
         book={book} 
         canBuy={canBuy} 
         chosenFormat={chosenFormat}
+        isFavorite={isBookFavorite(book.id)}
         setFormat={setFormat}
-        putInBasket={putInBasket}/>
+        onPutInBasketClick={() => account.id < 0 ? navigate('/log-in') : putInBasket(book)}
+        onFavoriteClick={() => account.id < 0 ? navigate('/log-in') : markAsFavotite(book)}/>
 
       <div className='page-right page'>
         <div className='book-page-title'>

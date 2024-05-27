@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Book from '../types/Book';
 import { ScreensWidth, getAverageNumber } from '../utils';
 import {Star} from './Star';
@@ -9,15 +9,19 @@ import { isReleased } from '../date-utils';
 import { useBasket } from '../hooks/BasketProvider';
 import { MIN_QUANTITY } from '../types/Cart';
 import { useFavorite } from '../hooks/FavoriteProvider';
+import { useAccount } from '../hooks/AccountProvider';
 
 const BookComponent: React.FC<{
   book: Book, 
   page?: string,
   quantity?: number
 }> = ({book, page = '', quantity = 0}) => {
+  const {account} = useAccount();
   const {markAsFavotite} = useFavorite();
   const {putInBasket, removeFromBasket, changeQuantity, loading} = useBasket();
   const rating = getAverageNumber(book.review.map((review) => review.star));
+
+  const navigate = useNavigate();
 
   return (
     <div className='book'>
@@ -49,7 +53,7 @@ const BookComponent: React.FC<{
       || <button 
           className='main-button'
           hidden={page === 'basket'} 
-          onClick={() => putInBasket(book)}>
+          onClick={() => account.id < 0 ? navigate('/log-in') : putInBasket(book)}>
             {isReleased(book.year, book.month) ? 'В корзину' : 'Предзаказ'}
         </button>}
 

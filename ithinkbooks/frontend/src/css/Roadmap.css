@@ -1,3 +1,18 @@
+/*:root {
+  --bg-color: #E5E5E5;
+  --text-color: #262626;
+  --panels-color: #262626;
+  --secondary-p-color: #4B4B4B;
+  --highlight-color: #3F97E7;
+  --highlighted-p-color: #1678D2;
+  --p-color-on-highlight: #FFFFFF;
+  --danger-color: #d21674;
+  --secondary-panel-color: #B3B3B3;
+  --p-color-on-panel: #E5E5E5;
+  --tertiary-panel-color: #FFFFFF;
+  --image-bg-color: #4B4B4B;
+}*/
+
 .roadmap {
   display: flex;
   width: 100%;
@@ -28,16 +43,16 @@
   max-height: min-content; 
   padding: 10px;
   padding-top: 7px;
-  background-color: #262626;
-  color: #E5E5E5;
+  background-color: var(--panels-color);
+  color: var(--p-color-on-panel);
   border-radius: 5px;
   text-align: center;
   position: relative;
 }
 
 .active-node {
-  background-color: #3F97E7;
-  color: #FFFFFF;
+  background-color: var(--highlight-color);
+  color: var(--p-color-on-highlight);
 } 
 
 .node-book p {
@@ -48,7 +63,7 @@
 .node-book .cover-stumb {
   width: 60px;
   height: 84px;
-  background-color: #B3B3B3;
+  background-color: var(--secondary-panel-color);
   margin: 0 auto;
 }
 

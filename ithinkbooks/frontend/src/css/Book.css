@@ -1,3 +1,9 @@
+/*:root {
+  --secondary-panel-color: #B3B3B3;
+  --highlight-color: #3F97E7;
+  --highlighted-p-color: #1678D2;
+}*/
+
 .book {
   width: 175px;
   display: flex;
@@ -13,7 +19,7 @@
 }
 
 .cover-stumb {
-  background-color: #B3B3B3;
+  background-color: var(--secondary-panel-color);
 }
 
 .books-scroller h2 {
@@ -34,7 +40,7 @@
 .book-page-promo .cover-stumb {
   width: 275px;
   height: 388px;
-  background-color: #B3B3B3;
+  background-color: var(--secondary-panel-color);
 }
 
 .bool-page-formats {
@@ -119,4 +125,16 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+.search-book:hover .main-p{
+  color: var(--highlight-color);
+}
+
+.search-book:active .main-p{
+  color: var(--highlighted-p-color);
+}
+
+.search-book:focus .main-p{
+  color: var(--highlight-color);
 }

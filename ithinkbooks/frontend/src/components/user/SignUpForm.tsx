@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { emptyAccount, useAccount } from '../hooks/AccountProvider';
 import { Link } from 'react-router-dom';
 import {DateField, DropdownField, MultiselectDropdown, TextField, TextareaField} from '../ui/FormFields';
@@ -28,6 +28,8 @@ const SignUpForm: React.FC<{}> = () => {
     email: false,
     phoneNumber: false
   });
+
+  const [passwordType, togglePasswordType] = useReducer((value) => value === 'password' ? 'text' : 'password', 'password');
 
   const onCitySelect = (eventKey: string | null) => {
     const foundCity = cities.find((c) => c.city === eventKey);
@@ -90,7 +92,7 @@ const SignUpForm: React.FC<{}> = () => {
 
         <TextField
           fieldHeader='Пароль*'
-          type='text'
+          type={passwordType}
           placeholder='Введите пароль'
           isValid={validation.password}
           warning={fieldsValidation.password.caution}
@@ -104,9 +106,14 @@ const SignUpForm: React.FC<{}> = () => {
             setNewAccount({...newAccount, password});
           }}/>
 
+        <label className='password-checkbox' htmlFor='passwordVisibility'>
+          <input type='checkbox' name='passwordVisibility' id='passwordVisibility' onChange={togglePasswordType}/>
+          <p className='main-p'>Показать пароль</p>
+        </label>
+
         <TextField
           fieldHeader='Повторите пароль*'
-          type='text'
+          type='password'
           placeholder='Введите пароль'
           isValid={validation.repeatedPassword}
           warning={fieldsValidation.repeatPassword.caution}

@@ -1,7 +1,21 @@
+/*:root {
+  --bg-color: #E5E5E5;
+  --text-color: #262626;
+  --panels-color: #262626;
+  --secondary-p-color: #4B4B4B;
+  --highlight-color: #3F97E7;
+  --highlighted-p-color: #1678D2;
+  --p-color-on-highlight: #FFFFFF;
+  --danger-color: #d21674;
+  --secondary-panel-color: #B3B3B3;
+  --p-color-on-panel: #E5E5E5;
+  --tertiary-panel-color: #FFFFFF;
+}*/
+
 header {
   padding: 15px 5%;
-  background-color: #262626;
-  color: #E5E5E5;
+  background-color: var(--panels-color);
+  color: var(--p-color-on-highlight);
   display: flex;
   justify-content: space-between;
   margin: 0;
@@ -14,7 +28,7 @@ header {
 .catalog {
   background-color: rgba(0, 0, 0, 0);
   border: none;
-  color: #E5E5E5;
+  color: var(--p-color-on-panel);
   font-size: 20px;
   display: flex;
   gap: 10px;
@@ -31,13 +45,16 @@ header {
 
 .search {
   width: 100%;
-  background-color: #E5E5E5;
-  color: #262626;
+  background-color: var(--bg-color);
   height: 44px;
   display: flex;
   justify-content: space-between;
   padding: 10px 16px;
   border-radius: 5px;
+}
+
+.search input[type="text"] {
+  color: var(--text-color);
 }
 
 .search input {
@@ -58,13 +75,13 @@ textarea:focus, input:focus{
 .dropdown-header {
   width: 105px;
   text-align: center;
-  color: #E5E5E5;
+  color: var(--p-color-on-panel);
 }
 
 .dropdown-header .dropdown-toggle{
   min-width: 105px;
   background-color: transparent;
-  color: #E5E5E5;
+  color: var(--p-color-on-panel);
   font-size: 20px;
   text-align: center;
 }
@@ -83,21 +100,21 @@ textarea:focus, input:focus{
 
 .dropdown-item a {
   display: block;
-  color: #E5E5E5;
+  color: var(--dropdown-menu-p-color);
   font-size: 18px;
   height: 100%;
   padding: 4px 16px;
 }
 
 .dropdown-item a:hover {
-  color: #E5E5E5;
+  color: var(--p-color-on-panel);
   background-color: transparent;
   font-size: 18px;
 }
 
 .dropdown-item:hover {
-  background-color: #3F97E7;
-  color: #E5E5E5;
+  background-color: var(--highlight-color);
+  color: var(--p-color-on-highlight);
   font-size: 18px;
 }
 
@@ -107,7 +124,8 @@ textarea:focus, input:focus{
   gap: 20px;
   position: absolute;
   margin-top: 54px;
-  background-color: #FFFFFF;
+  background-color: var(--tertiary-panel-color);
+  color: var(--text-color);
   border-radius: 5px;
   width: 100%;
   padding: 10px;

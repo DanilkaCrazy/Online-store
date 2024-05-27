@@ -1,3 +1,17 @@
+/*:root {
+  --bg-color: #E5E5E5;
+  --text-color: #262626;
+  --panels-color: #262626;
+  --secondary-p-color: #4B4B4B;
+  --highlight-color: #3F97E7;
+  --highlighted-p-color: #1678D2;
+  --p-color-on-highlight: #FFFFFF;
+  --danger-color: #d21674;
+  --secondary-panel-color: #B3B3B3;
+  --p-color-on-panel: #E5E5E5;
+  --tertiary-panel-color: #FFFFFF;
+}*/
+
 .carousel {
   width: 850px;
 }
@@ -26,13 +40,13 @@
   border: none;
   width: 20px;
   height: 20px;
-  background-color: #262626;
+  background-color: var(--panels-color);
   opacity: 1;
   border-radius: 5px;
 }
 
 .carousel .carousel-indicators .active {
-  background-color: #3F97E7;
+  background-color: var(--highlight-color);
 }
 
 .carousel-caption {
@@ -63,14 +77,14 @@
 .side-ads {
   width: 400px;
   height: 225px;
-  background-color: #B3B3B3;
+  background-color: var(--secondary-panel-color);
   border-radius: 5px;
 }
 
 .theme-menu {
   padding-top: 35px;
   padding-bottom: 50px;
-  background-color: #262626;
+  background-color: var(--panels-color);
   margin-left: -5.555%;
   margin-right: -5.555%;
   padding-left: 5.45%;
@@ -80,7 +94,7 @@
 .theme-menu h2 {
   text-align: center;
   margin-bottom: 35px;
-  color: #E5E5E5;
+  color: var(--p-color-on-panel);
 }
 
 .theme-button {
@@ -88,8 +102,8 @@
   flex-direction: column;
   width: 175px;
   height: 175px;
-  background-color: #3F97E7;
-  color: #FFFFFF;
+  background-color: var(--highlight-color);
+  color: var(--p-color-on-highlight);
   border-radius: 5px;
   padding: 0;
   padding-bottom: 10px;

@@ -1,10 +1,14 @@
 import React from 'react';
 import Book from '../types/Book';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useBasket } from '../hooks/BasketProvider';
+import { useAccount } from '../hooks/AccountProvider';
 
 const BookPanel: React.FC<{book: Book}> = ({book}) => {
+  const {account} = useAccount();
   const {putInBasket} = useBasket();
+
+  const navigate = useNavigate();
 
   return (
     <div className='book-panel'>
@@ -18,7 +22,7 @@ const BookPanel: React.FC<{book: Book}> = ({book}) => {
         </div>
 
         {book.quantity > 0
-        ? <button onClick={() => putInBasket(book)} className='secondary-button'>В корзину</button>
+        ? <button onClick={() => account.id < 0 ? navigate('/log-in') : putInBasket(book)} className='secondary-button'>В корзину</button>
         : <h3>Нет в наличии</h3>}
       </div>
     </div>

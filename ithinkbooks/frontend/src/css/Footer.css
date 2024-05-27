@@ -1,7 +1,12 @@
+/*:root {
+  --panels-color: #262626;
+  --p-color-on-panel: #E5E5E5;
+}*/
+
 footer {
   padding: 50px 70px 30px 70px;
-  background-color: #262626;
-  color: #E5E5E5;
+  background-color: var(--panels-color);
+  color: var(--p-color-on-panel);
   display: flex;
   justify-content: space-between;
   width: 100%;
@@ -53,5 +58,5 @@ footer .logo {
 }
 
 footer a {
-  color: #E5E5E5;
+  color: var(--p-color-on-panel);
 }

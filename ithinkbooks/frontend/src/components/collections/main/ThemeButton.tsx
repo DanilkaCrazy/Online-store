@@ -23,7 +23,8 @@ const ThemeMenu: React.FC<{themes: Theme[]}> = ({themes}) => {
         isScrollerDark={!isDark}
         itemsCount={themes.length} 
         itemWidth={ScreensWidth.THEME_BUTTON_WIDTH.DESKTOP}
-        itemHeight={ScreensWidth.THEME_BUTTON_WIDTH.DESKTOP}>
+        itemHeight={ScreensWidth.THEME_BUTTON_WIDTH.DESKTOP}
+        isOnPanel>
         {themes.map((theme, i) => <ThemeButton key={i} theme={theme}/>)}
       </HorizontalScroller>
     </div>

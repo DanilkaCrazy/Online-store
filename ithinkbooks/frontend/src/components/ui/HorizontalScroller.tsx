@@ -1,6 +1,7 @@
 import React, { ReactNode, useRef, useState } from 'react';
 import DesktopScrollerLight from '../../images/pages/desktop/DesktopScrollerLight.svg';
 import DesktopScrollerDark from '../../images/pages/desktop/DesktopScrollerDark.svg';
+import DesktopLightScrollerOnPanel from '../../images/pages/desktop/LightScrollerOnPanel.svg';
 import { ScreensWidth } from '../utils';
 import '../../css/UI.css';
 
@@ -10,8 +11,9 @@ const HorizontalScroller: React.FC<
   isScrollerDark: boolean,
   itemsCount: number, 
   itemWidth: number,
-  itemHeight: number
-}> = ({children, isScrollerDark: isDark, itemsCount, itemWidth, itemHeight}) => {
+  itemHeight: number,
+  isOnPanel?: boolean
+}> = ({children, isScrollerDark: isDark, itemsCount, itemWidth, itemHeight, isOnPanel = false}) => {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState<number>(0);
 
@@ -48,7 +50,7 @@ const HorizontalScroller: React.FC<
         onClick={() => onScrollButton(-step)} style={{height: itemHeight}}>
           <img 
             className='scroller-left' 
-            src={isDark ? DesktopScrollerDark : DesktopScrollerLight} 
+            src={isDark ? DesktopScrollerDark : (isOnPanel ? DesktopLightScrollerOnPanel : DesktopScrollerLight)} 
             alt='влево'/>
         </button>
         <button 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useReducer, useState } from 'react';
 import { TextField } from '../ui/FormFields';
 import LogInInfo from '../types/LogInInfo';
 import { Link } from 'react-router-dom';
@@ -22,6 +22,8 @@ const LogInForm: React.FC<{}> = () => {
     phoneNumber: true
   });
 
+  const [passwordType, togglePasswordType] = useReducer((value) => value === 'password' ? 'text' : 'password', 'password');
+
   return (
     <div className='page'>
       <form className='separated-form'>
@@ -40,7 +42,7 @@ const LogInForm: React.FC<{}> = () => {
 
         <TextField
           fieldHeader='Пароль*'
-          type='text'
+          type={passwordType}
           placeholder='Введите пароль'
           isValid={validation.password}
           warning={fieldsValidation.password.caution}
@@ -49,6 +51,11 @@ const LogInForm: React.FC<{}> = () => {
             setValidation({...validation, password: fieldsValidation.password.isValid(evt.target.value)});
             setLogInInfo({...logInInfo, password});
           }}/>
+
+        <label className='password-checkbox' htmlFor='passwordVisibility'>
+          <input type='checkbox' name='passwordVisibility' id='passwordVisibility' onChange={togglePasswordType}/>
+          <p className='main-p'>Показать пароль</p>
+        </label>
         
         <button 
           onClick={(evt) => {

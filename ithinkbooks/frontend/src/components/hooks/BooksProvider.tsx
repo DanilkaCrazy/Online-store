@@ -17,8 +17,7 @@ const defaultBooksContextValue = {
   findBooksByWord: (newSearchWord: string) => {},
   filterOriginalBooks: (updatedBooks: Book[]) => {},
   updateBook: (bookId: number, update: object) => {},
-  addBookReview: (review: Review) => {},
-  toggleLoading: (load: boolean) => {}
+  addBookReview: (review: Review) => {}
 };
 
 const BooksContext = createContext(defaultBooksContextValue);
@@ -58,10 +57,6 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const addBookReview = (review: Review) => {
     setReview(review);
-  };
-
-  const toggleLoading = (load: boolean) => {
-    setLoading(load);
   };
 
   // data fetch
@@ -177,8 +172,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
       findBooksByWord, 
       filterOriginalBooks, 
       updateBook, 
-      addBookReview,
-      toggleLoading}}>
+      addBookReview}}>
       {children}
     </BooksContext.Provider>
   );

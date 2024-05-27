@@ -1,3 +1,8 @@
+/*:root {
+  --panels-color: #262626;
+  --highlight-color: #3F97E7;
+}*/
+
 .quiz-page h2 {
   text-align: center;
   margin-bottom: 30px;
@@ -26,12 +31,12 @@
 
 .quiz-pagination::-webkit-scrollbar-track {
   border-radius: 5px;
-  background-color: #262626;
+  background-color: var(--panels-color);
 }
 
 .quiz-pagination::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background-color: #3F97E7;
+  background-color: var(--highlight-color);
 }
 
 .question h3 {
@@ -42,7 +47,7 @@
   width: 100%;
   display: flex;
   gap: 7px;
-  border: 3px solid #262626;
+  border: 3px solid var(--panels-color);
   border-radius: 5px;
   padding: 7px;
   line-height: 120%;
@@ -69,16 +74,16 @@
 
 .answers-block::-webkit-scrollbar-track {
   border-radius: 5px;
-  background-color: #262626;
+  background-color: var(--panels-color);
 }
 
 .answers-block::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background-color: #3F97E7;
+  background-color: var(--highlight-color);
 }
 
 .highlight-label {
-  border-color: #3F97E7;
+  border-color: var(--highlight-color);
 }
 
 .quiz-page .buttons-group {

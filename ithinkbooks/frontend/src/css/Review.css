@@ -1,3 +1,8 @@
+/*:root {
+  --tertiary-panel-color: #FFFFFF;
+  --image-bg-color: #4B4B4B;
+}*/
+
 .vote-button {
   min-width: 0;
   min-height: 0;
@@ -27,7 +32,7 @@
   gap: 20px;
   width: 100%;
   padding: 20px;
-  background-color: #FFFFFF;
+  background-color: var(--tertiary-panel-color);
   border-radius: 5px;
   margin-bottom: 30px;
 }
@@ -73,7 +78,7 @@
 }
 
 .review-user-status img {
-  background-color: #4B4B4B;
+  background-color: var(--image-bg-color);
   border-radius: 50%;
 }
 

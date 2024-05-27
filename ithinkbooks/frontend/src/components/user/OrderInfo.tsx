@@ -57,7 +57,7 @@ const OrderInfo: React.FC<{}> = () => {
         <p className='main-p'>Дата заказа: {getFormatedWithWordsDate(currentOrder.created_timestamp)}</p>
         <p className='main-p'>Статус: {currentOrder.status}</p>
         <p className='main-p'>Адрес доставки: г. {currentOrder.city.city}, {currentOrder.pick_up_point}</p>
-        <p className='main-p'>Стоимость: {price}</p>
+        <p className='main-p'>Стоимость: {price} ₽</p>
       </div>
       
       <div className='books-collection'>
