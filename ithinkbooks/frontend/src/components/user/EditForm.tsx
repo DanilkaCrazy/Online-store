@@ -8,6 +8,7 @@ import themes from '../mock/themes.json';
 import { User } from '../types/User';
 import Validation, { fieldsValidation } from '../types/Validation';
 import AvatarField from './AvatarField';
+import dayjs from 'dayjs';
 
 const EditFrom: React.FC<{}> = () => {
   const {account, updateUser} = useAccount();
@@ -113,7 +114,8 @@ const EditFrom: React.FC<{}> = () => {
         <DateField
           fieldHeader='Дата рождения*'
           defaultValue={updatingAccount.birthdate}
-          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => setUpdatingAccount({...updatingAccount, birthdate: new Date(evt.target.value)})}/>
+          value={updatingAccount.birthdate}
+          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => setUpdatingAccount({...updatingAccount, birthdate: dayjs(evt.target.value)})}/>
 
         <DropdownField 
           fieldHeader='Город*'

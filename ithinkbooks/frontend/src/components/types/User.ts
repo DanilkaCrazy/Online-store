@@ -1,6 +1,7 @@
 import City from './City';
 import Status from './Status';
 import Theme from './Theme';
+import { Dayjs } from 'dayjs';
 
 const MAX_ROADMAPS_COUNT = 3;
 
@@ -20,7 +21,7 @@ interface User {
   location: City;
   email: string;
   phone_number: string;
-  birthdate: Date;
+  birthdate: Dayjs;
 };
 
 interface UserResponce {

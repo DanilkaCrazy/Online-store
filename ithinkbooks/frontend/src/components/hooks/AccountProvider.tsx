@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import LogInInfo from '../types/LogInInfo';
 import axiosInstance, { getCookie } from '../Axios';
 import { randomInteger } from '../mock/mock';
+import dayjs from 'dayjs';
 
 const emptyAccount: User = {
   id: -1,
@@ -22,7 +23,7 @@ const emptyAccount: User = {
   location: cities[0],
   email: '',
   phone_number: '',
-  birthdate: new Date(),
+  birthdate: dayjs(),
   last_name: '',
   is_staff: false,
   is_active: false,
@@ -34,8 +35,7 @@ const defaultAccountValue = {
   loading: false,
   reviews: [emptyReview],
   updateAccount: (update: object) => {},
-  logIn: (info: LogInInfo) => {},
-  logOut: (user: User) => {},
+  logInOrOut: (info: LogInInfo) => {},
   updateUser: (newUserInfo: User) => {},
   getUserFromResponce: (data: UserResponce) => {},
   getResponceFromUser: (user: User) => {}
@@ -66,13 +66,9 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setAccount(updatedAccount);
   };
 
-  const logIn = (info: LogInInfo) => {
+  const logInOrOut = (info: LogInInfo) => {
     setLogInInfo(info);
   };
-
-  const logOut = () => {
-    updateAccount(emptyAccount);
-  }
 
   const updateUser = (newUserInfo: User) => {
     setNewAccount(newUserInfo);
@@ -92,7 +88,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       user_status: !changes.user_status ? statuses[0] : changes.user_status, 
       user_directions: !changes.user_directions ? [] : changes.user_directions,
       location: !changes.location ? cities[0] : changes.location,
-      birthdate: new Date(data.birthdate)
+      birthdate: dayjs(data.birthdate)
     });
   };
 
@@ -102,7 +98,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
         user_status: user.user_status.title,
         user_directions: user.user_directions.map((theme) => theme.title),
         location: user.location.city,
-        birthdate: `${user.birthdate.getFullYear()}-${user.birthdate.getMonth()}-${user.birthdate.getDay()}`,
+        birthdate: user.birthdate.format('YYYY-MM-DD'),
         is_active: true
       }
     );
@@ -134,6 +130,19 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then(() => navigate('/account/basket'))
       .then(() => setLoading(false));
   }, [logInInfo, getResponceFromUser, token]);
+
+  const postLogOut = useCallback(() => {
+    axiosInstance
+      .post('http://127.0.0.1:8000/users/logout', logInInfo, {
+        headers: {
+          'X-CSRFToken': getCookie('csrftoken')
+        }
+      })
+      .then(() => setLogInInfo({username: '', password: ''}))
+      .then(() => setAccount(emptyAccount))
+      .then(() => navigate('/log-in'))
+      .then(() => setLoading(false));
+  }, []);
 
   const postNewAccount = useCallback(() => {
     axiosInstance
@@ -174,9 +183,9 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   useEffect(() => {
     if(logInInfo.username) {
       setLoading(true);
-      postLogIn()
+      account.id < 0 ? postLogIn() : postLogOut();
     }
-  }, [postLogIn, account, logInInfo]);
+  }, [postLogIn, logInInfo]);
 
   useEffect(() => {
     if(newAccount.id >= 0) {
@@ -197,8 +206,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       loading,
       reviews,
       updateAccount,
-      logIn,
-      logOut,
+      logInOrOut,
       updateUser,
       getUserFromResponce,
       getResponceFromUser}}>

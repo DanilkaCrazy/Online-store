@@ -6,6 +6,7 @@ import Book from '../types/Book';
 import axiosInstance, { getCookie } from '../Axios';
 import { fixBookData, getRandomId } from '../utils';
 import { useLocation } from 'react-router-dom';
+import dayjs from 'dayjs';
 
 const emptyCartsList: Cart[] = [];
 
@@ -45,7 +46,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         user: account.id,
         product: book,
         quantity: 1,
-        created_timestamp: new Date()
+        created_timestamp: dayjs()
       };
 
       setCart(newCart);
@@ -87,7 +88,8 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
       ...cart, 
       user_id: account.id,
       product_id: cart.product.id,
-      cart_id: cart.id
+      cart_id: cart.id,
+      created_timestamp: cart.created_timestamp.format('YYYY-MM-DD')
     }
   );
 
@@ -99,7 +101,11 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         }
       })
       .then((resp) => resp.data)
-      .then((data) => setCarts(data.map((c: Cart) => ({...c, product: fixBookData(c.product)}))))
+      .then((data) => setCarts(data.map((c: Cart) => ({
+        ...c, 
+        product: fixBookData(c.product),
+        created_timestamp: dayjs(c.created_timestamp)
+      }))))
       .then(() => setLoading(false));
   }, [token]);
 

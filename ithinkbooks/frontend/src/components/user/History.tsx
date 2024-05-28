@@ -1,6 +1,6 @@
 import React from 'react';
-import { getFormatedWithWordsDate } from '../date-utils';
 import { useOrders } from '../hooks/OrderProvider';
+import { getFormatedWithWordsDate } from '../date-utils';
 
 const History: React.FC<{}> = () => {
   const {orders, loading, updateOrder} = useOrders();

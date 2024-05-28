@@ -7,6 +7,7 @@ import orderStatuses from '../mock/orderStatuses.json';
 import axiosInstance, { getCookie } from '../Axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 import cities from '../mock/cities.json';
+import dayjs from 'dayjs';
 
 const emptyOrders: Order[] = [];
 const emptyItems: OrderItem[] = [];
@@ -48,7 +49,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
       id: getRandomId(),
       pick_up_point: account.location.addresses[0],
       city: account.location,
-      created_timestamp: new Date(),
+      created_timestamp: dayjs(),
       is_paid: false,
       status: orderStatuses.ready,
       user: account.id
@@ -65,6 +66,24 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   // data fetch
 
+  const getOrderFromResponce = (data: Order): Order => {
+    const city = cities.find((c) => c.addresses.includes(data.pick_up_point));
+
+    return ({
+      ...data,
+      city: !city ? account.location : city,
+      created_timestamp: dayjs(data.created_timestamp),
+      id: data.id
+    });
+  };
+
+  const getResponceFromOrder = (data: Order, status: string) => ({
+    ...data,
+    city: data.city.city,
+    status,
+    created_timestamp: data.created_timestamp.format('YYYY-MM-DD')
+  });
+
   const getItems = (orderId: number, onFinish = () => {}) => {
     axiosInstance
       .get(`http://127.0.0.1:8000/orders/user_items/${orderId}`, {
@@ -74,13 +93,17 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
       })
       .then((resp) => resp.data)
       .then((data) => {
-        setItems(data.map((item: OrderItem) => ({...item, price: typeof item.price === 'string' ? parseFloat(item.price) : item.price})));
+        setItems(data.map((item: OrderItem) => ({
+          ...item, 
+          price: typeof item.price === 'string' ? parseFloat(item.price) : item.price,
+          created_timestamp: dayjs(item.created_timestamp)
+        })));
       })
       .finally(onFinish);
   };
 
   const postOrder = useCallback(() => {
-    axiosInstance.post('http://127.0.0.1:8000/orders/create_order', currentOrder, {
+    axiosInstance.post('http://127.0.0.1:8000/orders/create_order', getResponceFromOrder(currentOrder, currentOrder.status), {
       headers: {
         'X-CSRFToken': token
       }
@@ -93,7 +116,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
         id: data.id, 
         city: account.location,
         pick_up_point: account.location.addresses[0],
-        created_timestamp: new Date(data.created_timestamp)
+        created_timestamp: dayjs(data.created_timestamp)
       });
       return data;
     })
@@ -110,30 +133,19 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
       }
     })
     .then((resp) => resp.data)
-    .then((data) => setOrders(data.map((order: Order) => ({
-      ...order,
-      city: cities.find((c) => c.addresses.includes(order.pick_up_point)),
-      created_timestamp: new Date(order.created_timestamp)
-    }))))
+    .then((data) => setOrders(data.map((order: Order) => getOrderFromResponce(order))))
     .then(() => setLoading(false));
   }, [token]);
 
   const putOrderChange = useCallback((orderId: number) => {
     axiosInstance
-      .put(`http://127.0.0.1:8000/orders/${orderId}`, {
-        ...currentOrder, 
-        status: orderStatuses.awatingFulfillment
-      }, {
+      .put(`http://127.0.0.1:8000/orders/${orderId}`, getResponceFromOrder(currentOrder, orderStatuses.awatingFulfillment), {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }
       })
       .then((resp) => resp.data)
-      .then((data) => setCurrentOrder({
-        ...data,
-        id: data.id, 
-        city: cities.find((c) => c.addresses.includes(data.pick_up_point)),
-      }))
+      .then((data) => setCurrentOrder(getOrderFromResponce(data)))
       .then(() => navigate('/account/basket'))
       .then(() => setCurrentOrder(emptyOrder))
       .then(() => setLoading(false));
@@ -160,11 +172,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
       })
       .then((resp) => resp.data[0])
       .then((data) => {
-        setCurrentOrder({
-          ...data, 
-          city: cities.find((c) => c.addresses.includes(data.pick_up_point)),
-          created_timestamp: new Date(data.created_timestamp)
-        });
+        setCurrentOrder(getOrderFromResponce(data));
       })
       .then(() => getItems(orderId, () => {
         setLoading(false);

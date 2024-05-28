@@ -5,6 +5,7 @@ import { declineNounAfterNumber } from '../utils';
 import EditorImage from '../../images/pages/Pen.svg';
 import { Link } from 'react-router-dom';
 import { getAge } from '../date-utils';
+import { useAccount } from '../hooks/AccountProvider';
 
 const Status: React.FC<{title: string, name: string}> = ({title, name}) => (
   <div className='status'>
@@ -22,6 +23,7 @@ const Job: React.FC<{title: string, shortName: string}> = ({title, shortName}) =
 
 const UserProfile: React.FC<{user: User, isPersonal?: boolean}> = ({user, isPersonal = false}) => {
   const age = getAge(user.birthdate);
+  const {logInOrOut} = useAccount();
 
   return (
     <div className='user-profile'>
@@ -44,6 +46,13 @@ const UserProfile: React.FC<{user: User, isPersonal?: boolean}> = ({user, isPers
         <Status title={user.user_status.title} name={user.user_status.name}/>
         {user.user_directions.map((theme, i) => <Job key={i} title={theme.title} shortName={theme.shortName}/>)}
       </div>
+
+      <button 
+        hidden={!isPersonal} 
+        className='secondary-button' 
+        onClick={() => logInOrOut({username: user.username, password: user.password})}>
+          Выйти
+      </button>
     </div>
   );
 };

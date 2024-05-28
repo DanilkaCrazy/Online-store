@@ -3,6 +3,7 @@ import { Dropdown } from 'react-bootstrap';
 import ImageFieldIcon from '../../images/pages/ImageFieldIcon.svg';
 import DefaultAvatar from '../../images/pages/DefaultAvatar.svg';
 import ReactSlider from 'react-slider';
+import { Dayjs } from 'dayjs';
 
 const TextField: React.FC<{
   fieldHeader: string, 
@@ -22,12 +23,13 @@ const TextField: React.FC<{
 
 const DateField: React.FC<{
   fieldHeader: string,
-  defaultValue: Date,
+  defaultValue: Dayjs,
+  value: Dayjs,
   onChange: (evt: React.ChangeEvent<HTMLInputElement>) => void
-}> = ({fieldHeader, defaultValue, onChange}) => (
+}> = ({fieldHeader, defaultValue, value, onChange}) => (
   <div className='form-field'>
     <h3>{fieldHeader}</h3>
-    <input onChange={onChange} type='date' defaultValue={defaultValue.toDateString()}/>
+    <input onChange={onChange} type='date' value={value.format('YYYY-MM-DD')} defaultValue={defaultValue.format('YYYY-MM-DD')}/>
   </div>
 );
 

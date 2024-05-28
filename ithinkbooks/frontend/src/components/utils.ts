@@ -2,6 +2,8 @@ import { randomInteger } from "./mock/mock";
 import Book from "./types/Book";
 import Review from "./types/Review";
 
+const MAX_MONTH = 11;
+
 const ScreensWidth = {
   RELATIVE_WIDTH: {
     DESKTOP: 0.9,
@@ -64,7 +66,7 @@ const fixBookData = (data: Book): Book => {
   return (
     {
       ...data, 
-      month: randomInteger(1, 12), 
+      month: randomInteger(0, MAX_MONTH), 
       review: !data.review 
         ? [] 
         : data.review.map((r: Review) => ({...r, positiveVotes: randomInteger(0, 100), negativeVotes: randomInteger(0, 100)})),

@@ -9,6 +9,7 @@ import { User } from '../types/User';
 import Validation, {fieldsValidation} from '../types/Validation';
 import AvatarField from './AvatarField';
 import { getRandomId } from '../utils';
+import dayjs from 'dayjs';
 
 const SignUpForm: React.FC<{}> = () => {
   const {updateUser} = useAccount();
@@ -161,7 +162,8 @@ const SignUpForm: React.FC<{}> = () => {
         <DateField
           fieldHeader='Дата рождения*'
           defaultValue={newAccount.birthdate}
-          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => setNewAccount({...newAccount, birthdate: new Date(evt.target.value)})}/>
+          value={newAccount.birthdate}
+          onChange={(evt: React.ChangeEvent<HTMLInputElement>) => setNewAccount({...newAccount, birthdate: dayjs(evt.target.value)})}/>
 
         <DropdownField 
           fieldHeader='Город*'

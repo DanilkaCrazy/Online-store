@@ -14,6 +14,7 @@
     "@types/validator": "^13.9.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "dayjs": "^1.11.11",
     "joi": "^17.12.3",
     "nanoid": "^5.0.6",
     "react": "^18.2.0",

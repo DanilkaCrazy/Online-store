@@ -208,3 +208,7 @@
 .order-main-info p:last-child {
   margin-bottom: 10px;
 }
+
+.user-profile .secondary-button {
+  width: 100%;
+}

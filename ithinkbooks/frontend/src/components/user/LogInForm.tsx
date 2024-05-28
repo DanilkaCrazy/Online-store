@@ -6,7 +6,7 @@ import Validation, {fieldsValidation} from '../types/Validation';
 import { useAccount } from '../hooks/AccountProvider';
 
 const LogInForm: React.FC<{}> = () => {
-  const {logIn} = useAccount();
+  const {logInOrOut} = useAccount();
 
   const [logInInfo, setLogInInfo] = useState<LogInInfo>({
     username: '',
@@ -60,7 +60,7 @@ const LogInForm: React.FC<{}> = () => {
         <button 
           onClick={(evt) => {
             evt.preventDefault();
-            logIn(logInInfo);
+            logInOrOut(logInInfo);
           }}
           className={`main-button sign-button ${Object.values(validation).every((isValid) => isValid) ? '' : 'disabled-link'}`}>
             Войти

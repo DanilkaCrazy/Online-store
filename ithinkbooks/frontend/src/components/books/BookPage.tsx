@@ -52,7 +52,7 @@ const BookPromo: React.FC<{
         onClick={onFavoriteClick}>
           {isFavorite ? 'В избранном' : 'Добавить в избранное'}
       </button>
-      <p className='main-p' hidden={canBuy}>{months[book.month - 1].nominative} {book.year}</p>
+      <p className='main-p' hidden={canBuy}>{months[book.month].nominative} {book.year}</p>
     </div>
   );
 
