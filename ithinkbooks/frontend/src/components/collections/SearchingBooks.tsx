@@ -31,7 +31,7 @@ const SearchedBooks: React.FC<{}> = () => {
 
   return (
     <div className='divided-page theme-collection'>
-      <FiltersMenu applyFilters={applyFilters}/>
+      <FiltersMenu applyFilters={applyFilters} theme='search'/>
       <div>
         <h1>Результаты по запросу "{bookTitle}"</h1>
         <div className='books-collection'>

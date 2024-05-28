@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { SortTranslations, SortTypes } from '../sort';
 import Filter, { defaultFilter } from '../types/Filter';
@@ -7,6 +7,8 @@ import ReactSlider from 'react-slider';
 import { MAX_YEAR, MIN_YEAR } from '../date-utils';
 import languages from '../mock/languages.json';
 import { BookFormats } from '../mock/mock';
+import tags from '../mock/tags.json';
+import themes from '../mock/themes.json';
 
 const SliderField: React.FC<{
   fieldHeader: string,
@@ -52,15 +54,16 @@ const FiltersListBlock: React.FC<{
   options: string[],
   optionsNames: string[],
   listTitle: string,
+  defaultValue?: string,
   updateFilters: (newValue: string) => void
-}> = ({fieldHeader, type, options, optionsNames, listTitle, updateFilters}) => (
+}> = ({fieldHeader, type, options, optionsNames, listTitle, updateFilters, defaultValue = ''}) => (
   <div className='filter-field'>
     <h3 className='normal-h3'>{fieldHeader}</h3>
 
     <div className='filters-options'>
       {options.map((option, i) => (
         <label key={i} className='list-option' htmlFor={option}>
-          <input type={type} name={listTitle} id={option} onChange={() => updateFilters(option)}/>
+          <input type={type} name={listTitle} id={option} onChange={() => updateFilters(option)} defaultChecked={defaultValue === option}/>
           <p className='main-p'>{optionsNames[i]}</p>
         </label>
       ))}
@@ -70,9 +73,12 @@ const FiltersListBlock: React.FC<{
 );
 
 const FiltersMenu: React.FC<{
-  applyFilters: (filter: Filter) => void
-}> = ({applyFilters}) => {
+  applyFilters: (filter: Filter) => void,
+  theme: string;
+}> = ({applyFilters, theme}) => {
   const [filter, setFilter] = useState<Filter>(defaultFilter);
+
+  const subthemes = useMemo(() => theme === 'seacrh' ? [] : Object.entries(tags).filter((pair) => pair[0] === theme).pop(), [theme]);
 
   const onSortTypeSelect = (eventKey: string | null) => {
     if(!eventKey) {
@@ -116,6 +122,13 @@ const FiltersMenu: React.FC<{
       formats: filter.formats.includes(newValue) 
         ? filter.formats.filter((format) => format !== newValue) 
         : filter.formats.concat(newValue)});
+  };
+
+  const changeTag = (newValue: string) => {
+    setFilter({
+      ...filter,
+      tag: newValue
+    });
   };
 
   return (
@@ -187,6 +200,27 @@ const FiltersMenu: React.FC<{
           optionsNames={BookFormats.map((format) => format.name)}
           listTitle='formats'
           updateFilters={changeBookFormats}/>
+
+        {
+          !subthemes
+          ? <FiltersListBlock
+              fieldHeader='Направления:'
+              type='radio'
+              options={['all'].concat(themes.map((t) => t.title))}
+              optionsNames={['Все'].concat(themes.map((t) => t.name))}
+              listTitle='tags'
+              updateFilters={changeTag}
+              defaultValue='all'/>
+
+          : <FiltersListBlock
+              fieldHeader='Темы:'
+              type='radio'
+              options={Object.keys(subthemes[1])}
+              optionsNames={Object.values(subthemes[1])}
+              listTitle='tags'
+              updateFilters={changeTag}
+              defaultValue='all'/>
+        }
 
         <SliderField 
           fieldHeader='Цена:'

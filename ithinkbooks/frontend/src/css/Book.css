@@ -134,7 +134,3 @@
 .search-book:active .main-p{
   color: var(--highlighted-p-color);
 }
-
-.search-book:focus .main-p{
-  color: var(--highlight-color);
-}

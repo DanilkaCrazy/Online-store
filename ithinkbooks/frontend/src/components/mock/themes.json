@@ -10,9 +10,9 @@
     "shortName": "Backend"
   },
   {
-    "title": "network",
-    "name": "Компьютерные сети",
-    "shortName": "Комп. сети"
+    "title": "fullstack",
+    "name": "Fullstack",
+    "shortName": "Fullstack"
   },
   {
     "title": "gamedev",
@@ -40,11 +40,6 @@
     "shortName": "Data Sceince"
   },
   {
-    "title": "software",
-    "name": "Разработка ПО",
-    "shortName": "Разработка ПО"
-  },
-  {
     "title": "devops",
     "name": "DevOps",
     "shortName": "DevOps"
@@ -55,8 +50,23 @@
     "shortName": "Тестирование"
   },
   {
+    "title": "Kubersecurity",
+    "name": "Безопасность",
+    "shortName": "Безопасность"
+  },
+  {
+    "title": "mobiledev",
+    "name": "Mobile",
+    "shortName": "Mobile"
+  },
+  {
     "title": "CS",
     "name": "Computer Science",
     "shortName": "Computer Science"
+  },
+  {
+    "title": "OT",
+    "name": "Другие направляения",
+    "shortName": "Другое"
   }
 ]

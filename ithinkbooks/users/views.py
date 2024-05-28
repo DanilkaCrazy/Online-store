@@ -7,14 +7,7 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
-from django.core.files.base import ContentFile
-import base64
-from uuid import uuid4
-
-def base64_to_image(base64_string):
-    format, imgstr = base64_string.split(';base64,')
-    ext = format.split('/')[-1]
-    return ContentFile(base64.b64decode(imgstr), name=uuid4().hex + "." + ext)
+from users.utils import base64_to_image
 
 # Create your views here.
 #Регистрация
@@ -57,7 +50,18 @@ class GetUser(APIView):
 		return Response(serializer.data)
 
 
-class UpdateProfileView(UpdateAPIView):
-    queryset = User.objects.all()
-    permission_classes = (permissions.IsAuthenticated,)
-    serializer_class = UpdateUserSerializer
+class UpdateProfileView(APIView):
+  #queryset = User.objects.all()
+  permission_classes = (permissions.IsAuthenticated,)
+  #serializer_class = UpdateUserSerializer
+  def put(self, request, pk):
+    data = request.data
+    data['image'] = base64_to_image(request.data['image'])
+    user = get_object_or_404(User, pk=pk)
+    serializer = UpdateUserSerializer(user, data)
+    if (serializer.is_valid()):
+      serializer.save()
+      return Response(status=201)
+    return Response(serializer.errors)
+			
+			

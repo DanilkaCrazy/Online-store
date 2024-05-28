@@ -129,7 +129,10 @@ a {
   transition: 200ms background-color;
 }
 
-.main-button:disabled {
+.main-button:disabled,
+.main-button:disabled:hover,
+.main-button:disabled:active,
+.main-button:disabled:hover:active {
   cursor: default;
   background-color: var(--disabled-highlight-color);
   border-color: var(--disabled-highlight-color);
@@ -148,12 +151,6 @@ a {
   transition: 200ms background-color;
 }
 
-.main-button:focus {
-  background-color: var(--hovered-highlight-color);
-  border-color: var(--hovered-highlight-color);
-  transition: 200ms background-color;
-}
-
 .secondary-button {
   color: var(--text-color);
   font-size: 18px;
@@ -168,7 +165,10 @@ a {
   transition: 200ms border-color;
 }
 
-.secondary-button:disabled {
+.secondary-button:disabled,
+.secondary-button:disabled:hover,
+.secondary-button:disabled:active,
+.secondary-button:disabled:hover:active {
   cursor: default;
   border-color: var(--disabled-highlight-color);
   color: var(--secondary-p-color);
@@ -181,11 +181,6 @@ a {
 
 .secondary-button:active {
   border-color: var(--active-highlight-color);
-  transition: 200ms border-color;
-}
-
-.secondary-button:focus {
-  border-color: var(--hovered-highlight-color);
   transition: 200ms border-color;
 }
 
@@ -206,11 +201,6 @@ a {
 .text-button:active {
   color: var(--highlighted-p-color);
   transition: 100ms color;
-}
-
-.text-button:focus {
-  color: var(--highlight-color);
-  transition: 200ms color;
 }
 
 ::placeholder {

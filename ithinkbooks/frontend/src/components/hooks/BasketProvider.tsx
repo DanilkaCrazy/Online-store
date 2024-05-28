@@ -81,6 +81,10 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setClean(true);
   };
 
+  const updateCarts = (updatedCarts: Cart[]) => {
+    setCarts(updatedCarts.sort((a, b) => a.product.name.localeCompare(b.product.name)));
+  }
+
   // data fecth
 
   const getCartResponce = () => (
@@ -101,7 +105,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
         }
       })
       .then((resp) => resp.data)
-      .then((data) => setCarts(data.map((c: Cart) => ({
+      .then((data) => updateCarts(data.map((c: Cart) => ({
         ...c, 
         product: fixBookData(c.product),
         created_timestamp: dayjs(c.created_timestamp)
@@ -116,7 +120,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
           'X-CSRFToken': token
         }
       })
-      .then(() => setCarts(carts.concat(cart)))
+      .then(() => updateCarts(carts.concat(cart)))
       .then(() => setLoading(false));
   }, [cart, token]);
 
@@ -127,7 +131,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
           'X-CSRFToken': token
         }
       })
-      .then(() => setCarts(carts.map((c) => c.product.id === cart.product.id ? cart : c)))
+      .then(() => updateCarts(carts.map((c) => c.product.id === cart.product.id ? cart : c)))
       .then(() => getCarts());
   }, [cart, token]);
 
@@ -138,7 +142,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
           'X-CSRFToken': token
         }
       })
-      .then(() => setCarts(carts.filter((c) => c.id !== cart.id)))
+      .then(() => updateCarts(carts.filter((c) => c.id !== cart.id)))
       .then(() => setLoading(false));
   }, [cart, token]);
 
@@ -149,7 +153,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
           'X-CSRFToken': token
         }
       })
-      .then(() => setCarts([]))
+      .then(() => updateCarts([]))
       .then(() => setClean(false))
       .then(() => setLoading(false));
   }, [token]);

@@ -56,7 +56,7 @@ const ReviewComponent: React.FC<{review: Review, isInBookPage?: boolean}> = ({re
   return (
     <div className='review-block'>
       {isInBookPage && review.user
-      ? <></>
+      ? <Reviewer user={review.user}/>
       : <ReviewedBook book={books.find((book) => book.id === review.product)}/>}
       <div className='review'>
         <Star rating={review.star}/>

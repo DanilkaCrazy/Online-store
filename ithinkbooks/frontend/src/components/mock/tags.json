@@ -1,0 +1,121 @@
+{
+  "frontend": {
+    "all": "Все",
+    "frontend_framework": "Фреймворки",
+    "frontend_automatization": "Автоматизация",
+    "frontend_testing": "Тестирование",
+    "frontend_design": "Вёрстка и дизайн",
+    "frontend_optimization": "Оптимизация",
+    "frontend_graphic": "Графические редакторы"
+  },
+  "backend": {
+    "all": "Все",
+    "backend_db": "Базы данных",
+    "backend_architecture": "Архитектура ПО и паттерны",
+    "backend_security": "Безопасность",
+    "backend_optimization": "Оптимизация"
+  },
+  "design": {
+    "all": "Все",
+    "design_principal": "Принципы и структура",
+    "design_tools": "Графические редакторы",
+    "design_ui": "UX/UI",
+    "design_brand": "Брендинг",
+    "desing_frontend": "Вёрстка",
+    "design_adapt": "Адаптивный дизайн",
+    "design_visualization": "Визуализация данных",
+    "design_images": "Работа с изображениями"
+  },
+  "gamedev": {
+    "all": "Все",
+    "gamedev_engines": "Игровые движки",
+    "gamedev_design": "Геймдизайн",
+    "gamedev_graphics": "Графический дизайн",
+    "gamedev_sound": "Аудио-дизайн",
+    "gamedev_physics": "Физика и математика игр",
+    "gamedev_optimisation": "Оптимизация",
+    "gamedev_test": "Тестирование"
+  },
+  "ai": {
+    "all": "Все",
+    "deep_learning": "Глубокое обучение",
+    "natural_language": "Языковой процессинг",
+    "computer_vision": "компьютерное зрение"
+  },
+  "data": {
+    "all": "Все",
+    "datascience_visualization": "Визуализация данных",
+    "datascience_work": "Инструменты обработки данных",
+    "datascience_bigdata": "Big Data"
+  },
+  "devops": {
+    "all": "Все",
+    "devops_automatization": "Автоматизация",
+    "devops_container": "Контейнеризация",
+    "devops_cloud": "Облачные технологии",
+    "devops_monitor": "Мониторинг",
+    "devops_integration": "CI/CD",
+    "devops_security": "Безопасность"
+  },
+  "qa": {
+    "all": "Все",
+    "testing_methods": "Методологии",
+    "testing_automatization": "Автоматизация",
+    "testing_tracking": "Отслеживание ошибок"
+  },
+  "CS": {
+    "all": "Все",
+    "cs_algoritm": "Алгоритмы и структуры данных",
+    "cs_architecture": "Архитектура компьютерных систем",
+    "cs_math": "Математика в Computer Science",
+    "cs_tools": "Инструменты разработки ПО"
+  },
+  "OT": {
+    "all": "Все",
+    "source_control": "Системы контроля версий",
+    "api_work": "API",
+    "team_work": "Командная работа",
+    "db_basics": "Основы баз данных",
+    "db_advanced": "Принципы работы с базами данных",
+    "developement_methods": "Методологии разработки",
+    "networks_protocols": "Компьютерные сети и протоколы",
+    "math_knowledge": "Математика в IT",
+    "machine_learning": "Машинное обучение",
+    "os_basic": "Операционные системы",
+    "optimization": "Принципы оптимизации",
+    "other": "Другое"
+  },
+  "fullstack": {
+    "all": "Все",
+    "frontend_framework": "Фреймворки",
+    "frontend_automatization": "Автоматизация",
+    "frontend_testing": "Тестирование",
+    "frontend_design": "Вёрстка и дизайн",
+    "frontend_optimization": "Оптимизация",
+    "frontend_graphic": "Графические редакторы",
+    "backend_db": "Базы данных",
+    "backend_architecture": "Архитектура ПО и паттерны",
+    "backend_security": "Безопасность",
+    "backend_optimization": "Оптимизация"
+  },
+  "Kubersecurity": {
+    "all": "Все",
+    "operation_systems": "Операционные системы",
+    "networks": "Компьютерные сети",
+    "systems_of_security": "Системы безопасности",
+    "pentest": "Атаки на проникновение и защита",
+    "monitoring": "Мониторинг",
+    "instruments": "Инструменты безопасности",
+    "standarts": "Стандарты и практики"
+  },
+  "mobiledev": {
+    "all": "Все",
+    "mobile": "Особенности мобильных устройств",
+    "bd_exp": "Базы данных",
+    "network": "Компьютерные сети",
+    "algoritms": "Алгоритмы и структура данных",
+    "testing": "Тестирование",
+    "control_version": "Системы контроля версий",
+    "design": "UX/UI-дизайн"
+  }
+}

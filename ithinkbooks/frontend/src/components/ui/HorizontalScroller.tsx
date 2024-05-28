@@ -1,4 +1,4 @@
-import React, { ReactNode, useRef, useState } from 'react';
+import React, { ReactNode, useLayoutEffect, useRef, useState } from 'react';
 import DesktopScrollerLight from '../../images/pages/desktop/DesktopScrollerLight.svg';
 import DesktopScrollerDark from '../../images/pages/desktop/DesktopScrollerDark.svg';
 import DesktopLightScrollerOnPanel from '../../images/pages/desktop/LightScrollerOnPanel.svg';
@@ -16,8 +16,9 @@ const HorizontalScroller: React.FC<
 }> = ({children, isScrollerDark: isDark, itemsCount, itemWidth, itemHeight, isOnPanel = false}) => {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState<number>(0);
+  const [screenWidth, setScreenWidth] = useState<number>(document.documentElement.clientWidth);
 
-  const deviceWidth = ScreensWidth.RELATIVE_WIDTH.DESKTOP * document.documentElement.clientWidth;
+  const deviceWidth = ScreensWidth.RELATIVE_WIDTH.DESKTOP * screenWidth;
   const gap = (deviceWidth - ScreensWidth.COLLUMNS_COUNT.DESKTOP * itemWidth) / (ScreensWidth.COLLUMNS_COUNT.DESKTOP - 1);
   const width = itemsCount * itemWidth + (itemsCount - 1) * gap;
   const step = itemWidth + gap;
@@ -41,6 +42,13 @@ const HorizontalScroller: React.FC<
       scrollerRef.current.scrollLeft = endScrollPosition;
     }
   };
+
+  useLayoutEffect(() => {
+    const recalculate = () => setScreenWidth(document.documentElement.scrollWidth);
+    window.addEventListener('resize', recalculate);
+    recalculate();
+    return () => window.removeEventListener('resize', recalculate);
+  }, [])
   
   return (
     <div className='h-scroller'>

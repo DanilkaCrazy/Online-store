@@ -3,7 +3,7 @@ import { getFormatedWithWordsDate } from '../date-utils';
 import { useOrders } from '../hooks/OrderProvider';
 import { ScreensWidth, getArraySum } from '../utils';
 import { OrderItem } from '../types/Order';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Price from '../books/Price';
 
 const OrderItemComponent: React.FC<{item: OrderItem}> = ({item}) => (
@@ -22,18 +22,19 @@ const OrderItemComponent: React.FC<{item: OrderItem}> = ({item}) => (
         <p className='secondary-p secondary-color'>{item.author}</p>
       </div>
 
-      <Price price={Math.round(item.price / item.quantity * 100) / 100}/>
+      <Price price={item.price}/>
 
       <p className='main-p'><b>Число копий: </b>{item.quantity}</p>
   </div>
 );
 
 const OrderInfo: React.FC<{}> = () => {
+  const {id} = useParams();
   const {currentOrder, loading, items} = useOrders();
 
-  const price = useMemo(() => getArraySum(items.map((item) => item.price)), [items]);
+  const price = useMemo(() => getArraySum(items.map((item) => item.price * item.quantity)), [items]);
 
-  if(loading) {
+  if(loading || !id || parseInt(id) !== currentOrder.id) {
     return (
       <div className='histpry-page'>
         <h2>Загрузка...</h2>

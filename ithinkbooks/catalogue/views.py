@@ -5,7 +5,7 @@ from catalogue.models import Categories, Products, Review, Favorite
 from users.models import User
 from rest_framework import permissions
 from rest_framework.response import Response
-from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer, FindBookSerializer, FavoriteSerializer, RemoveFavoriteSerializer, FavoriteReturnSerializer, GetReviewSerializer
+from catalogue.serializers import ProductsSerializer, CategoriesSerializer, CreateReviewSerializer, FindBookSerializer, FavoriteSerializer, RemoveFavoriteSerializer, FavoriteReturnSerializer, GetReviewSerializer, OneProductSerializer
 # Create your views here.
 #Просмотр всех книг
 class ProductsListView(ListAPIView):
@@ -17,7 +17,7 @@ class ProductsListView(ListAPIView):
 #Просмотр одной книги по её Id
 class ProductView(RetrieveAPIView):
     queryset = Products.objects.all()
-    serializer_class = ProductsSerializer
+    serializer_class = OneProductSerializer
 
 #Просмотр книг по категории
 class CategoryView(ListAPIView):

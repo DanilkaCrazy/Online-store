@@ -31,10 +31,17 @@ const hasFormat = (bookFormat: string, formats: string[]) => !formats.length || 
 const isInBetweenPrices = (bookPrice: number, minPrice: number, maxPrice: number) => bookPrice >= minPrice && bookPrice <= maxPrice;
 const isInBetweenYears = (bookYear: number, minYear: number, maxYear: number) => bookYear >= minYear && bookYear <= maxYear;
 
+const hasTag = (themeCategories: string[], bookTheme: string, filterTag: string) => (
+  filterTag === 'all' 
+  || themeCategories.includes(filterTag)
+  || bookTheme === filterTag
+);
+
 const filterBooks = (books: Book[], filter: Filter) => {
   return SortBooks[filter.sortType](books.filter((book) => (
       hasLanguage(book.book_language, filter.languages) 
       && hasFormat(book.book_format, filter.formats)
+      && hasTag(book.theme_category, book.book_theme, filter.tag)
       && isInBetweenPrices(book.price, filter.minPrice, filter.maxPrice)
       && isInBetweenYears(book.year, filter.minYear, filter.maxYear))));
 };

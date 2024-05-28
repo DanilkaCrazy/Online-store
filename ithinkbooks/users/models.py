@@ -5,14 +5,17 @@ from django_better_admin_arrayfield.models.fields import ArrayField
 # Create your models here.
 class User(AbstractUser):
     email = models.EmailField(verbose_name="Электронная почта")
-    image = models.ImageField(upload_to = 'users_images', blank=True, null=True, verbose_name='Фото профиля')
+    image = models.ImageField(blank=True, null=True, verbose_name='Фото профиля')
     phone_number = models.TextField(max_length=15, null=True, verbose_name='Номер телефона')
     birthdate = models.DateField(null=True, verbose_name='Дата рождения')
     location = models.TextField(max_length=50, null=True, verbose_name='Населенный пункт')
     about_self = models.TextField(max_length=300, null=True, blank=True, verbose_name='О себе')
     class UserDirection(models.TextChoices):
         FRONTEND = "frontend","Frontend"
+        FULLSTACK = "fullstack", "FullStack"
         BACKEND = "backend","Backend"
+        KUBERSECURITY = "Kubersecurity", "Кибербезопасность"
+        MOBILEDEV = "mobiledev", "Мобильная разработка"
         DESIGN = "design","Дизайн"
         GAMEDEV = "gamedev","Gamedev"
         ANALYTICS = "analytics", "Analytics"

@@ -55,6 +55,14 @@
   margin-bottom: 10px;
 }
 
+.answer:hover {
+  border-color: var(--hovered-highlight-color);
+}
+
+.answer:active {
+  border-color: var(--active-highlight-color);
+}
+
 .answer:last-child {
   margin-bottom: 0;
 }

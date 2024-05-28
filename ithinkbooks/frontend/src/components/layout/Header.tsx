@@ -36,7 +36,12 @@ const Header: React.FC<{}> = () => {
       <button onClick={toggleLightMode}><img src={!isDark ? DarkMode : LightMode} alt='Тёмный режим'/></button>
       <Link to={account.id < 0 ? '/log-in' : '/account/favorities'}><img src={StarIcon} alt='Избранное'/></Link>
       <Link to={account.id < 0 ? '/log-in' : '/account/basket'}><img src={BasketIcon} alt='Корзина'/></Link>
-      <Link to={account.id < 0 ? '/log-in' : '/account/basket'}><img src={AccountIcon} alt='Личный кабиент'/></Link>
+      <Link to={account.id < 0 ? '/log-in' : '/account/basket'}>
+        <img 
+          className={`header-avatar ${account.id < 0 ? '' : 'avatar-with-border'}`} 
+          src={account.id < 0 ? AccountIcon : account.image} 
+          alt='Личный кабиент'/>
+      </Link>
       <Outlet/>
     </header>
   );

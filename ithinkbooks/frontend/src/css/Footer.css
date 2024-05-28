@@ -60,3 +60,11 @@ footer .logo {
 footer a {
   color: var(--p-color-on-panel);
 }
+
+footer a:hover {
+  color: var(--highlight-color);
+}
+
+footer a:active {
+  color: var(--active-highlight-color);
+}

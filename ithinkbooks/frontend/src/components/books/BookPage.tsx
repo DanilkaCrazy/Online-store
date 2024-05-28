@@ -107,7 +107,11 @@ const BookReviewsBlock: React.FC<{
                   {sortedReviews.length} {declineNounAfterNumber(sortedReviews.length, 'отзыв', 'отзыва', 'отзывов')}
                 </p>
               </div>
-              <button className='main-button' onClick={() => setFormOpen(true)}>Оценить</button>
+
+              {account.id < 0 
+              ? <p className='main-p'>Чтобы, оставить отзыв, необходимо авторизоваться</p>
+              : <button className='main-button' onClick={() => setFormOpen(true)}>Оценить</button>}
+
             </div>
             <Dropdown onSelect={onSortTypeSelect}>
               <Dropdown.Toggle>{SortTranslations[sortType]}</Dropdown.Toggle>
@@ -136,7 +140,7 @@ const BookReviewsBlock: React.FC<{
           </div>
         }
         <div className='reviews'>
-          {isFormOpened ? <ReviewForm bookId={book.id} setFormOpened={setFormOpen}/> : <></>}
+          {!isFormOpened || <ReviewForm bookId={book.id} setFormOpened={setFormOpen}/>}
           {sortedReviews.map((review, i) => <ReviewComponent key={i} review={review} isInBookPage/>)}
         </div>
       </div>

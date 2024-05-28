@@ -26,6 +26,12 @@ class ProductsSerializer(serializers.ModelSerializer):
         #fields = ('name','slug','author','publisher', 'year','number_of_pages','description','price',
         #'quantity','book_type', 'book_bindings', 'translator_choice' )
 
+class OneProductSerializer(serializers.ModelSerializer):
+    review = GetReviewSerializer(many = True)
+    class Meta:
+        model = Products
+        fields = '__all__'
+
 class ProductWithoutReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products

@@ -35,7 +35,7 @@ const ThemeCollection: React.FC<{}> = () => {
 
   return (
     <div className='divided-page theme-collection'>
-      <FiltersMenu applyFilters={applyFilters}/>
+      <FiltersMenu applyFilters={applyFilters} theme={foundTheme.title}/>
       <div>
         <h1>{foundTheme.name}</h1>
         <div className='books-collection'>

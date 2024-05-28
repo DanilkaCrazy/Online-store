@@ -136,7 +136,7 @@ class Products(models.Model):
         #AI
         deep_learning = "deep_learning", "Принципы глубокого обучения (сверточные нейронные сети, повторяющиеся нейронные сети, генеративные состязательные сети и т.д.)"
         natural_language = "natural_language", "Знание естественного языкового процессинга (обработка текста, разметка текста, синтаксический анализ, семантический анализ и т.д.)"
-        computer_vision = "computer_vision", "Компьютерное зрения (распознавание образов, сегментация изображений, обнаружение объектов и т.д.)"
+        computer_vision = "computer_vision", "Компьютерное зрение (распознавание образов, сегментация изображений, обнаружение объектов и т.д.)"
         #Data Science
         datascience_visualization = "datascience_visualization", "Визуализация данных (Matplotlib, Seaborn, Tableau, Power BI и т.д.)"
         datascience_work = "datascience_work", "Знание инструментов обработки данных (Pandas, NumPy, SciPy, Scikit-learn и т.д.)"

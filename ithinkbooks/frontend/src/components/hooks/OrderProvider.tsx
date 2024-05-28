@@ -5,7 +5,7 @@ import { getRandomId } from '../utils';
 import { useAccount } from './AccountProvider';
 import orderStatuses from '../mock/orderStatuses.json';
 import axiosInstance, { getCookie } from '../Axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import cities from '../mock/cities.json';
 import dayjs from 'dayjs';
 
@@ -137,9 +137,9 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
     .then(() => setLoading(false));
   }, [token]);
 
-  const putOrderChange = useCallback((orderId: number) => {
+  const putOrderChange = useCallback((order: Order) => {
     axiosInstance
-      .put(`http://127.0.0.1:8000/orders/${orderId}`, getResponceFromOrder(currentOrder, orderStatuses.awatingFulfillment), {
+      .put(`http://127.0.0.1:8000/orders/${order.id}`, getResponceFromOrder(order, orderStatuses.awatingFulfillment), {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }
@@ -176,12 +176,11 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
       })
       .then(() => getItems(orderId, () => {
         setLoading(false);
-        navigate(`/account/history/${orderId}`);
       }));
   }, []);
 
   useEffect(() => {
-    if(currentOrder.id >= 0 && currentOrder.status !== orderStatuses.pending) {
+    if(currentOrder.id >= 0) {
       setLoading(true);
       switch(currentOrder.status) {
         case orderStatuses.ready:
@@ -189,7 +188,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
           break;
         
         case orderStatuses.awatingPayment:
-          putOrderChange(currentOrder.id);
+          putOrderChange(currentOrder);
           break;
 
         case orderStatuses.cancelled:
@@ -197,9 +196,8 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
           break;
 
         default:
-          if(!items.length || items[0].order !== currentOrder.id) {
-            getOrder(currentOrder.id);
-          }
+          setLoading(true);
+          break;
       }
     }
   }, [currentOrder, postOrder, putOrderChange]);
@@ -207,7 +205,9 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
   useEffect(() => {
     if(location.pathname.includes('history')) {
       setLoading(true);
-      getOrders();
+      const id = location.pathname.split('/').pop();
+      const parsed = !id ? undefined : parseInt(id);
+      !parsed ? getOrders() : getOrder(parsed);
     }
   }, [location.pathname, orders.length, getOrders]);
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import { useOrders } from '../hooks/OrderProvider';
 import { getFormatedWithWordsDate } from '../date-utils';
+import { Link } from 'react-router-dom';
 
 const History: React.FC<{}> = () => {
-  const {orders, loading, updateOrder} = useOrders();
+  const {orders, loading} = useOrders();
 
   if(loading) {
     return (
@@ -25,7 +26,7 @@ const History: React.FC<{}> = () => {
     <div className='histpry-page'>
       {orders.map((order, i) => (
         <div key={i} className='order-info-button'>
-          <button onClick={() => updateOrder(order)} className='text-button'><h3>Заказ №{order.id}</h3></button>
+          <Link to={`/account/history/${order.id}`} className='text-button'><h3>Заказ №{order.id}</h3></Link>
           <p className='main-p'>{getFormatedWithWordsDate(order.created_timestamp)}</p>
           <p className='main-p'>Статус: {order.status}</p>
           <p className='main-p'>Адрес доставки: г. {order.city.city}, {order.pick_up_point}</p>
