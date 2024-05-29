@@ -108,9 +108,8 @@ const BookReviewsBlock: React.FC<{
                 </p>
               </div>
 
-              {account.id < 0 
-              ? <p className='main-p'>Чтобы, оставить отзыв, необходимо авторизоваться</p>
-              : <button className='main-button' onClick={() => setFormOpen(true)}>Оценить</button>}
+            <button hidden={account.id < 0} className='main-button' onClick={() => setFormOpen(true)}>Оценить</button>
+            <p  hidden={account.id >= 0} className='main-p'>Чтобы оставить отзыв, необходимо авторизоваться</p>
 
             </div>
             <Dropdown onSelect={onSortTypeSelect}>
@@ -136,7 +135,8 @@ const BookReviewsBlock: React.FC<{
           </div>
         : <div className='empty-reviews-block'>
             <p className='price-p'>Нет отзывов</p>
-            <button className='main-button' onClick={() => setFormOpen(true)}>Оценить</button>
+            <button hidden={account.id < 0} className='main-button' onClick={() => setFormOpen(true)}>Оценить</button>
+            <p  hidden={account.id >= 0} className='main-p'>Чтобы оставить отзыв, необходимо авторизоваться</p>
           </div>
         }
         <div className='reviews'>

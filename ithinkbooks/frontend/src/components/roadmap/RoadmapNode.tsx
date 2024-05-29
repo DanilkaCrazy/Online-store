@@ -51,9 +51,9 @@ const Branch: React.FC<{upperNode: RoadmapNode, downNode: RoadmapNode}> = ({uppe
 const NodeBook:React.FC<{
   book: Book, 
   chosenBookId: number,
-  isRecommended: boolean,
+  isRecommended?: boolean,
   setChosenBook: React.Dispatch<React.SetStateAction<Book>>
-}> = ({book, isRecommended, chosenBookId ,setChosenBook}) => (
+}> = ({book, chosenBookId ,setChosenBook, isRecommended = false}) => (
   <button onClick={() => setChosenBook(book)} className={`node-book ${book.id === chosenBookId ? 'active-node' : ''}`}>
     <img hidden={!isRecommended} className='node-star' src={book.id === chosenBookId ? NodeStarDark : NodeStar} alt='Рекомендовано'/>
     <p className='secondary-p'>{book.name.length > MAX_TITLE_LENGTH ? `${book.name.slice(0, MAX_TITLE_LENGTH)}...` : book.name}</p>

@@ -181,22 +181,23 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   useEffect(() => {
     if(currentOrder.id >= 0) {
-      setLoading(true);
       switch(currentOrder.status) {
         case orderStatuses.ready:
+          setLoading(true);
           postOrder();
           break;
         
         case orderStatuses.awatingPayment:
+          setLoading(true);
           putOrderChange(currentOrder);
           break;
 
         case orderStatuses.cancelled:
+          setLoading(true);
           deleteOrderFromServer(currentOrder.id);
           break;
 
         default:
-          setLoading(true);
           break;
       }
     }

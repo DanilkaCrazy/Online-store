@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import OrderedBook from '../books/OrderedBook';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { DropdownField } from '../ui/FormFields';
 import { useOrders } from '../hooks/OrderProvider';
 import { getArraySum } from '../utils';
@@ -53,11 +53,13 @@ const OrderForm: React.FC<{}> = () => {
       <form className='separated-form'>
         <h2>Оформление заказа</h2>
 
-        <div className='form-field'>
+        {/*<div className='form-field'>
           <h3>Город: {currentOrder.city.city}</h3>
           <div className='map-stub'></div>
-        </div>
+        </div>*/}
       
+        <h3>Город: {currentOrder.city.city}</h3>
+
         <DropdownField 
           fieldHeader='Пункт выдачи заказа' 
           options={currentOrder.city.addresses} 

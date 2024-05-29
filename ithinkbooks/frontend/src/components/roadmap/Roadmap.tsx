@@ -63,7 +63,6 @@ const RoadmapPage: React.FC<{}> = () => {
                   <NodeBook 
                     key={j} 
                     book={book} 
-                    isRecommended={!randomInteger(0, 5)} 
                     chosenBookId={chosenBook.id} 
                     setChosenBook={setChosenBook}/>
                 ))}

@@ -40,7 +40,7 @@
   border: none;
   width: 20px;
   height: 20px;
-  background-color: var(--panels-color);
+  background-color: var(--secondary-panel-color);
   opacity: 1;
   border-radius: 5px;
 }
@@ -79,6 +79,7 @@
   height: 225px;
   background-color: var(--secondary-panel-color);
   border-radius: 5px;
+  padding: 15px;
 }
 
 .theme-menu {
@@ -115,4 +116,19 @@
 .theme-button p {
   font-size: 20px;
   margin: 0;
+}
+
+.ads-a {
+  color: var(--p-color-on-highlight);
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+
+.side-ads h3 {
+  color: var(--p-color-on-highlight);
+}
+
+.carousel-bg {
+  border-radius: 5px;;
 }
