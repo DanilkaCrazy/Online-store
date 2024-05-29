@@ -67,7 +67,7 @@ const HorizontalScroller: React.FC<
           onClick={() => onScrollButton(step)} style={{height: itemHeight}}>
           <img 
             className='scroller-right' 
-            src={isDark ? DesktopScrollerDark : DesktopScrollerLight} 
+            src={isDark ? DesktopScrollerDark : (isOnPanel ? DesktopLightScrollerOnPanel : DesktopScrollerLight)} 
             alt='вправо'/>
         </button>
       <div className='h-scroller-container' ref={scrollerRef}>
