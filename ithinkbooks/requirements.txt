@@ -1,3 +1,7 @@
 Django==5.0.3
 django_better_admin_arrayfield==1.4.2
 djangorestframework==3.15.1
+django-cors-headers==4.3.1
+psycopg2==2.9.9
+pillow==10.3.0
+
