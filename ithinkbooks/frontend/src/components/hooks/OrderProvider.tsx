@@ -5,7 +5,7 @@ import { getRandomId } from '../utils';
 import { useAccount } from './AccountProvider';
 import orderStatuses from '../mock/orderStatuses.json';
 import axiosInstance, { getCookie } from '../Axios';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import cities from '../mock/cities.json';
 import dayjs from 'dayjs';
 

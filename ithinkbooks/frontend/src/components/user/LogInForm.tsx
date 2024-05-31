@@ -6,7 +6,7 @@ import Validation, {fieldsValidation} from '../types/Validation';
 import { useAccount } from '../hooks/AccountProvider';
 
 const LogInForm: React.FC<{}> = () => {
-  const {logInOrOut} = useAccount();
+  const {logInOrOut, error} = useAccount();
 
   const [logInInfo, setLogInInfo] = useState<LogInInfo>({
     username: '',
@@ -28,6 +28,9 @@ const LogInForm: React.FC<{}> = () => {
     <div className='page'>
       <form className='separated-form'>
         <h2>Вход</h2>
+
+        <h3 hidden={!error} className='danger-p'>Аккаунт не найден.<br/>
+        Возможно, вы ввели неправльный логин или пароль</h3>
         
         <TextField 
           fieldHeader='Логин*'
