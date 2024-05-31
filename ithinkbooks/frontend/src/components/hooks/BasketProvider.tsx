@@ -99,7 +99,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getCarts = useCallback(() => {
     axiosInstance
-      .get('http://127.0.0.1:8000/cart/items', {
+      .get('http://158.160.176.183:8000/cart/items', {
         headers: {
           'X-CSRFToken': token
         }
@@ -115,7 +115,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const postCart = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/cart/items', getCartResponce(), {
+      .post('http://158.160.176.183:8000/cart/items', getCartResponce(), {
         headers: {
           'X-CSRFToken': token
         }
@@ -126,7 +126,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const changeCart = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/cart/change', getCartResponce(), {
+      .post('http://158.160.176.183:8000/cart/change', getCartResponce(), {
         headers: {
           'X-CSRFToken': token
         }
@@ -137,7 +137,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const removeCart = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/cart/remove', getCartResponce(), {
+      .post('http://158.160.176.183:8000/cart/remove', getCartResponce(), {
         headers: {
           'X-CSRFToken': token
         }
@@ -148,7 +148,7 @@ const BasketProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const deleteBasket = useCallback(() => {
     axiosInstance
-      .delete('http://127.0.0.1:8000/cart/items', {
+      .delete('http://158.160.176.183:8000/cart/items', {
         headers: {
           'X-CSRFToken': token
         }

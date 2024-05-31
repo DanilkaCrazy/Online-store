@@ -86,7 +86,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getItems = (orderId: number, onFinish = () => {}) => {
     axiosInstance
-      .get(`http://127.0.0.1:8000/orders/user_items/${orderId}`, {
+      .get(`http://158.160.176.183:8000/orders/user_items/${orderId}`, {
         headers: {
           'X-CSRFToken': token
         }
@@ -103,7 +103,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
   };
 
   const postOrder = useCallback(() => {
-    axiosInstance.post('http://127.0.0.1:8000/orders/create_order', getResponceFromOrder(currentOrder, currentOrder.status), {
+    axiosInstance.post('http://158.160.176.183:8000/orders/create_order', getResponceFromOrder(currentOrder, currentOrder.status), {
       headers: {
         'X-CSRFToken': token
       }
@@ -127,7 +127,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, [currentOrder, token]);
 
   const getOrders = useCallback(() => {
-    axiosInstance.get('http://127.0.0.1:8000/orders/user_items', {
+    axiosInstance.get('http://158.160.176.183:8000/orders/user_items', {
       headers: {
         'X-CSRFToken': token
       }
@@ -139,7 +139,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const putOrderChange = useCallback((order: Order) => {
     axiosInstance
-      .put(`http://127.0.0.1:8000/orders/${order.id}`, getResponceFromOrder(order, orderStatuses.awatingFulfillment), {
+      .put(`http://158.160.176.183:8000/orders/${order.id}`, getResponceFromOrder(order, orderStatuses.awatingFulfillment), {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }
@@ -153,7 +153,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const deleteOrderFromServer = useCallback((orderId: number) => {
     axiosInstance
-      .delete(`http://127.0.0.1:8000/orders/${orderId}`, {
+      .delete(`http://158.160.176.183:8000/orders/${orderId}`, {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }
@@ -165,7 +165,7 @@ const OrdersProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getOrder = useCallback((orderId: number) => {
     axiosInstance
-      .get(`http://127.0.0.1:8000/orders/${orderId}`, {
+      .get(`http://158.160.176.183:8000/orders/${orderId}`, {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }

@@ -105,7 +105,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   }, []);
 
   const getUser = async (username: string) => {
-    const user: User = await axiosInstance.get(`http://127.0.0.1:8000/users/user/${username}`, {
+    const user: User = await axiosInstance.get(`http://158.160.176.183:8000/users/user/${username}`, {
       headers: {
         'X-CSRFToken': token
       }
@@ -118,7 +118,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const postLogIn = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/users/login', logInInfo, {
+      .post('http://158.160.176.183:8000/users/login', logInInfo, {
         headers: {
           'X-CSRFToken': token
         }
@@ -133,7 +133,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const postLogOut = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/users/logout', logInInfo, {
+      .post('http://158.160.176.183:8000/users/logout', logInInfo, {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }
@@ -146,7 +146,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const postNewAccount = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/users/register', getResponceFromUser(newAccount), {
+      .post('http://158.160.176.183:8000/users/register', getResponceFromUser(newAccount), {
         headers: {
           'X-CSRFToken': token
         }
@@ -158,7 +158,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const putEditedAccount = useCallback(() => {
     axiosInstance
-      .put(`http://127.0.0.1:8000/users/update_profile/${newAccount.id}`, getResponceFromUser(newAccount), {
+      .put(`http://158.160.176.183:8000/users/update_profile/${newAccount.id}`, getResponceFromUser(newAccount), {
         headers: {
           'X-CSRFToken': token
         }
@@ -170,7 +170,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   
   const getReviews = useCallback(() => {
     axiosInstance
-      .get(`http://127.0.0.1:8000/${account.id}/reviews`, {
+      .get(`http://158.160.176.183:8000/${account.id}/reviews`, {
         headers: {
           'X-CSRFToken': token
         }

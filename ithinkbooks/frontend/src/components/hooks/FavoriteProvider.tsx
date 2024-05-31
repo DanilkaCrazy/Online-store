@@ -49,7 +49,7 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const addToFavorite = useCallback(() => {
     axiosInstance
-      .post(`http://127.0.0.1:8000/favorite/${account.id}`, {
+      .post(`http://158.160.176.183:8000/favorite/${account.id}`, {
         ...currentFav,
         product: currentFav.product.id
       }, {
@@ -64,7 +64,7 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const removeFromFavorite = useCallback(() => {
     axiosInstance
-      .delete(`http://127.0.0.1:8000/favorite_book/${currentFav.id}`, {
+      .delete(`http://158.160.176.183:8000/favorite_book/${currentFav.id}`, {
         headers: {
           'X-CSRFToken': token
         }
@@ -76,7 +76,7 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getFavoriteBooks = useCallback(() => {
     axiosInstance
-      .get(`http://127.0.0.1:8000/favorite/${account.id}`, {
+      .get(`http://158.160.176.183:8000/favorite/${account.id}`, {
         headers: {
           'X-CSRFToken': token
         }

@@ -15,7 +15,7 @@ const getCookie = (name: string) => {
     return cookieValue;
 }
 
-const baseUrl = 'http://127.0.0.1:8000/';
+const baseUrl = 'http://158.160.176.183:8000/';
 const axiosInstance = axios.create({
     baseURL: baseUrl, 
     timeout: 5000

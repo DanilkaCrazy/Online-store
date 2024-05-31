@@ -39,7 +39,7 @@ const Search: React.FC<{}> = () => {
 
   const getFoundBooks = useCallback(() => {
     axiosInstance
-      .post('http://127.0.0.1:8000/books_search', {
+      .post('http://158.160.176.183:8000/books_search', {
         book_name: searchWord.toLowerCase()
       }, {
         headers: {
