@@ -33,6 +33,7 @@ const emptyAccount: User = {
 const defaultAccountValue = {
   account: emptyAccount,
   loading: false,
+  error: false,
   reviews: [emptyReview],
   updateAccount: (update: object) => {},
   logInOrOut: (info: LogInInfo) => {},
@@ -54,6 +55,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const location = useLocation();
 
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const [reviews, setReviews] = useState<Review[]>([]);
 
   const token = getCookie('csrftoken');
@@ -107,7 +109,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const getUser = async (username: string) => {
     const user: User = await axiosInstance.get(`http://ratchekx.beget.tech/users/user/${username}`, {
       headers: {
-        'X-CSRFToken': token
+        'X-CSRFToken': getCookie('csrftoken')
       }
     })
     .then((resp) => resp.data)
@@ -120,7 +122,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     axiosInstance
       .post('http://ratchekx.beget.tech/users/login', logInInfo, {
         headers: {
-          'X-CSRFToken': token
+          'X-CSRFToken': getCookie('csrftoken')
         }
       })
       .then((resp) => resp.data)
@@ -128,7 +130,9 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
       .then((user) => setAccount(user))
       .then(() => setLogInInfo({username: '', password: ''}))
       .then(() => navigate('/account/basket'))
-      .then(() => setLoading(false));
+      .then(() => setError(false))
+      .catch(() => setError(true))
+      .finally(() => setLoading(false))
   }, [logInInfo, getResponceFromUser, token]);
 
   const postLogOut = useCallback(() => {
@@ -204,6 +208,7 @@ const AccountProvider: React.FC<{children: ReactNode}> = ({children}) => {
     <AccountContext.Provider value={{
       account, 
       loading,
+      error,
       reviews,
       updateAccount,
       logInOrOut,
