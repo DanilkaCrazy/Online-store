@@ -27,7 +27,7 @@ class UserLoginSerializer(serializers.Serializer):
 	username = serializers.CharField()
 	password = serializers.CharField()
 	def check_user(self, clean_data):
-		user = authenticate(username=clean_data['username'], password=clean_data['password'])
+		user = authenticate(request=self.context.get('request'), username=clean_data['username'], password=clean_data['password'])
 		if not user:
 			raise ValidationError('user not found')
 		return user

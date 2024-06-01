@@ -7,7 +7,12 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView,
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
+from rest_framework.authentication import SessionAuthentication
 from users.utils import base64_to_image
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 # Create your views here.
 #Регистрация
@@ -32,10 +37,10 @@ class UserLogout(APIView):
 #Вход
 class UserLogin(APIView):
 	permission_classes = (permissions.AllowAny,)
-	#authentication_classes = (SessionAuthentication,)
+	authentication_classes = (SessionAuthentication,)
 	def post(self, request):
 		data = request.data
-		serializer = UserLoginSerializer(data=data)
+		serializer = UserLoginSerializer(data=data, context={ 'request': self.request } )
 		if serializer.is_valid(raise_exception=True):
 			user = serializer.check_user(data)
 			login(request, user)
@@ -44,6 +49,7 @@ class UserLogin(APIView):
 #Получать информацию о пользователе
 class GetUser(APIView):
 	permission_classes = (permissions.IsAuthenticated,)
+	authentication_classes = (SessionAuthentication,)
 	def get(self, request, username):
 		user = get_object_or_404(User, username=username)
 		serializer = UserSerializer(user)
@@ -53,6 +59,7 @@ class GetUser(APIView):
 class UpdateProfileView(APIView):
   #queryset = User.objects.all()
   permission_classes = (permissions.IsAuthenticated,)
+  authentication_classes = (SessionAuthentication,)
   #serializer_class = UpdateUserSerializer
   def put(self, request, pk):
     data = request.data
