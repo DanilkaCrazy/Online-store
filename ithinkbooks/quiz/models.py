@@ -30,8 +30,23 @@ class Question(models.Model):
         THEME_SPECIFIC = 'Theme Specific Question' # Что конкретно интересно в данной теме
         LEVEL_SPECIFIC = 'Specific Level Question' #Вопрос об уровне знаний в определенной теме
         THEME_FOR_OTHER = 'Theme for Other' #Выбор темы для других
-        OTHER = 'Other'
+        OTHER_GEN = 'Other General' #Общий вопрос для других
     question_type = models.TextField(choices=QuestionType, default=QuestionType.THEME, verbose_name='Тип вопроса')
+    #Для вопросов по аналитике, бэк, фронут и т.д.
+    class SpecificQuestionType(models.TextChoices):
+        FE = 'FE' #Frontend
+        BE = 'BE' #Backend
+        DES = 'DES' #Desing
+        DO = 'DO' #Devops
+        DS = 'DS' #Data Science
+        GD = 'GD' #Gamedev
+        AN = 'AN' #Analytic
+        AI = 'AI' #AI
+        TEST = 'TEST' #Testing
+        CS = 'CS' #Comp Science
+        OTHER = 'Other'
+        ALL = 'All' #Everything else
+    specific_question_type = models.TextField(choices=SpecificQuestionType, default=SpecificQuestionType.ALL)
     class Meta:
         db_table = 'question'
         verbose_name = 'Вопрос'
