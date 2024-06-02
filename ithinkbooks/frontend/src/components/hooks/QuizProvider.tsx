@@ -1,19 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useState } from 'react';
-import mockQuiz from '../roadmap/quiz.json';
-import { Answer, AnswerToQuestion, Quiz } from '../types/Quiz';
+//import mockQuiz from '../roadmap/quiz.json';
+import { Answer, AnswerToQuestion, Quiz, emptyQuiz } from '../types/Quiz';
 import themes from '../mock/themes.json';
 import Theme from '../types/Theme';
 import axiosInstance, { getCookie } from '../Axios';
 import { Roadmap, emptyRoadmap } from '../types/Roadmap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { EXCLUDED_QUESTION_TYPE } from '../utils';
 
 const defaultResponce: AnswerToQuestion = {
-  question: mockQuiz.question[0],
+  question: emptyQuiz.question[0],
   answer: {
     id: 0,
     text: '',
-    answer_value: -1
+    answer_value: ''
   },
   isCompleted: false
 };
@@ -21,7 +22,7 @@ const defaultResponce: AnswerToQuestion = {
 const emptyRoadmaps: Roadmap[] = [];
 
 const defaultQuizContext = {
-  quiz: mockQuiz,
+  quiz: emptyQuiz,
   updateTheme: (newTheme: Theme) => {},
   responces: [defaultResponce],
   sendResponce: () => {},
@@ -42,12 +43,13 @@ const QuizContext = createContext(defaultQuizContext);
 const useQuiz = () => useContext(QuizContext);
 
 const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
-  const [quiz, setQuiz] = useState<Quiz>(mockQuiz);
+  const [quiz, setQuiz] = useState<Quiz>(emptyQuiz);
   const [theme, setTheme] = useState<string>(themes[0].title);
   const [loading, setLoading] = useState<boolean>(false);
 
   const [responces, setResponces] = useState<AnswerToQuestion[]>([]);
   const [responce, setResponce] = useState<AnswerToQuestion>(defaultResponce);
+  const [themeResponce, setThemeResponce] = useState<AnswerToQuestion | undefined>(undefined);
   const [questionNumber, setQuestionNumber] = useState<number>(0);
 
   const [isFinished, setFinish] = useState<boolean>(false);
@@ -61,16 +63,41 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   //const token = getCookie('csrftoken'); ?
 
   const updateQuiz = (data: Quiz) => {
-    setQuiz(data);
-    setResponces(data.question.map((question) => ({
-      question,
-      answer: {
-        id: 0,
-        text: '',
-        answer_value: -1
-      },
-      isCompleted: false
-    })));
+    const newResponces = data.question.map((question) => {
+      if(question.question_type === EXCLUDED_QUESTION_TYPE) {
+        const foundAnswer = question.answer.find((answer) => answer.answer_value === data.quiz_theme);
+
+        return ({
+          question,
+          answer: !foundAnswer 
+            ? {
+              id: 0,
+              text: '',
+              answer_value: ''
+            }
+            : foundAnswer,
+          isCompleted: true
+        });
+      }
+
+      return ({
+        question,
+        answer: {
+          id: 0,
+          text: '',
+          answer_value: ''
+        },
+        isCompleted: false
+      });
+    });
+
+    setThemeResponce(newResponces.find((r) => r.question.question_type === EXCLUDED_QUESTION_TYPE))
+    setResponces(newResponces.filter((r) => r.question.question_type !== EXCLUDED_QUESTION_TYPE));
+
+    setQuiz({
+      ...data,
+      question: data.question.filter((q) => q.question_type !== EXCLUDED_QUESTION_TYPE)
+    });
   };
 
   const updateTheme = (newTheme: Theme) => {
@@ -106,7 +133,13 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   // data fetch
 
-  const getQuiz = useCallback(() => {
+  const filterQuestions = (quiz: Quiz, quizTheme: string): Quiz => ({
+    ...quiz,
+    quiz_theme: quizTheme,
+    question: quiz.question.filter((question) => question.specific_question_type === 'all' || question.specific_question_type === quizTheme)
+  });
+
+  const getQuiz = useCallback((quizTheme: string) => {
     axiosInstance
       .get('http://ratchekx.beget.tech/quiz', {
         headers: {
@@ -115,7 +148,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
       })
       .then((resp) => resp.data[0])
       .then((data) => {
-        updateQuiz(data);
+        updateQuiz(filterQuestions(data, quizTheme));
         return data;
       })
       .then((data) => setResponce({...defaultResponce, question: data.question[0]}))
@@ -173,13 +206,13 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   useEffect(() => {
     setLoading(true);
-    getQuiz();
+    getQuiz(theme);
   }, [theme, getQuiz]);
 
   useEffect(() => {
     if(isFinished) {
       setLoading(true);
-      postQuizResult(responces);
+      postQuizResult(!themeResponce ? responces : responces.concat(themeResponce));
     }
   }, [isFinished, postQuizResult]);
 
