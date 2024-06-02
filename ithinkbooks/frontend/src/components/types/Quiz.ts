@@ -1,7 +1,7 @@
 interface Answer {
   id: number;
   text: string;
-  answer_value: number;
+  answer_value: string;
 };
 
 interface Question {
@@ -9,6 +9,7 @@ interface Question {
   text: string;
   question_type: string;
   answer: Answer[];
+  specific_question_type: string;
 };
 
 interface Quiz {
@@ -24,4 +25,20 @@ interface AnswerToQuestion {
   isCompleted: boolean;
 }
 
+const emptyQuiz: Quiz = {
+  id: 1,
+  name: '',
+  quiz_theme: 'other',
+  question: [
+    {
+      id: 2,
+      text: '',
+      question_type: '',
+      answer: [],
+      specific_question_type: 'all'
+    }
+  ]
+}
+
 export type {Quiz, Question, Answer, AnswerToQuestion};
+export {emptyQuiz};

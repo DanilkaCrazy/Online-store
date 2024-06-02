@@ -7,6 +7,7 @@
       "id": 1,
       "text": "Оцените свой уровень знаний в этой области.",
       "question_type": "level",
+      "specific_question_type": "all",
       "answer": [
         {
           "id": 1,
@@ -29,6 +30,7 @@
       "id": 2,
       "text": "Сколько Вы готовы заплатить за одну книгу?",
       "question_type": "price",
+      "specific_question_type": "all",
       "answer": [
         {
           "id": 1,
@@ -56,6 +58,7 @@
       "id": 3,
       "text": "На каких языках Вы готовы читать?",
       "question_type": "Language",
+      "specific_question_type": "all",
       "answer": [
         {
           "id": 1,

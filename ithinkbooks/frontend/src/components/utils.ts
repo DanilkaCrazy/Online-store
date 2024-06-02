@@ -75,4 +75,7 @@ const fixBookData = (data: Book): Book => {
   );
 };
 
-export {getArraySum, getAverageNumber, declineNounAfterNumber, getRandomId, fixBookData, ScreensWidth, AvatarWidth, MIN_PRICE, MAX_PRICE};
+const EXCLUDED_QUESTION_TYPE = 'Theme Question';
+
+export {getArraySum, getAverageNumber, declineNounAfterNumber, getRandomId, fixBookData, 
+  ScreensWidth, AvatarWidth, MIN_PRICE, MAX_PRICE, EXCLUDED_QUESTION_TYPE};

@@ -34,18 +34,18 @@ class Question(models.Model):
     question_type = models.TextField(choices=QuestionType, default=QuestionType.THEME, verbose_name='Тип вопроса')
     #Для вопросов по аналитике, бэк, фронут и т.д.
     class SpecificQuestionType(models.TextChoices):
-        FE = 'FE' #Frontend
-        BE = 'BE' #Backend
-        DES = 'DES' #Desing
-        DO = 'DO' #Devops
-        DS = 'DS' #Data Science
-        GD = 'GD' #Gamedev
-        AN = 'AN' #Analytic
-        AI = 'AI' #AI
-        TEST = 'TEST' #Testing
+        FE = 'frontend' #Frontend
+        BE = 'backend' #Backend
+        DES = 'design' #Desing
+        DO = 'devops' #Devops
+        DS = 'data' #Data Science
+        GD = 'gamedev' #Gamedev
+        AN = 'analytics' #Analytic
+        AI = 'ai' #AI
+        TEST = 'qa' #Testing
         CS = 'CS' #Comp Science
-        OTHER = 'Other'
-        ALL = 'All' #Everything else
+        OTHER = 'OT'
+        ALL = 'all' #Everything else
     specific_question_type = models.TextField(choices=SpecificQuestionType, default=SpecificQuestionType.ALL)
     class Meta:
         db_table = 'question'
