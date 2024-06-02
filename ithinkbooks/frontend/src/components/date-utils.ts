@@ -15,6 +15,6 @@ const isNew = (year: number, month: number) => {
 
 const getAge = (birthdate: Dayjs) => dayjs().diff(dayjs(birthdate, 'YYYY-MM-DD'), 'year');
 
-const getFormatedWithWordsDate = (date: Dayjs) => `${date.date()} ${months[date.month()]?.nominative} ${date.year()}`;
+const getFormatedWithWordsDate = (date: Dayjs) => `${date.date()} ${months[date.month()]?.genitiveSingular} ${date.year()}`;
 
 export {isReleased, isNew, getAge, getFormatedWithWordsDate, MIN_YEAR, MAX_YEAR};
