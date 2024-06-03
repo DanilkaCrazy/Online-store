@@ -18,7 +18,7 @@ const defaultFilter: Filter = {
   sortType: SortTypes.POPULARITY,
   languages: [],
   formats: [],
-  tag: '',
+  tag: 'all',
   minPrice: MIN_PRICE,
   maxPrice: MAX_PRICE,
   minYear: MIN_YEAR,

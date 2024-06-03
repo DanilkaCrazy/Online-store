@@ -111,6 +111,18 @@
   justify-content: flex-end;
   align-items: center;
   gap: 15px;
+  transition: 200ms background-color;
+}
+
+.theme-button:hover {
+  background-color: var(--hovered-highlight-color);
+  transition: 200ms background-color;
+}
+
+.theme-button:active {
+  background-color: var(--active-highlight-color);
+  border-color: var(--active-highlight-color);
+  transition: 200ms background-color;
 }
 
 .theme-button p {

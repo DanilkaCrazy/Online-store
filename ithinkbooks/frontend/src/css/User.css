@@ -212,3 +212,8 @@
 .user-profile .secondary-button {
   width: 100%;
 }
+
+.history-button {
+  padding-left: 0;
+  padding-right: 0;
+}

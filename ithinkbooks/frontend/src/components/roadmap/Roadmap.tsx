@@ -5,7 +5,6 @@ import '../../css/Roadmap.css';
 import BookPanel from '../books/BookPanel';
 import { useParams } from 'react-router-dom';
 import { useQuiz } from '../hooks/QuizProvider';
-import { randomInteger } from '../mock/mock';
 import { Roadmap } from '../types/Roadmap';
 import { fixBookData } from '../utils';
 import Book, { emptyBook } from '../types/Book';

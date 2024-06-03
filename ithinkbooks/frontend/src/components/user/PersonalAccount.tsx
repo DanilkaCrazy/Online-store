@@ -43,7 +43,7 @@ const PersonalAccount: React.FC<{}> = () => {
             <Link 
               key={i}
               to={page.TITLE} 
-              className={currentPage === page.TITLE ? 'main-button' : 'secondary-button'}>
+              className={`${currentPage === page.TITLE ? 'main-button' : 'secondary-button'} ${page.TITLE === 'history' ? 'history-button' : ''}`}>
                 {page.TRANSLATION}
             </Link>
           ))}
