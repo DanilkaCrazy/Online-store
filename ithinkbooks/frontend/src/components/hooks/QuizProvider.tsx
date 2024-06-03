@@ -94,6 +94,8 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     setThemeResponce(newResponces.find((r) => r.question.question_type === EXCLUDED_QUESTION_TYPE))
     setResponces(newResponces.filter((r) => r.question.question_type !== EXCLUDED_QUESTION_TYPE));
 
+    setResponce(newResponces[0]);
+
     setQuiz({
       ...data,
       question: data.question.filter((q) => q.question_type !== EXCLUDED_QUESTION_TYPE)
@@ -151,7 +153,6 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
         updateQuiz(filterQuestions(data, quizTheme));
         return data;
       })
-      .then((data) => setResponce({...defaultResponce, question: data.question[0]}))
       .then(() => setLoading(false));
   }, []);
 
@@ -179,6 +180,8 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     const data = resps.map((r) => (
       {question_id: r.question.id, answer_id: r.answer.id}
     ));
+
+    console.log(data);
 
     axiosInstance
       .post(`http://158.160.176.183:8000/quiz/quizes/${quiz.id}/vote`, data, {
