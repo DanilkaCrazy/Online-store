@@ -136,10 +136,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const filterQuestions = (quiz: Quiz, quizTheme: string): Quiz => ({
     ...quiz,
     quiz_theme: quizTheme,
-    question: quiz.question.filter((question) => question.specific_question_type === 'all' 
-      || question.specific_question_type === quizTheme
-      || (quizTheme === 'fullstack' 
-          && (question.specific_question_type === 'frontend' || question.specific_question_type === 'backend')))
+    question: quiz.question.filter((question) => question.specific_question_type === 'all' || question.specific_question_type === quizTheme)
   });
 
   const getQuiz = useCallback((quizTheme: string) => {
