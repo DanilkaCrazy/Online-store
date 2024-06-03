@@ -33,7 +33,7 @@ const QuizTheme: React.FC<{}> = () => {
         <DropdownField
           fieldHeader=''
           options={themes
-            .filter((t) => t.title !== 'fullstack' && t.title !== 'Kubersecurity' && t.title === 'mobiledev')
+            .filter((t) => t.title !== 'fullstack' && t.title !== 'Kubersecurity' && t.title !== 'mobiledev')
             .map((t) => t.shortName)}
           placeholder={theme}
           onOptionSelect={onThemeSelect}/>
