@@ -15,7 +15,7 @@ const getCookie = (name: string) => {
     return cookieValue;
 }
 
-const baseUrl = 'http://ratchekx.beget.tech/';
+const baseUrl = 'http://127.0.0.1:8000/';
 const axiosInstance = axios.create({
     baseURL: baseUrl, 
     timeout: 5000
