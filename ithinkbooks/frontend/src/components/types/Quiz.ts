@@ -1,7 +1,7 @@
 interface Answer {
   id: number;
   text: string;
-  answer_value: number | string;
+  answer_value: string;
 };
 
 interface Question {
@@ -28,30 +28,14 @@ interface AnswerToQuestion {
 const emptyQuiz: Quiz = {
   id: 1,
   name: '',
-  quiz_theme: 'other',
+  quiz_theme: 'OT',
   question: [
     {
       id: 2,
-      text: "Оцените свой уровень знаний в этой области.",
-      question_type: "level",
-      specific_question_type: "all",
-      answer: [
-        {
-          id: 1,
-          text: "Новичок (только начинаю знакомство с этим);",
-          answer_value: 1
-        },
-        {
-          id: 2,
-          text: "Средний (есть базовые знания, но хотелось бы их расширить);",
-          answer_value: 2
-        },
-        {
-          id: 3,
-          text: "Профессионал (обладаю продвинутыми знаниями).",
-          answer_value: 3
-        }
-      ]
+      text: '',
+      question_type: '',
+      answer: [],
+      specific_question_type: 'all'
     }
   ]
 }
