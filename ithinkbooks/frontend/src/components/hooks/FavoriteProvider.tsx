@@ -49,7 +49,7 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const addToFavorite = useCallback(() => {
     axiosInstance
-      .post(`http://ratchekx.beget.tech/favorite/${account.id}`, {
+      .post(`http://127.0.0.1:8000/favorite/${account.id}`, {
         ...currentFav,
         product: currentFav.product.id
       }, {
@@ -64,7 +64,7 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const removeFromFavorite = useCallback(() => {
     axiosInstance
-      .delete(`http://ratchekx.beget.tech/favorite_book/${currentFav.id}`, {
+      .delete(`http://127.0.0.1:8000/favorite_book/${currentFav.id}`, {
         headers: {
           'X-CSRFToken': token
         }
@@ -76,7 +76,7 @@ const FavoriteProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getFavoriteBooks = useCallback(() => {
     axiosInstance
-      .get(`http://ratchekx.beget.tech/favorite/${account.id}`, {
+      .get(`http://127.0.0.1:8000/favorite/${account.id}`, {
         headers: {
           'X-CSRFToken': token
         }

@@ -63,7 +63,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getThemeBooks = useCallback(() => {
     axiosInstance
-      .get(`http://ratchekx.beget.tech/theme/${keys[keys.length - 1]}`, {
+      .get(`http://127.0.0.1:8000/theme/${keys[keys.length - 1]}`, {
         headers: {
           'X-CSRFToken': token
         }
@@ -79,7 +79,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getBookById = useCallback(() => {
     axiosInstance
-      .get(`http://ratchekx.beget.tech/products/${keys[keys.length - 1]}`, {
+      .get(`http://127.0.0.1:8000/products/${keys[keys.length - 1]}`, {
         headers: {
           'X-CSRFToken': token
         }
@@ -92,7 +92,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getBooks = useCallback(() => {
     axiosInstance
-      .get('http://ratchekx.beget.tech/products', {
+      .get('http://127.0.0.1:8000/products', {
         headers: {
           'X-CSRFToken': token
         }
@@ -105,7 +105,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const postReview = useCallback(() => {
     axiosInstance
-      .post('http://ratchekx.beget.tech/review/', {...newReview, user: account.id}, {
+      .post('http://127.0.0.1:8000/review/', {...newReview, user: account.id}, {
         headers: {
           'X-CSRFToken': token
         }
@@ -117,7 +117,7 @@ const BooksProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getBooksBySearchWord = useCallback(() => {
     axiosInstance
-      .post('http://ratchekx.beget.tech/books_search', {
+      .post('http://127.0.0.1:8000/books_search', {
         book_name: searchWord.toLowerCase()
       }, {
         headers: {

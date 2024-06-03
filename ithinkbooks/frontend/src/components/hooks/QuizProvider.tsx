@@ -143,7 +143,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getQuiz = useCallback((quizTheme: string) => {
     axiosInstance
-      .get('http://ratchekx.beget.tech/quiz', {
+      .get('http://127.0.0.1:8000/quiz', {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }
@@ -158,7 +158,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const getRoadmaps = useCallback((redirect = false) => {
     axiosInstance
-      .get('http://ratchekx.beget.tech/quiz/user_roadmaps', {
+      .get('http://127.0.0.1:8000/quiz/user_roadmaps', {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }
@@ -184,7 +184,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
     console.log(data);
 
     axiosInstance
-      .post(`http://ratchekx.beget.tech/quiz/quizes/${quiz.id}/vote`, data, {
+      .post(`http://127.0.0.1:8000/quiz/quizes/${quiz.id}/vote`, data, {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }
@@ -198,7 +198,7 @@ const QuizProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const deleteRoadmapFromServer = useCallback((roadmapId: number) => {
     axiosInstance
-      .delete(`http://ratchekx.beget.tech/quiz/roadmap/${roadmapId}`, {
+      .delete(`http://127.0.0.1:8000/quiz/roadmap/${roadmapId}`, {
         headers: {
           'X-CSRFToken': getCookie('csrftoken')
         }
